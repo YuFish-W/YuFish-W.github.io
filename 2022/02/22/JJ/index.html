@@ -6,13 +6,222 @@
   
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
+  <meta name="description" content="Java 1. 入门 编译时使用javac+文件名，c代表compile，这个文件名是编写好的源文件文件名，需要后缀（Hello.java)  在用DOS运行时属性里的“当前代码页”有规定了格式（GBK），编译文件中有中文的时候如果不先将程序转换成GBK编码可能编译无效（切换编码后需要保存才能生效） ，不会出现.class文件(不在DOS里运行基本都是UTF-8编码)       在运行时的时候使">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="http://example.com/2022/02/22/JJ/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Java 1. 入门 编译时使用javac+文件名，c代表compile，这个文件名是编写好的源文件文件名，需要后缀（Hello.java)  在用DOS运行时属性里的“当前代码页”有规定了格式（GBK），编译文件中有中文的时候如果不先将程序转换成GBK编码可能编译无效（切换编码后需要保存才能生效） ，不会出现.class文件(不在DOS里运行基本都是UTF-8编码)       在运行时的时候使">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211208084158425.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211208091927202.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211210085849263.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211216092013689.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211220163657420.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211220190754830.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211220192504580.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211221092728909.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211221203412974.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211221203701691.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211221212105452.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211222110208515.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224075334189.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211223123006507.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211223190354498.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224102202345.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224132531769.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224144607999.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224145317808.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224152941442.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224155620210.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224155630592.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224162909475.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211224162839850.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211225164912044.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211225164957297.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211225200549401.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211227102313115.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211227102330994.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211227105623856.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211227105828235.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229121724738.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229144219171.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229145539319.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229150013202.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229150753465.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229150806901.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229150824407.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229160140935.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229160158820.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229161523669.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229164019649.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229164045931.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229171953279.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229172659570.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229173357181.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211229174008141.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211230155030868.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211230223422063.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211230223438994.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231101447632.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231102137519.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231110556926.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231123513536.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231123529853.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231123546280.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231123555134.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231192708828.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231205302723.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231205450925.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211231205318623.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101155207964.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101155213887.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101155226196.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101173153957.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101173204267.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101173208585.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101173212442.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101194552893.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101200841410.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101205910404.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101220142246.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101220703015.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101222054912.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220101222753151.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102114034690.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102114118342.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102114400602.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102114410291.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102114447001.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102144809463.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102144920581.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102152857427.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102154542865.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102154604190.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102155824897.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102155846580.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102160517251.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102164006487.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102162046341.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102164413213.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102170505782.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102170648800.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102172129733.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102172139168.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102185506856.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102185512682.png">
+<meta property="og:image" content="c:/Users/%E5%90%B4%E5%AE%87/AppData/Roaming/Typora/typora-user-images/image-20220102200349175.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102200519291.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102200525182.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102200812679.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102202023034.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103093841127.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102211112611.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102211256998.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102211745526.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102211950716.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102212556359.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220102213318272.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103092438800.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103092635917.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103093338669.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103095112120.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103095118917.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103095327324.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103212135653.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103212903120.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103222304693.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103224726268.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220103224800723.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104131911414.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104132210285.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104133030046.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104133256295.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104142407252.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104153603185.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104165321379.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220108102129267.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104172114749.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220104172126309.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220108101336971.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220108102310753.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220109182224949.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220109183518910.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220109183525252.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220109184158045.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220109184927445.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220109192403303.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220109192409874.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220109192544481.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220123105036233.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220123114115175.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220123182854676.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220123182957730.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124105744662.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124105904572.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124110256510.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124110434940.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124110624403.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124111310294.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124114646341.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124114752627.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124124620017.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124125521375.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124170225581.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124170311551.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124173839183.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124190124073.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220124194309747.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220125114338098.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220125134933858.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220125141752593.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220125141556302.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220125195133444.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220126161218339.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220127150113869.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220127150156886.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220127173529338.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220127174231666.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220127175402831.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220127181520835.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220127214126750.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220127215109811.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128114328320.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128114407747.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128121516292.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128152455290.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128152530666.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128152538592.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128152548035.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128152559189.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128210352703.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128210414360.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220128210437584.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220129110020434.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220129110046015.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220211221056884.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220211221153736.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220211221348465.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220211221447818.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220211224059980.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220211224223346.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212000055365.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212170606391.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212170646465.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212171041483.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212180115375.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212180250016.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212180709930.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212182559066.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212202310002.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212202423428.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20220212202430918.png">
+<meta property="og:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211230161148251.png">
+<meta property="article:published_time" content="2022-02-22T14:29:51.320Z">
+<meta property="article:modified_time" content="2022-02-22T13:09:58.079Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YuFish-W/picture/raw/master/img/image-20211208084158425.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -69,9 +278,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-JJ" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-JJ" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/02/22/JJ/" class="article-date">
   <time class="dt-published" datetime="2022-02-22T14:29:51.320Z" itemprop="datePublished">2022-02-22</time>
@@ -3131,62 +3338,19 @@ System.out.println(&quot;密码是=&quot; + pwd);
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/12/02/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2021-12-02T15:23:05.296Z" itemprop="datePublished">2021-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/12/02/hello-world/">Hello World</a>
-    </h1>
+    <a href="/2021/12/02/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/12/02/hello-world/" data-id="ckwpxvqjx00004wudcv7n8cf2" data-title="Hello World" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
 
 
 </section>
