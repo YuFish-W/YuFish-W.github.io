@@ -1,3 +1,3 @@
-http://example.com/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/
-http://example.com/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/
-http://example.com/
+https://yufish-w.github.io/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/
+https://yufish-w.github.io/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/
+https://yufish-w.github.io/
