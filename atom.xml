@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-03-14T08:36:28.490Z</updated>
+  <updated>2022-03-14T09:11:07.344Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,25 +17,17 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>fasd</title>
-    <link href="http://example.com/2022/03/14/fasd/"/>
-    <id>http://example.com/2022/03/14/fasd/</id>
-    <published>2022-03-14T08:36:28.000Z</published>
-    <updated>2022-03-14T08:36:28.490Z</updated>
+    <title>MySQL自增长</title>
+    <link href="http://example.com/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/"/>
+    <id>http://example.com/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/</id>
+    <published>2022-03-14T09:08:17.000Z</published>
+    <updated>2022-03-14T09:11:07.344Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="MySQL数据库中的自增长问题"><a href="#MySQL数据库中的自增长问题" class="headerlink" title="MySQL数据库中的自增长问题"></a>MySQL数据库中的自增长问题</h1><ul><li><p><strong>自动增长的时候如果有其他列是也是唯一的(主键、唯一键都行)，但是添加元素的时候重复添加导致失败，也会导致+1，下一次成功添加的时候就比之前+2了，这样每失败一次都会+1</strong>。</p><span id="more"></span><ul><li><p><strong>例如</strong>：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t15(</span><br><span class="line">    id INT PRIMARY KEY AUTO_INCREMENT,</span><br><span class="line">    num INT UNIQUE);</span><br><span class="line">INSERT INTO t15 VALUES(NULL,1);</span><br><span class="line">INSERT INTO t15 VALUES(NULL,2);</span><br><span class="line">INSERT INTO t15 VALUES(NULL,3);</span><br><span class="line">SELECT * FROM t15;</span><br><span class="line">-- 这里查看表表里有(1,1),(2,2),(3,3)</span><br><span class="line">-- 再次插入(null,3)</span><br><span class="line">INSERT INTO t15 VALUES(NULL,3);</span><br><span class="line">-- 由于num参数是unique，因此插入失败，此时插入(null,4)</span><br><span class="line">INSERT INTO t15 VALUES(NULL,4);</span><br><span class="line">SELECT * FROM t15;</span><br><span class="line">-- 查看表，发现此时插入的不是(4,4)而是(5,4)</span><br></pre></td></tr></table></figure></li></ul></li><li><p><strong>自增长底层是找到当前字段中最大的然后+1，如果指定插入了一个比现在增长到的值更大的数，下次自增长从这里开始</strong>。</p><ul><li><p><strong>但是这个自增长的值只会变大不会变小，即如果现在最大的是4，你插入的时候指定7，那么下一次自增长从7开始，但是如果这个时候你把234全部删除了，只剩下1，自增长还是从4开始</strong>。</p><ul><li><p><strong>下列语句删除1，2之后自动插入，查看表可以发现插入的仍然是3</strong>：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t14(</span><br><span class="line">    id INT PRIMARY KEY AUTO_INCREMENT);</span><br><span class="line">INSERT INTO t14 VALUES(NULL);</span><br><span class="line">INSERT INTO t14 VALUES(NULL);</span><br><span class="line">DELETE FROM t14 WHERE id = 1;</span><br><span class="line">DELETE FROM t14 WHERE id = 2;</span><br><span class="line">INSERT INTO t14 VALUES(NULL);</span><br><span class="line">SELECT * FROM t14;</span><br></pre></td></tr></table></figure></li></ul></li><li><p><strong>如果是<code>update</code>修改了已经插入的值，不会有影响</strong>。</p></li><li><p><strong>但是之前说了，如果是因为重复导致的添加失败，仍会+1，但是不会插入，下次插入就加了2，如果使用<code>update</code>修改一个值例如2改成5，当自增到4的时候再次调用，就会失败，因为5重复了，下一次再调用就会插入6</strong>。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t13(</span><br><span class="line">    id INT PRIMARY KEY AUTO_INCREMENT);</span><br><span class="line">INSERT INTO t13 VALUES(NULL);</span><br><span class="line">INSERT INTO t13 VALUES(NULL);</span><br><span class="line">INSERT INTO t13 VALUES(NULL);</span><br><span class="line">UPDATE t13 SET id = 5 WHERE id = 2;</span><br><span class="line">INSERT INTO t13 VALUES(NULL);</span><br></pre></td></tr></table></figure><ul><li><p><strong>此时查看发现列表</strong>：<img src="https://img-blog.csdnimg.cn/4139c6655f494bd793afcbf3a9c872b2.png" alt="img"></p><p><strong>此时自增长到了4，如果再次插入，则会因为5重复而失败</strong>。</p></li></ul></li></ul></li></ul>]]></content>
     
     
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>fs</title>
-    <link href="http://example.com/2022/03/14/fs/"/>
-    <id>http://example.com/2022/03/14/fs/</id>
-    <published>2022-03-14T08:20:04.000Z</published>
-    <updated>2022-03-14T08:20:04.148Z</updated>
-    
+    <summary type="html">&lt;h1 id=&quot;MySQL数据库中的自增长问题&quot;&gt;&lt;a href=&quot;#MySQL数据库中的自增长问题&quot; class=&quot;headerlink&quot; title=&quot;MySQL数据库中的自增长问题&quot;&gt;&lt;/a&gt;MySQL数据库中的自增长问题&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;自动增长的时候如果有其他列是也是唯一的(主键、唯一键都行)，但是添加元素的时候重复添加导致失败，也会导致+1，下一次成功添加的时候就比之前+2了，这样每失败一次都会+1&lt;/strong&gt;。&lt;/p&gt;</summary>
     
     
     
