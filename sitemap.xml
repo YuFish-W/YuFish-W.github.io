@@ -2,18 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yufish-w.github.io/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/</loc>
+    <loc>http://example.com/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/</loc>
     
-    <lastmod>2022-03-14</lastmod>
+    <lastmod>2022-03-15</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://yufish-w.github.io/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/</loc>
+    <loc>http://example.com/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/</loc>
     
-    <lastmod>2022-03-14</lastmod>
+    <lastmod>2022-03-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/</loc>
+    
+    <lastmod>2022-03-15</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -21,12 +30,19 @@
   
 
   <url>
-    <loc>https://yufish-w.github.io/</loc>
-    <lastmod>2022-03-14</lastmod>
+    <loc>http://example.com/</loc>
+    <lastmod>2022-03-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
+  
+  <url>
+    <loc>http://example.com/tags/java/</loc>
+    <lastmod>2022-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
   
 
   
