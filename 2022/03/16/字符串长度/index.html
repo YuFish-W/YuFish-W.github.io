@@ -22,18 +22,24 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="功成名就不是目的">
-<meta property="og:type" content="website">
-<meta property="og:title" content="酒书茶社">
-<meta property="og:url" content="http://example.com/archives/2022/index.html">
+  <meta name="description" content="为什么单个字符的字符串长度为2？ 我们知道字符串的.length()方法会返回字符串的长度，但以下有的字符串只有一个字符，.length()返回的长度却是2，例如: 12String str &#x3D; &quot;𝄞&quot;;System.out.println(str.length());  输出结果如下：  这是因为length方法返回的是采用utf-16编码表示的给定字符串所需要的代码单元数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单个字符的字符串长度可能为2">
+<meta property="og:url" content="http://example.com/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/index.html">
 <meta property="og:site_name" content="酒书茶社">
-<meta property="og:description" content="功成名就不是目的">
+<meta property="og:description" content="为什么单个字符的字符串长度为2？ 我们知道字符串的.length()方法会返回字符串的长度，但以下有的字符串只有一个字符，.length()返回的长度却是2，例如: 12String str &#x3D; &quot;𝄞&quot;;System.out.println(str.length());  输出结果如下：  这是因为length方法返回的是采用utf-16编码表示的给定字符串所需要的代码单元数">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/ac2837f14073475d9f617cf33892acf7.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/3c7f254a7f4749d2bb2cfec9de2cf0af.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/ab999f3ad6484f4fb2481914fc2aee96.png">
+<meta property="article:published_time" content="2022-03-16T08:10:09.000Z">
+<meta property="article:modified_time" content="2022-03-16T08:11:23.333Z">
 <meta property="article:author" content="YuFish-W">
 <meta property="article:tag" content="酒书茶社、YuFish-W">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/ac2837f14073475d9f617cf33892acf7.png">
 
-<link rel="canonical" href="http://example.com/archives/2022/">
+<link rel="canonical" href="http://example.com/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/">
 
 
 <script id="page-configurations">
@@ -41,12 +47,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | 酒书茶社</title>
+  <title>单个字符的字符串长度可能为2 | 酒书茶社</title>
   
 
 
@@ -148,110 +154,143 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 4 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="YuFish-W">
+      <meta itemprop="description" content="功成名就不是目的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="酒书茶社">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          单个字符的字符串长度可能为2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-16 16:10:09 / 修改时间：16:11:23" itemprop="dateCreated datePublished" datetime="2022-03-16T16:10:09+08:00">2022-03-16</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>588</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
-    </div>
+        <h1 id="为什么单个字符的字符串长度为2？"><a href="#为什么单个字符的字符串长度为2？" class="headerlink" title="为什么单个字符的字符串长度为2？"></a>为什么单个字符的字符串长度为2？</h1><ul>
+<li><p><strong>我们知道字符串的<code>.length()</code>方法会返回字符串的长度，但以下有的字符串只有一个字符，<code>.length()</code>返回的长度却是2，例如</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String str = &quot;𝄞&quot;;</span><br><span class="line">System.out.println(str.length());</span><br></pre></td></tr></table></figure>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<p><strong>输出结果如下</strong>：<img src="https://img-blog.csdnimg.cn/ac2837f14073475d9f617cf33892acf7.png" alt="img"></p>
+</li>
+<li><p><strong>这是因为<code>length</code>方法返回的是采用utf-16编码表示的给定字符串所需要的代码单元数量（<a target="_blank" rel="noopener" href="https://blog.csdn.net/w55935/article/details/123500133?spm=1001.2014.3001.5502">代码单元不懂的可以看这里</a>），大多数常用字符仅用一个代码单元就可以表示，但有些却需要一对代码单元表示</strong>。</p>
+</li>
+<li><p><strong>想要知道字符串的实际长度，即<code>Unicode</code>代码点的数量（一个字符对应一个代码点，代码点用16进制编写，并且在前面加上U+，例如<code>U+0041</code>就是字母A的代码点），可以采用如下方法</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str = &quot;𝄞&quot;;</span><br><span class="line">int count = str.codePointCount(0, str.length());</span><br><span class="line">System.out.println(count);</span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-03-16T16:10:09+08:00"
-              content="2022-03-16">
-          03-16
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/" itemprop="url">
-            <span itemprop="name">单个字符的字符串长度可能为2</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-03-15T13:15:00+08:00"
-              content="2022-03-15">
-          03-15
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/" itemprop="url">
-            <span itemprop="name">java中char为什么无法表示全部字符</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-03-14T17:08:17+08:00"
-              content="2022-03-14">
-          03-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/" itemprop="url">
-            <span itemprop="name">MySQL数据库中的自增长问题</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-03-13T21:15:25+08:00"
-              content="2022-03-13">
-          03-13
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/" itemprop="url">
-            <span itemprop="name">在IDEA中使用apache-dbutils查询返回对象时封装属性的问题</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+<p><strong>此时输出</strong>：<img src="https://img-blog.csdnimg.cn/3c7f254a7f4749d2bb2cfec9de2cf0af.png" alt="img"></p>
+</li>
+<li><p><strong>额外需要知道：字符串的<code>.charAt(n)</code>方法返回的是处于位置n的代码单元，而不是字符，所以如果对于这样两个代码单元的字符调用<code>.char()</code>得不到我们想要的字符</strong>：</p>
+</li>
+<li><pre><code>String str = &quot;𝄞&quot;;
+char c = str.charAt(0);
+System.out.println(c);
+</code></pre>
+<p><strong>此时输出</strong>：<img src="https://img-blog.csdnimg.cn/ab999f3ad6484f4fb2481914fc2aee96.png" alt="img"></p>
+</li>
+</ul>
 
     </div>
-  </div>
-  
-  
-  
 
+    <div>
+	  
+	    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+	  
+	</div>
+
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>YuFish-W
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/" title="单个字符的字符串长度可能为2">http://example.com/2022/03/16/字符串长度/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/" rel="prev" title="java中char为什么无法表示全部字符">
+      <i class="fa fa-chevron-left"></i> java中char为什么无法表示全部字符
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -304,6 +343,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8D%95%E4%B8%AA%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6%E4%B8%BA2%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">为什么单个字符的字符串长度为2？</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
