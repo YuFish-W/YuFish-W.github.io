@@ -179,7 +179,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-03-16 16:10:09 / 修改时间：16:11:23" itemprop="dateCreated datePublished" datetime="2022-03-16T16:10:09+08:00">2022-03-16</time>
+              <time title="创建时间：2022-03-16 16:10:09 / 修改时间：16:13:49" itemprop="dateCreated datePublished" datetime="2022-03-16T16:10:09+08:00">2022-03-16</time>
             </span>
 
           <br>
@@ -201,28 +201,7 @@
 
       
           <h1 id="为什么单个字符的字符串长度为2？"><a href="#为什么单个字符的字符串长度为2？" class="headerlink" title="为什么单个字符的字符串长度为2？"></a>为什么单个字符的字符串长度为2？</h1><ul>
-<li><p><strong>我们知道字符串的<code>.length()</code>方法会返回字符串的长度，但以下有的字符串只有一个字符，<code>.length()</code>返回的长度却是2，例如</strong>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String str = &quot;𝄞&quot;;</span><br><span class="line">System.out.println(str.length());</span><br></pre></td></tr></table></figure>
-
-<p><strong>输出结果如下</strong>：<img src="https://img-blog.csdnimg.cn/ac2837f14073475d9f617cf33892acf7.png" alt="img"></p>
-</li>
-<li><p><strong>这是因为<code>length</code>方法返回的是采用utf-16编码表示的给定字符串所需要的代码单元数量（<a target="_blank" rel="noopener" href="https://blog.csdn.net/w55935/article/details/123500133?spm=1001.2014.3001.5502">代码单元不懂的可以看这里</a>），大多数常用字符仅用一个代码单元就可以表示，但有些却需要一对代码单元表示</strong>。</p>
-</li>
-<li><p><strong>想要知道字符串的实际长度，即<code>Unicode</code>代码点的数量（一个字符对应一个代码点，代码点用16进制编写，并且在前面加上U+，例如<code>U+0041</code>就是字母A的代码点），可以采用如下方法</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str = &quot;𝄞&quot;;</span><br><span class="line">int count = str.codePointCount(0, str.length());</span><br><span class="line">System.out.println(count);</span><br></pre></td></tr></table></figure>
-
-<p><strong>此时输出</strong>：<img src="https://img-blog.csdnimg.cn/3c7f254a7f4749d2bb2cfec9de2cf0af.png" alt="img"></p>
-</li>
-<li><p><strong>额外需要知道：字符串的<code>.charAt(n)</code>方法返回的是处于位置n的代码单元，而不是字符，所以如果对于这样两个代码单元的字符调用<code>.char()</code>得不到我们想要的字符</strong>：</p>
-</li>
-<li><pre><code>String str = &quot;𝄞&quot;;
-char c = str.charAt(0);
-System.out.println(c);
-</code></pre>
-<p><strong>此时输出</strong>：<img src="https://img-blog.csdnimg.cn/ab999f3ad6484f4fb2481914fc2aee96.png" alt="img"></p>
-</li>
-</ul>
-
+<li><p><strong>我们知道字符串的<code>.length()</code>方法会返回字符串的长度，但以下有的字符串只有一个字符，<code>.length()</code>返回的长度却是2，例如</strong>:
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/#more" rel="contents">
