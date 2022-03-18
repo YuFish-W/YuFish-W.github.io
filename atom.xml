@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-03-16T08:13:49.629Z</updated>
+  <updated>2022-03-18T12:40:57.496Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于正则表达式`*`为什么会在行尾匹配出一个空串</title>
+    <link href="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/"/>
+    <id>http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/</id>
+    <published>2022-03-18T12:23:31.000Z</published>
+    <updated>2022-03-18T12:40:57.496Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p><code>*</code>代表<strong>匹配0个或者多个</strong>，例如<code>5*</code>表示匹配0个或者多个5，在<strong>匹配的时候系统会每个字符依次匹配</strong>，即调用<code>.find()</code>过后返回到<code>groups</code>数组中的位置是<strong>从第一个字符开始找</strong>5，<strong>如果第一个字符不是5就相当于找到了0个5，此时<code>groups</code>数组中索引的第一二个是(0,0)<strong>，</strong>意思是从0到0的位置有0个5，这个时候用字符串找子串的方式<code>return</code>这个范围的子串给我们，即此时我们得到了一个<code>&quot;&quot;</code>空串，此时第一次匹配结束，之后以此类推</strong>。<span id="more"></span></p><ul><li>**用<code>5\*</code>匹配字符串<code>&quot;a555fds651&quot;</code>**：<ul><li>**第一次<code>find()</code>找到0个5开始于0结束于0，返回<code>&quot;&quot;</code>**；</li><li>**第二次<code>find()</code>找到3个5开始于1结束于4，返回<code>555</code>**；</li><li>**最后匹配来到了1，同样返回<code>&quot;&quot;</code>，但是还没有结束，还会在最后返回一个<code>&quot;&quot;</code>**。</li></ul></li></ul></li><li><p><strong>在使用正则表达式<code>.find()</code>匹配的时候</strong>：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public boolean find() &#123;</span><br><span class="line">    int nextSearchIndex = last;//将下一个搜索位置移到last，last表示上次搜索位置的结束位置，因为搜索子串是左闭右开区间，因此这个最右的字符头一次没有匹配到，这次从这开始</span><br><span class="line">    if (nextSearchIndex == first)//如果下一次搜索的开始位置等于上一个子串开始位置first，则往后移一位，只有last=first即搜到空子串才回这样</span><br><span class="line">        nextSearchIndex++;</span><br><span class="line"></span><br><span class="line">    //下面的from和to代表父串的开始和结束位置，即(0,length)</span><br><span class="line">    // If next search starts before region, start it at region</span><br><span class="line">    if (nextSearchIndex &lt; from)//下一个搜索位置小于0则移到0</span><br><span class="line">        nextSearchIndex = from;</span><br><span class="line"></span><br><span class="line">    // If next search starts beyond region then it fails</span><br><span class="line">    if (nextSearchIndex &gt; to) &#123;</span><br><span class="line">        //！！！！这句就是出现问题的关键！！！！！！！！这里的to表示父串长度，这里判断大于搜索位置大于父串长度才会结束搜索，但是我们知道字符串索引是从0开始的，因此不需要大于这个长度，只要等于这个长度其实就搜不到了。</span><br><span class="line">        //因此我们nextSerchIndex=to即搜索索引是父串长度的位置的时候仍然会继续以to位置为开始索引开始搜索</span><br><span class="line">        for (int i = 0; i &lt; groups.length; i++)</span><br><span class="line">            groups[i] = -1;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    return search(nextSearchIndex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><p><strong>以to(父串length，由于索引从0开始，实际没这个位置的字符)位置为开始索引开始搜索的时候*自然搜不到我们要的，此时则代表从to到to找到了0个子串，然后根据子串搜索源码可以知道，即使子串开始索引等于length长度，仍然不会报索引越界的错误，因为开始索引只要不小于0就行。如果开始和结束位置都是length，子串长度为0，返回<code>&quot;&quot;</code>空串</strong>。</p><ul><li><p><strong>java中<code>substring()</code>源码</strong>：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public String substring(int beginIndex, int endIndex) &#123;//代表子串开始位置和结束位置</span><br><span class="line">    if (beginIndex &lt; 0) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(beginIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    if (endIndex &gt; value.length) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(endIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    int subLen = endIndex - beginIndex;</span><br><span class="line">    if (subLen &lt; 0) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(subLen);</span><br><span class="line">    &#125;</span><br><span class="line">    return ((beginIndex == 0) &amp;&amp; (endIndex == value.length)) ? this</span><br><span class="line">        : new String(value, beginIndex, subLen);</span><br><span class="line">&#125;//this代表要找的父字符串</span><br></pre></td></tr></table></figure><ul><li><strong>可以看到<code>sbustring()</code>会先判断输入的子串索引是否合法，即是否在0到父串长度之间，然后计算要得到的自传长度<code>int subLen = endIndex - beginIndex</code>,如果这个长度不小于0，就进行最后的返回值，即如果<code>(beginIndex == 0) &amp;&amp; (endIndex == value.length)</code>成立，即要找的子串就是父串本身，则返回父串，否则<code>new String(value, beginIndex, subLen)</code>，代表new一个新串，从父串的<code>beginIndex</code>位置开始加入<code>sunLen</code>个字符</strong>。</li><li><strong>这也能看出为什么返回子串是左闭右开区间，因为返回子串的时候是从开始位置放入搜索区间长度个字符，例如1-3只返回从1开始2个字符，因此取的是1和2,3总是取不到的</strong>。</li></ul></li></ul></li></ul></li><li><p><strong>因此*在匹配字符串的时候最后总是会匹配到一个<code>&quot;&quot;</code>空串</strong>。</p></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;*&lt;/code&gt;代表&lt;strong&gt;匹配0个或者多个&lt;/strong&gt;，例如&lt;code&gt;5*&lt;/code&gt;表示匹配0个或者多个5，在&lt;strong&gt;匹配的时候系统会每个字符依次匹配&lt;/strong&gt;，即调用&lt;code&gt;.find()&lt;/code&gt;过后返回到&lt;code&gt;groups&lt;/code&gt;数组中的位置是&lt;strong&gt;从第一个字符开始找&lt;/strong&gt;5，&lt;strong&gt;如果第一个字符不是5就相当于找到了0个5，此时&lt;code&gt;groups&lt;/code&gt;数组中索引的第一二个是(0,0)&lt;strong&gt;，&lt;/strong&gt;意思是从0到0的位置有0个5，这个时候用字符串找子串的方式&lt;code&gt;return&lt;/code&gt;这个范围的子串给我们，即此时我们得到了一个&lt;code&gt;&amp;quot;&amp;quot;&lt;/code&gt;空串，此时第一次匹配结束，之后以此类推&lt;/strong&gt;。</summary>
+    
+    
+    
+    
+    <category term="正则表达式" scheme="http://example.com/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>单个字符的字符串长度可能为2</title>

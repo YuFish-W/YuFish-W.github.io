@@ -22,23 +22,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="此处是操作MySQL数据库 在使用apache-dbutils的时候，查询过程中如果创建的javabean对象里的属性比查询到的字段多，则此时创建的对象属性值是null，引用类型的属性默认null 。  创建测试表和测试类：">
+  <meta name="description" content="*代表匹配0个或者多个，例如5*表示匹配0个或者多个5，在匹配的时候系统会每个字符依次匹配，即调用.find()过后返回到groups数组中的位置是从第一个字符开始找5，如果第一个字符不是5就相当于找到了0个5，此时groups数组中索引的第一二个是(0,0)，意思是从0到0的位置有0个5，这个时候用字符串找子串的方式return这个范围的子串给我们，即此时我们得到了一个&quot;&quot;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在IDEA中使用apache-dbutils查询返回对象时封装属性的问题">
-<meta property="og:url" content="http://example.com/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:title" content="关于正则表达式&#96;*&#96;为什么会在行尾匹配出一个空串">
+<meta property="og:url" content="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/index.html">
 <meta property="og:site_name" content="酒书茶社">
-<meta property="og:description" content="此处是操作MySQL数据库 在使用apache-dbutils的时候，查询过程中如果创建的javabean对象里的属性比查询到的字段多，则此时创建的对象属性值是null，引用类型的属性默认null 。  创建测试表和测试类：">
+<meta property="og:description" content="*代表匹配0个或者多个，例如5*表示匹配0个或者多个5，在匹配的时候系统会每个字符依次匹配，即调用.find()过后返回到groups数组中的位置是从第一个字符开始找5，如果第一个字符不是5就相当于找到了0个5，此时groups数组中索引的第一二个是(0,0)，意思是从0到0的位置有0个5，这个时候用字符串找子串的方式return这个范围的子串给我们，即此时我们得到了一个&quot;&quot;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/62ac59dfab8041979d1ca6fc37b56492.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/021c09be1a86429bb7428b6474f966a7.png">
-<meta property="article:published_time" content="2022-03-13T13:15:25.000Z">
-<meta property="article:modified_time" content="2022-03-15T05:18:05.383Z">
+<meta property="article:published_time" content="2022-03-18T12:23:31.000Z">
+<meta property="article:modified_time" content="2022-03-18T12:40:57.496Z">
 <meta property="article:author" content="YuFish-W">
-<meta property="article:tag" content="酒书茶社、YuFish-W">
+<meta property="article:tag" content="正则表达式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/62ac59dfab8041979d1ca6fc37b56492.png">
 
-<link rel="canonical" href="http://example.com/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/">
+<link rel="canonical" href="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/">
 
 
 <script id="page-configurations">
@@ -51,7 +48,7 @@
   };
 </script>
 
-  <title>在IDEA中使用apache-dbutils查询返回对象时封装属性的问题 | 酒书茶社</title>
+  <title>关于正则表达式`*`为什么会在行尾匹配出一个空串 | 酒书茶社</title>
   
 
 
@@ -160,7 +157,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -173,7 +170,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          在IDEA中使用apache-dbutils查询返回对象时封装属性的问题
+          关于正则表达式`*`为什么会在行尾匹配出一个空串
         </h1>
 
         <div class="post-meta">
@@ -182,16 +179,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-03-13 21:15:25" itemprop="dateCreated datePublished" datetime="2022-03-13T21:15:25+08:00">2022-03-13</time>
+              <time title="创建时间：2022-03-18 20:23:31 / 修改时间：20:40:57" itemprop="dateCreated datePublished" datetime="2022-03-18T20:23:31+08:00">2022-03-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-15 13:18:05" itemprop="dateModified" datetime="2022-03-15T13:18:05+08:00">2022-03-15</time>
-              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -206,7 +197,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
+              <span>2.2k</span>
             </span>
 
         </div>
@@ -218,34 +209,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="此处是操作MySQL数据库"><a href="#此处是操作MySQL数据库" class="headerlink" title="此处是操作MySQL数据库"></a>此处是操作MySQL数据库</h2><ul>
-<li><p><strong>在使用<code>apache-dbutils</code>的时候，查询过程中如果创建的javabean对象里的属性比查询到的字段多，则此时创建的对象属性值是<code>null</code>，引用类型的属性默认<code>null</code> 。</strong></p>
+        <ul>
+<li><p><code>*</code>代表<strong>匹配0个或者多个</strong>，例如<code>5*</code>表示匹配0个或者多个5，在<strong>匹配的时候系统会每个字符依次匹配</strong>，即调用<code>.find()</code>过后返回到<code>groups</code>数组中的位置是<strong>从第一个字符开始找</strong>5，<strong>如果第一个字符不是5就相当于找到了0个5，此时<code>groups</code>数组中索引的第一二个是(0,0)<strong>，</strong>意思是从0到0的位置有0个5，这个时候用字符串找子串的方式<code>return</code>这个范围的子串给我们，即此时我们得到了一个<code>&quot;&quot;</code>空串，此时第一次匹配结束，之后以此类推</strong>。<span id="more"></span></p>
 <ul>
-<li><strong>创建测试表和测试类</strong>：<span id="more"></span></li>
+<li>**用<code>5\*</code>匹配字符串<code>&quot;a555fds651&quot;</code>**：<ul>
+<li>**第一次<code>find()</code>找到0个5开始于0结束于0，返回<code>&quot;&quot;</code>**；</li>
+<li>**第二次<code>find()</code>找到3个5开始于1结束于4，返回<code>555</code>**；</li>
+<li>**最后匹配来到了1，同样返回<code>&quot;&quot;</code>，但是还没有结束，还会在最后返回一个<code>&quot;&quot;</code>**。</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#创建一个测试表</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test0(</span><br><span class="line">	id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">	NAME <span class="type">VARCHAR</span>(<span class="number">10</span>));</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test0 <span class="keyword">VALUES</span>(<span class="keyword">NULL</span>,<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test0 <span class="keyword">VALUES</span>(<span class="keyword">NULL</span>,<span class="string">&#x27;b&#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test0 <span class="keyword">VALUES</span>(<span class="keyword">NULL</span>,<span class="string">&#x27;c&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个多一个属性 pwd 的javabean类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test0</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String pwd;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">test0</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPwd</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPwd</span><span class="params">(String pwd)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pwd = pwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;test0&#123;&quot;</span> +</span><br><span class="line">            <span class="string">&quot;id=&quot;</span> + id +</span><br><span class="line">            <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">            <span class="string">&quot;, pwd=&#x27;&quot;</span> + pwd + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">            <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>测试方法</strong>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">query</span><span class="params">()</span></span>&#123;</span><br><span class="line">    QueryRunner qr = <span class="keyword">new</span> QueryRunner();</span><br><span class="line">    Connection connection= <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">        <span class="comment">//这里是使用的一个自己创建的管理数据库连接关闭的工具类</span></span><br><span class="line">        </span><br><span class="line">        List&lt;test0&gt; query = qr.query(connection, <span class="string">&quot;select * from test0&quot;</span>, <span class="keyword">new</span> BeanListHandler&lt;test0&gt;(test0.class));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (test0 t : query)&#123;</span><br><span class="line">            System.out.println(t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (SQLException throwables) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(throwables);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        JDBCUtilsByDruid.closeConnection(<span class="keyword">null</span>,<span class="keyword">null</span>,connection);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>结果如下</strong>：<img src="https://img-blog.csdnimg.cn/62ac59dfab8041979d1ca6fc37b56492.png"></p>
-<p><strong>可以看到如果创建的<code>javabean</code>对象中比表中的字段多，并不会报错，此时值为<code>null</code>(因为在类中属性都有默认值，引用类型对应的是<code>null</code>)</strong></p>
 </li>
 </ul>
 </li>
-<li><p><strong>如果创建的javabean类里面的属性名和需要查询的表里的字段名不相同，则无法赋值成功，会是Null。因为底层是通过我们给出的Class对象通过反射找到和表中字段对应的属性，利用<code>setXX()</code>方法给它赋值，找不到这个对应的属性则无法复制，而属性是有默认值的，引用类型默认是Null</strong>。</p>
-<ul>
-<li><p>例如在创建表的时候将<code>name</code>换成<code>name0</code>:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test0(</span><br><span class="line">	id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">	NAME0 <span class="type">VARCHAR</span>(<span class="number">10</span>));</span><br></pre></td></tr></table></figure>
+<li><p><strong>在使用正则表达式<code>.find()</code>匹配的时候</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public boolean find() &#123;</span><br><span class="line">    int nextSearchIndex = last;//将下一个搜索位置移到last，last表示上次搜索位置的结束位置，因为搜索子串是左闭右开区间，因此这个最右的字符头一次没有匹配到，这次从这开始</span><br><span class="line">    if (nextSearchIndex == first)//如果下一次搜索的开始位置等于上一个子串开始位置first，则往后移一位，只有last=first即搜到空子串才回这样</span><br><span class="line">        nextSearchIndex++;</span><br><span class="line"></span><br><span class="line">    //下面的from和to代表父串的开始和结束位置，即(0,length)</span><br><span class="line">    // If next search starts before region, start it at region</span><br><span class="line">    if (nextSearchIndex &lt; from)//下一个搜索位置小于0则移到0</span><br><span class="line">        nextSearchIndex = from;</span><br><span class="line"></span><br><span class="line">    // If next search starts beyond region then it fails</span><br><span class="line">    if (nextSearchIndex &gt; to) &#123;</span><br><span class="line">        //！！！！这句就是出现问题的关键！！！！！！！！这里的to表示父串长度，这里判断大于搜索位置大于父串长度才会结束搜索，但是我们知道字符串索引是从0开始的，因此不需要大于这个长度，只要等于这个长度其实就搜不到了。</span><br><span class="line">        //因此我们nextSerchIndex=to即搜索索引是父串长度的位置的时候仍然会继续以to位置为开始索引开始搜索</span><br><span class="line">        for (int i = 0; i &lt; groups.length; i++)</span><br><span class="line">            groups[i] = -1;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    return search(nextSearchIndex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><strong>此时运行结果为</strong>：<img src="https://img-blog.csdnimg.cn/021c09be1a86429bb7428b6474f966a7.png"></p>
+<ul>
+<li><p><strong>以to(父串length，由于索引从0开始，实际没这个位置的字符)位置为开始索引开始搜索的时候*自然搜不到我们要的，此时则代表从to到to找到了0个子串，然后根据子串搜索源码可以知道，即使子串开始索引等于length长度，仍然不会报索引越界的错误，因为开始索引只要不小于0就行。如果开始和结束位置都是length，子串长度为0，返回<code>&quot;&quot;</code>空串</strong>。</p>
+<ul>
+<li><p><strong>java中<code>substring()</code>源码</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public String substring(int beginIndex, int endIndex) &#123;//代表子串开始位置和结束位置</span><br><span class="line">    if (beginIndex &lt; 0) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(beginIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    if (endIndex &gt; value.length) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(endIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    int subLen = endIndex - beginIndex;</span><br><span class="line">    if (subLen &lt; 0) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(subLen);</span><br><span class="line">    &#125;</span><br><span class="line">    return ((beginIndex == 0) &amp;&amp; (endIndex == value.length)) ? this</span><br><span class="line">        : new String(value, beginIndex, subLen);</span><br><span class="line">&#125;//this代表要找的父字符串</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>可以看到<code>sbustring()</code>会先判断输入的子串索引是否合法，即是否在0到父串长度之间，然后计算要得到的自传长度<code>int subLen = endIndex - beginIndex</code>,如果这个长度不小于0，就进行最后的返回值，即如果<code>(beginIndex == 0) &amp;&amp; (endIndex == value.length)</code>成立，即要找的子串就是父串本身，则返回父串，否则<code>new String(value, beginIndex, subLen)</code>，代表new一个新串，从父串的<code>beginIndex</code>位置开始加入<code>sunLen</code>个字符</strong>。</li>
+<li><strong>这也能看出为什么返回子串是左闭右开区间，因为返回子串的时候是从开始位置放入搜索区间长度个字符，例如1-3只返回从1开始2个字符，因此取的是1和2,3总是取不到的</strong>。</li>
+</ul>
 </li>
 </ul>
 </li>
-<li><p><strong>如果在多表查询的时候有表中有相同名字的字段，此时应该在查询的时候使用<code>AS</code>给属性别名</strong>。</p>
+</ul>
+</li>
+<li><p><strong>因此*在匹配字符串的时候最后总是会匹配到一个<code>&quot;&quot;</code>空串</strong>。</p>
 </li>
 </ul>
 
@@ -275,7 +268,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/" title="在IDEA中使用apache-dbutils查询返回对象时封装属性的问题">http://example.com/2022/03/13/apache-dbutils封装问题/</a>
+    <a href="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/" title="关于正则表达式&#96;*&#96;为什么会在行尾匹配出一个空串">http://example.com/2022/03/18/正则表达式星号限定符/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -287,17 +280,20 @@
       
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag"># 正则表达式</a>
+          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/" rel="next" title="MySQL数据库中的自增长问题">
-      MySQL数据库中的自增长问题 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/" rel="prev" title="单个字符的字符串长度可能为2">
+      <i class="fa fa-chevron-left"></i> 单个字符的字符串长度可能为2
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -356,7 +352,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A4%E5%A4%84%E6%98%AF%E6%93%8D%E4%BD%9CMySQL%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">此处是操作MySQL数据库</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
