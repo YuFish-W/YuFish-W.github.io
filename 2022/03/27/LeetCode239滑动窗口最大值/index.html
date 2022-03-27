@@ -22,20 +22,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="使用优先权队列PriorityQueue，将所有链表的头结点加入，每次poll弹出最小的，然后再加入这个节点的下一个，以此类推，能将所有链表有序合并。">
+  <meta name="description" content="如题：     思路：使用单调队列，即先构建初始窗口，大小为K，将前面K个元素依次加入队列中，加入的时候需要保证队头元素是最大的，由于队列先进先出，这样可以保证poll()弹出的元素是最大的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode23:合并多个有序链表">
-<meta property="og:url" content="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/index.html">
+<meta property="og:title" content="LeetCode239:滑动窗口最大值">
+<meta property="og:url" content="http://example.com/2022/03/27/LeetCode239%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/index.html">
 <meta property="og:site_name" content="酒书茶社">
-<meta property="og:description" content="使用优先权队列PriorityQueue，将所有链表的头结点加入，每次poll弹出最小的，然后再加入这个节点的下一个，以此类推，能将所有链表有序合并。">
+<meta property="og:description" content="如题：     思路：使用单调队列，即先构建初始窗口，大小为K，将前面K个元素依次加入队列中，加入的时候需要保证队头元素是最大的，由于队列先进先出，这样可以保证poll()弹出的元素是最大的。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-20T09:26:03.000Z">
-<meta property="article:modified_time" content="2022-03-20T09:28:22.994Z">
+<meta property="og:image" content="https://gitee.com/yufish-w/picture/raw/master/img/image-20220326215415410.png">
+<meta property="article:published_time" content="2022-03-27T11:59:34.000Z">
+<meta property="article:modified_time" content="2022-03-27T12:01:39.046Z">
 <meta property="article:author" content="YuFish-W">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yufish-w/picture/raw/master/img/image-20220326215415410.png">
 
-<link rel="canonical" href="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/">
+<link rel="canonical" href="http://example.com/2022/03/27/LeetCode239%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/">
 
 
 <script id="page-configurations">
@@ -48,7 +50,7 @@
   };
 </script>
 
-  <title>LeetCode23:合并多个有序链表 | 酒书茶社</title>
+  <title>LeetCode239:滑动窗口最大值 | 酒书茶社</title>
   
 
 
@@ -157,7 +159,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/27/LeetCode239%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -170,7 +172,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          LeetCode23:合并多个有序链表
+          LeetCode239:滑动窗口最大值
         </h1>
 
         <div class="post-meta">
@@ -181,7 +183,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-03-20 17:26:03 / 修改时间：17:28:22" itemprop="dateCreated datePublished" datetime="2022-03-20T17:26:03+08:00">2022-03-20</time>
+              <time title="创建时间：2022-03-27 19:59:34 / 修改时间：20:01:39" itemprop="dateCreated datePublished" datetime="2022-03-27T19:59:34+08:00">2022-03-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -206,7 +208,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
+              <span>1.8k</span>
             </span>
 
         </div>
@@ -219,12 +221,18 @@
 
       
         <ul>
-<li><strong>使用优先权队列<code>PriorityQueue</code>，将所有链表的头结点加入，每次<code>poll</code>弹出最小的，然后再加入这个节点的下一个，以此类推，能将所有链表有序合并</strong>。<span id="more"></span></li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public ListNode mergeKLists(ListNode[] lists) &#123;</span><br><span class="line">        if(lists.length == 0)&#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        PriorityQueue&lt;ListNode&gt; listNodes = new PriorityQueue&lt;&gt;(</span><br><span class="line">            lists.length , (o1,o2) -&gt; o1.val - o2.val</span><br><span class="line">        );/*传入链表程度和比较器，o1.val - o2.val 小于0表示o1更小，属于升序排列，这是</span><br><span class="line">          lambda表达式，效果和使用匿名类一样*/</span><br><span class="line">        for (ListNode listNode : lists) &#123;</span><br><span class="line">            if (listNode != null) &#123;</span><br><span class="line">                listNodes.add(listNode);</span><br><span class="line">                /*只加入头结点而不是全部加入，poll其中一个的时候就加入这个头结点的next，这样</span><br><span class="line">                  这个优先权队列始终只有K各节点，可以保证调整队列的复杂度是logk,n个结点全部</span><br><span class="line">                  加入和弹出总的时间复杂度你nlogk，如果一次性全部加入，每次调整优先级的复杂度</span><br><span class="line">                  是logn，总的时间复杂度是nlogn</span><br><span class="line">                */</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode res = new ListNode(-1);</span><br><span class="line">        ListNode virtualHeadNode = res;</span><br><span class="line">        while (!listNodes.isEmpty())&#123;</span><br><span class="line">            virtualHeadNode.next = listNodes.poll();</span><br><span class="line">            virtualHeadNode = virtualHeadNode.next;</span><br><span class="line">            if(virtualHeadNode.next != null) &#123;</span><br><span class="line">                listNodes.add(virtualHeadNode.next);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        virtualHeadNode.next = null;</span><br><span class="line">        /*只加头结点进入优先权队列可以不要这句，但是如果全部加入，可能会有多个相同的值，他们之间的相对</span><br><span class="line">          位置不一定和原来一样，可能最后一个原来是第一个，这样它的next就是下一个而不是null，这里就会</span><br><span class="line">          形成环。</span><br><span class="line">        */</span><br><span class="line">        return res.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<li><p>如题：</p>
 <ul>
-<li><strong>总结</strong>：<strong>合并多个有序链表</strong>：<strong>使用优先权队列</strong>。队列里只存放头结点，取出一个头结点再加入下一个，避免有序结点相对顺序变化后最后形成环的问题，且时间复杂度<code>nlogk</code>，k为头结点数，即链表数；如果全部加入则<code>nlogn</code>，且需要将最后加入的结点的<code>next=null</code>，避免出现环。</li>
+<li><img src="https://gitee.com/yufish-w/picture/raw/master/img/image-20220326215415410.png" alt="image-20220326215415410"></li>
+</ul>
+</li>
+<li><p>思路：使用<strong>单调队列</strong>，即<strong>先构建初始窗口，大小为K</strong>，将前面K个元素依次加入队列中，加入的时候需要保证<strong>队头元素是最大</strong>的，由于队列先进先出，这样可以保证<code>poll()</code>弹出的元素是最大的。<span id="more"></span></p>
+<ul>
+<li>这样保证队列中队头元素最大：<strong>每次加入的时候</strong>和当前<strong>队尾</strong>元素比较(因此应该使用双端队列，可以操作队头和队尾)，<strong>如果队列非空就拿队尾和当前元素比较，如果当前元素更大，就删除这个队尾元素，因为它不可能是最大值了</strong>。<strong>然后直到找到大于等于当前元素的新队尾，将当前元素插入到这个元素之后</strong>。<strong>具体细节在代码中注释标明</strong>！！</li>
+</ul>
+</li>
+<li><p>解法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] maxSlidingWindow(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        <span class="comment">// res数组记录每一轮窗口最大值，大小为K的窗口总共有num.lenth-k+1轮，</span></span><br><span class="line">        <span class="comment">// 即数组长度为num.lenth-k+1</span></span><br><span class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length - k + <span class="number">1</span>];</span><br><span class="line">        LinkedList&lt;Integer&gt; monotonicQueue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;<span class="comment">//将前面k个元素形成窗口，之后就只需拿新加入的元素和窗口内的比较</span></span><br><span class="line">            <span class="keyword">while</span> (!monotonicQueue.isEmpty() &amp;&amp; monotonicQueue.getLast() &lt; nums[i])&#123;</span><br><span class="line">                <span class="comment">/*如果队列非空就拿队列最后一个和当前元素比较，如果当前元素更大，就删除这个队尾元素，因为它不可能是最大值了。</span></span><br><span class="line"><span class="comment">                 但是注意：如果相同则不应该删除，因为每一轮 窗口右移 后都应该删除上一最左边的元素，</span></span><br><span class="line"><span class="comment">                 如果上一轮最左边的不是最大值，那么它就不会在队列里(上述规则说明了，在它后面的元素如果比他大会将它压出队列)，</span></span><br><span class="line"><span class="comment">                 这种情况就不用删除。如果它是最大值，那么它就会在队头位置，所以我们窗口右移删除的时候只需要判断：</span></span><br><span class="line"><span class="comment">                 窗口最左边的元素 和 队列中的队头元素是否相等，如果相等则说明窗口最左边元素在队列中，</span></span><br><span class="line"><span class="comment">                 且是最大值，应该删除，否则该元素不在队列中，不用删除。</span></span><br><span class="line"><span class="comment">                 此时如果新加入的元素和它相等，那么如果你在刚刚比较的时候将&lt;=新元素的都删除的话，</span></span><br><span class="line"><span class="comment">                 那么这个队头元素就在此时被删除，而之后我们将窗口右移的时候判断最左边元素与队头元素是否相等，</span></span><br><span class="line"><span class="comment">                 此时结果便是true，我们会将队头元素删除，但是这个队头元素实则是新加入的，造成误删！！！！*/</span></span><br><span class="line">                monotonicQueue.pollLast();</span><br><span class="line">            &#125;</span><br><span class="line">            monotonicQueue.add(nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从第k+1个位置即索引为k的位置和前面k个元素形成的窗口依次比较</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = k; i &lt; nums.length; i++) &#123;</span><br><span class="line">            res[i-k] = monotonicQueue.peek();<span class="comment">//每一轮比较前将上一轮最大的元素记录</span></span><br><span class="line">            <span class="keyword">if</span>(nums[i-k] == monotonicQueue.peek())&#123;</span><br><span class="line">                <span class="comment">/*删除上一轮最左边的元素，因为窗口右移了</span></span><br><span class="line"><span class="comment">                 关键：这里只和队首元素比较，即最大元素，因为上一轮最左边的元素如果不是最大值，</span></span><br><span class="line"><span class="comment">                 则代表后面几位有比它更大的，而比它更大的元素在入队前会检查队尾元素是否比自己小，</span></span><br><span class="line"><span class="comment">                 如果比自己小则将这个元素删除，因为我们要返回的是最大值。</span></span><br><span class="line"><span class="comment">                 因此如果上一轮最左边的元素不是上一轮窗口的最大值，则肯定已经被移出了队列*/</span></span><br><span class="line">                monotonicQueue.remove();<span class="comment">//如果它是最大值则移出队列</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (!monotonicQueue.isEmpty() &amp;&amp; monotonicQueue.getLast() &lt; nums[i])&#123;</span><br><span class="line">                monotonicQueue.pollLast();</span><br><span class="line">            &#125;</span><br><span class="line">            monotonicQueue.add(nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        res[nums.length - k] = monotonicQueue.peek();</span><br><span class="line">        <span class="comment">//之前循环到nums.length-1后就结束了，res中的最后一个元素位置是nums.length-k，而不是</span></span><br><span class="line">        <span class="comment">// nums.lenth - 1 - k，因此应该补上</span></span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 
     </div>
@@ -253,7 +261,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/" title="LeetCode23:合并多个有序链表">http://example.com/2022/03/20/LeetCode23多表合并/</a>
+    <a href="http://example.com/2022/03/27/LeetCode239%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/" title="LeetCode239:滑动窗口最大值">http://example.com/2022/03/27/LeetCode239滑动窗口最大值/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -275,13 +283,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/" rel="prev" title="关于正则表达式`*`为什么会在行尾匹配出一个空串">
-      <i class="fa fa-chevron-left"></i> 关于正则表达式`*`为什么会在行尾匹配出一个空串
+    <a href="/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/" rel="prev" title="LeetCode503：下一个更大元素">
+      <i class="fa fa-chevron-left"></i> LeetCode503：下一个更大元素
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/" rel="next" title="LeetCode503：下一个更大元素">
-      LeetCode503：下一个更大元素 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
