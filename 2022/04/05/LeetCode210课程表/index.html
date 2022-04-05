@@ -22,22 +22,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="题目如下：     分析：该题可以用单调栈来完成，单调栈就是一种通过特殊操作使栈中元素有序的栈。">
+  <meta name="description" content="如题：  解读题意：题目中的numCourses表示需要修读的课程总数，且课程编号是从0-numCourses-1的，prerequisites表示每两门课之间的依赖关系。我们需要给出各门课程学习的先后顺序，保证合理完成全部课程。如果无法完成所有课程，就返回空数组。  什么时候无法完成？">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode503：下一个更大元素">
-<meta property="og:url" content="http://example.com/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/index.html">
+<meta property="og:title" content="LeetCode210:课程表">
+<meta property="og:url" content="http://example.com/2022/04/05/LeetCode210%E8%AF%BE%E7%A8%8B%E8%A1%A8/index.html">
 <meta property="og:site_name" content="酒书茶社">
-<meta property="og:description" content="题目如下：     分析：该题可以用单调栈来完成，单调栈就是一种通过特殊操作使栈中元素有序的栈。">
+<meta property="og:description" content="如题：  解读题意：题目中的numCourses表示需要修读的课程总数，且课程编号是从0-numCourses-1的，prerequisites表示每两门课之间的依赖关系。我们需要给出各门课程学习的先后顺序，保证合理完成全部课程。如果无法完成所有课程，就返回空数组。  什么时候无法完成？">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220322165023100.png">
-<meta property="article:published_time" content="2022-03-22T10:51:49.000Z">
-<meta property="article:modified_time" content="2022-03-28T11:43:07.057Z">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220405215303452.png">
+<meta property="article:published_time" content="2022-04-05T14:25:33.000Z">
+<meta property="article:modified_time" content="2022-04-05T14:27:05.232Z">
 <meta property="article:author" content="YuFish-W">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220322165023100.png">
+<meta name="twitter:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220405215303452.png">
 
-<link rel="canonical" href="http://example.com/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/">
+<link rel="canonical" href="http://example.com/2022/04/05/LeetCode210%E8%AF%BE%E7%A8%8B%E8%A1%A8/">
 
 
 <script id="page-configurations">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title>LeetCode503：下一个更大元素 | 酒书茶社</title>
+  <title>LeetCode210:课程表 | 酒书茶社</title>
   
 
 
@@ -159,7 +159,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/05/LeetCode210%E8%AF%BE%E7%A8%8B%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -172,7 +172,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          LeetCode503：下一个更大元素
+          LeetCode210:课程表
         </h1>
 
         <div class="post-meta">
@@ -181,16 +181,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-03-22 18:51:49" itemprop="dateCreated datePublished" datetime="2022-03-22T18:51:49+08:00">2022-03-22</time>
+              <time title="创建时间：2022-04-05 22:25:33 / 修改时间：22:27:05" itemprop="dateCreated datePublished" datetime="2022-04-05T22:25:33+08:00">2022-04-05</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-28 19:43:07" itemprop="dateModified" datetime="2022-03-28T19:43:07+08:00">2022-03-28</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -214,7 +208,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
+              <span>2.7k</span>
             </span>
 
         </div>
@@ -226,30 +220,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ul>
-<li><p><strong>题目如下</strong>：</p>
+        <p><strong>如题</strong>：<img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220405215303452.png" alt="image-20220405215303452"></p>
 <ul>
-<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220322165023100.png" alt="image-20220322165023100"></li>
+<li><p><strong>解读题意</strong>：题目中的<code>numCourses</code>表示需要修读的<strong>课程总数</strong>，且<strong>课程编号是从<code>0-numCourses-1</code><strong>的，<code>prerequisites</code>表示</strong>每两门课之间的依赖关系</strong>。我们需要给出<strong>各门课程学习的先后顺序</strong>，保证合理完成全部课程。如果无法完成所有课程，就返回空数组。</p>
+</li>
+<li><p><strong>什么时候无法完成</strong>？<span id="more"></span></p>
+<ul>
+<li>当课程之间存在<strong>循环依赖的时候就无法完成</strong>，例如完成<code>[1,2],[2,1]</code>这样，因此<strong>我们可以将这些依赖关系抽象成一个有向图，需要做的就是检测图中有没有环</strong>。</li>
 </ul>
 </li>
-<li><p>分析：该题可以用<strong>单调栈</strong>来完成，<strong>单调栈就是一种通过特殊操作使栈中元素有序的栈</strong>。<span id="more"></span></p>
-</li>
-<li><p><strong>单调栈可以这样实现：从给定的数组从后往前推，每次检查当前元素和栈顶元素的大小(栈空不检查)，如果当前元素比栈顶元素大，就让栈顶元素出栈，最后碰到栈顶元素比当前元素大，就让当前元素入栈，这样可以保证栈里的顺序是从小到大的</strong>。</p>
-</li>
-<li><p>使用单调栈我们解决此题：<strong>我们从数组最后一个开始比较，此时栈空，将此元素的答案标记为-1，压入栈中。然后将栈顶元素(此时就是最后一个元素)和倒数第二个元素比较，如果倒数第二个元素更大，就将栈顶元素出栈，出栈后此时栈已空，将倒数第二个压入栈中</strong>。</p>
+<li><p><strong>如果可以完成，如何记录下来先后顺序</strong>？</p>
 <ul>
-<li><strong>因为我们要找的是某一个元素后面比它大的第一个元素，那么我们肯定会先和倒数第二个比较完了才和最后一个比较，如果倒数第二个满足要求，即比当前元素更大，那么最后一个元素则不会进行比较；而如果倒数第二个不满足要求，即比当前元素更小，那么比倒数第二个元素更小的最后一个元素肯定也不满足要求，也没有比较的必要，因此如果倒数第二个比最后一个大，则将最后一个元素出栈，此后不需要进行比较</strong>。</li>
-<li>以此类推。</li>
+<li><p>将所有课程依赖关系看成图，那么<strong>完成课程的顺序就是这个有向图的拓扑排序顺序</strong>，而拓扑排序就是一次遍历每个入度为0的结点，入度为0即不被任何结点指向。</p>
+</li>
+<li><p>有向图的拓扑排序可以利用<code>DFS</code>深度优先搜索或者<code>BFS</code>广度优先搜索进行，这里我们是用<code>DFS</code>：</p>
+<ul>
+<li><p><strong>对于<code>DFS</code>来说，图的拓扑排序可以理解为后序遍历的结果然后反转</strong>。因为<strong>后序遍历先遍历叶子节点，叶子节点其实就是出度为0的结点，否则就不是叶子，也就是说一次遍历出度为翻0的所有借点，反转后就是根据入度为0的顺序遍历了</strong>。如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void traverse(List&lt;Integer&gt;[] graph,int s)&#123;</span><br><span class="line">    for (Integer child : graph[s]) &#123;</span><br><span class="line">        traverse(graph,child);</span><br><span class="line">    &#125;</span><br><span class="line">    arrayList.add(s);//在遍历代码后的位置将当前结点加入集合中，这里就是后序遍历</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>注意：不能是先序遍历，因为有可能一个父母指向同一个孩子，此时先序遍历会直接遍历一个父母后就遍历孩子，此时该孩子还被另一个父结点指向，入度为1，遍历错误</strong>。</p>
+</li>
 </ul>
 </li>
-<li><p>此题还有一个特别：如果后面没有找到更大的，就会从头开始找。此时<strong>我们可以将数组扩大成原来的两倍，元素不变，从这个新的数组从尾部<code>(2*n-1)</code>开始比较</strong>。</p>
-<ul>
-<li>例如<code>&#123;1,2,4,3,1&#125;</code>-&gt;<code>&#123;1,2,4,3,1,1,2,4,3,1&#125;</code>。这样从未到头进行刚刚的操作，最终就相当于循环比较。</li>
-<li>我们可以使用<strong>循环数组</strong>的方法<strong>抽象成原来数组扩容</strong>了：从<code>(2*n-1)%n</code>一直往前比较。</li>
 </ul>
 </li>
-<li><p>代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] nextGreaterElements(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.length;</span><br><span class="line">        Deque&lt;Integer&gt; stack = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="comment">//这里使用LinkedList当做栈来使用，LinkedList可以用来模拟栈，也可以用来模拟队</span></span><br><span class="line">        <span class="comment">//列。LinkedList中有两个添加元素的方法，add()和push()，add在尾部添加元素，</span></span><br><span class="line">        <span class="comment">//push在头部添加元素，pop从头部弹出元素，配合使用模拟栈和队列。</span></span><br><span class="line">        <span class="comment">//也可以直接使用Stack当做栈，但是操作起来速度慢一些</span></span><br><span class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span> * (n) - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!stack.isEmpty() &amp;&amp; nums[i % n] &gt;= stack.peek()) &#123;</span><br><span class="line">                stack.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            res[i % n] = stack.isEmpty() ? -<span class="number">1</span> : stack.peek();</span><br><span class="line">            <span class="comment">//如果栈空相当于此时元素比之后的都大，返回-1</span></span><br><span class="line">            stack.push(nums[i % n]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>代码如下</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span>[] visited;<span class="comment">//用来记录遍历过的结点</span></span><br><span class="line">    <span class="keyword">boolean</span> Circle = <span class="keyword">false</span>;<span class="comment">//如果有环就将它置为true</span></span><br><span class="line">    <span class="keyword">boolean</span>[] onPath;<span class="comment">//用来判断是否存在环</span></span><br><span class="line">    ArrayList&lt;Integer&gt; arrayList;<span class="comment">//用来记录后序遍历的每个结点</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] findOrder(<span class="keyword">int</span> numCourses, <span class="keyword">int</span>[][] prerequisites) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[numCourses];<span class="comment">//用来返回最后的结果</span></span><br><span class="line">        arrayList = <span class="keyword">new</span> ArrayList&lt;&gt;(numCourses);</span><br><span class="line">        visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[numCourses];</span><br><span class="line">        <span class="comment">//visited数组此处不用来判断是否存在环，而是因为我们无法保证图联通，需要将所有节点依次作为</span></span><br><span class="line">        <span class="comment">// 开始结点遍历图，此时如果依次遍历abc，下一次以b开始又会遍历bc，这就出现了重复遍历</span></span><br><span class="line">        <span class="comment">//visited数组可以避免重复遍历的问题。</span></span><br><span class="line">        onPath = <span class="keyword">new</span> <span class="keyword">boolean</span>[numCourses];</span><br><span class="line">        <span class="comment">//因此使用onPath记录 当前 走过的路径，每次遍历到新结点时判断onPath是否为true,如果是</span></span><br><span class="line">        <span class="comment">//就代表之前遍历过这个结点，因此存在环，然后将Circle置为true。</span></span><br><span class="line">        List&lt;Integer&gt;[] graph = buildGraph(numCourses, prerequisites);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numCourses; i++) &#123;</span><br><span class="line">            traverse(graph,i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (Circle)<span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;&#125;;</span><br><span class="line">        Collections.reverse(arrayList);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arrayList.size(); i++) &#123;</span><br><span class="line">            res[i] = arrayList.get(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//建图，使用链表法，每个结点作为开始结点存在在List数组中，后面依次连接着它指向的结点</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;Integer&gt;[] buildGraph(<span class="keyword">int</span> numCourses,<span class="keyword">int</span>[][] prerequisites)&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt;[] res = <span class="keyword">new</span> ArrayList[numCourses];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; res.length; i++) &#123;</span><br><span class="line">            res[i] = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] p : prerequisites)&#123;</span><br><span class="line">            res[p[<span class="number">1</span>]].add(p[<span class="number">0</span>]);</span><br><span class="line">            <span class="comment">//由于学习p[0]之前需要学习p[1]，因此由p[1]指向p[0]</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//遍历图判断是否有环，并且记录后序遍历的结点</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traverse</span><span class="params">(List&lt;Integer&gt;[] graph,<span class="keyword">int</span> s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (onPath[s])&#123;</span><br><span class="line">            Circle = <span class="keyword">true</span>;</span><br><span class="line">            <span class="comment">//不是return，而是用全局变量记录，因为可能只是一个分支有环，return只是让当前分支不再继续，</span></span><br><span class="line">            <span class="comment">//此时我们应该让其它分支也不用再继续遍历。</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//要注意，我们的onPath数组需要在退出的时候清除标记，即只记录当前路径，因为如果和visited</span></span><br><span class="line">            <span class="comment">// 一样的话，就无法判断是有环而重复还是从子节点开始遍历而重复了，因为我们无法判断图是否连通，</span></span><br><span class="line">            <span class="comment">// 需要将所有结点遍历，如果遍历到了子节点那么也是ture，因此onPath只记录当前遍历的路径。</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//注意：这里必须将判断环写在头而不是下面的visited写在头，因为我们只是让visited起到避免</span></span><br><span class="line">            <span class="comment">//重复遍历子节点的问题，但他仍然是可以在一次遍历中检测环的，这是它的本职工作，我们只是不用罢了。</span></span><br><span class="line">            <span class="comment">//如果将visited放在头部，那么碰到环还是可以被他检测出来，那么它无法分辨到底是重复遍历子节点导致</span></span><br><span class="line">            <span class="comment">//条件成立还是因为环导致条件成立。</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(visited[s] || Circle)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        visited[s] = <span class="keyword">true</span>;</span><br><span class="line">        onPath[s] = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer child : graph[s]) &#123;</span><br><span class="line">            traverse(graph,child);</span><br><span class="line">        &#125;</span><br><span class="line">        arrayList.add(s);<span class="comment">//将当前结点加入集合中</span></span><br><span class="line">        onPath[s] = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 
     </div>
@@ -278,7 +273,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/" title="LeetCode503：下一个更大元素">http://example.com/2022/03/22/LeetCode503下一个更大元素/</a>
+    <a href="http://example.com/2022/04/05/LeetCode210%E8%AF%BE%E7%A8%8B%E8%A1%A8/" title="LeetCode210:课程表">http://example.com/2022/04/05/LeetCode210课程表/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -300,13 +295,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/" rel="prev" title="LeetCode23:合并多个有序链表">
-      <i class="fa fa-chevron-left"></i> LeetCode23:合并多个有序链表
+    <a href="/2022/03/30/LeetCode493%E7%BF%BB%E8%BD%AC%E5%AF%B9/" rel="prev" title="LeetCode493:翻转对">
+      <i class="fa fa-chevron-left"></i> LeetCode493:翻转对
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/27/LeetCode239%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/" rel="next" title="LeetCode239:滑动窗口最大值">
-      LeetCode239:滑动窗口最大值 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
