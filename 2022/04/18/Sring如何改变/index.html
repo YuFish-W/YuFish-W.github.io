@@ -22,20 +22,24 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="为什么java中有的字符char无法表示 首先要知道Unicode字符集和UTF-8、UTF-16等的区别：Unicode属于一种规则，它规定了什么字符该由哪种数字表示，而UTF-8、UTF-16是实现这种规则的，它们分别用不同的法式在计算机中存储这个数字。">
+  <meta name="description" content="为什么说String类型不可变？ String的源码里其实使用一个char数组来存储字符串的，**String之所以说不可变，就是因为这个char数组它是private类型，而且String没有对外暴露和提供修改这个char数组的方法，因此我们无法更改这个char数组的值，所以String是不可变的**。    注意：这里char数组被final修饰不代表不可变，因为数组是引用类型，final修饰">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java中char为什么无法表示全部字符">
-<meta property="og:url" content="http://example.com/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/index.html">
+<meta property="og:title" content="Sring如何改变">
+<meta property="og:url" content="http://example.com/2022/04/18/Sring%E5%A6%82%E4%BD%95%E6%94%B9%E5%8F%98/index.html">
 <meta property="og:site_name" content="酒书茶社">
-<meta property="og:description" content="为什么java中有的字符char无法表示 首先要知道Unicode字符集和UTF-8、UTF-16等的区别：Unicode属于一种规则，它规定了什么字符该由哪种数字表示，而UTF-8、UTF-16是实现这种规则的，它们分别用不同的法式在计算机中存储这个数字。">
+<meta property="og:description" content="为什么说String类型不可变？ String的源码里其实使用一个char数组来存储字符串的，**String之所以说不可变，就是因为这个char数组它是private类型，而且String没有对外暴露和提供修改这个char数组的方法，因此我们无法更改这个char数组的值，所以String是不可变的**。    注意：这里char数组被final修饰不代表不可变，因为数组是引用类型，final修饰">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-15T05:15:00.000Z">
-<meta property="article:modified_time" content="2022-03-20T09:30:46.379Z">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220418084542067.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220418091040434.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220418092930118.png">
+<meta property="article:published_time" content="2022-04-18T01:38:03.000Z">
+<meta property="article:modified_time" content="2022-04-18T01:38:45.605Z">
 <meta property="article:author" content="YuFish-W">
-<meta property="article:tag" content="java">
+<meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220418084542067.png">
 
-<link rel="canonical" href="http://example.com/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/">
+<link rel="canonical" href="http://example.com/2022/04/18/Sring%E5%A6%82%E4%BD%95%E6%94%B9%E5%8F%98/">
 
 
 <script id="page-configurations">
@@ -48,7 +52,7 @@
   };
 </script>
 
-  <title>java中char为什么无法表示全部字符 | 酒书茶社</title>
+  <title>Sring如何改变 | 酒书茶社</title>
   
 
 
@@ -157,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/18/Sring%E5%A6%82%E4%BD%95%E6%94%B9%E5%8F%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -170,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          java中char为什么无法表示全部字符
+          Sring如何改变
         </h1>
 
         <div class="post-meta">
@@ -179,23 +183,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-03-15 13:15:00" itemprop="dateCreated datePublished" datetime="2022-03-15T13:15:00+08:00">2022-03-15</time>
+              <time title="创建时间：2022-04-18 09:38:03 / 修改时间：09:38:45" itemprop="dateCreated datePublished" datetime="2022-04-18T09:38:03+08:00">2022-04-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-20 17:30:46" itemprop="dateModified" datetime="2022-03-20T17:30:46+08:00">2022-03-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
                 </span>
             </span>
 
@@ -212,7 +210,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>813</span>
+              <span>2.2k</span>
             </span>
 
         </div>
@@ -224,31 +222,57 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="为什么java中有的字符char无法表示"><a href="#为什么java中有的字符char无法表示" class="headerlink" title="为什么java中有的字符char无法表示"></a>为什么java中有的字符char无法表示</h1><ul>
-<li><p><strong>首先要知道Unicode字符集和UTF-8、UTF-16等的区别：Unicode属于一种规则，它规定了什么字符该由哪种数字表示，而UTF-8、UTF-16是实现这种规则的，它们分别用不同的法式在计算机中存储这个数字</strong>。<span id="more"></span></p>
+        <h1 id="为什么说String类型不可变？"><a href="#为什么说String类型不可变？" class="headerlink" title="为什么说String类型不可变？"></a><strong>为什么说<code>String</code>类型不可变</strong>？</h1><ul>
+<li><p><code>String</code>的源码里其实使用一个<code>char</code>数组来存储字符串的，**<code>String</code>之所以说不可变，就是因为这个char数组它是<code>private</code>类型，而且<code>String</code>没有对外暴露和提供修改这个<code>char</code>数组的方法，因此我们无法更改这个<code>char</code>数组的值，所以<code>String</code>是不可变的**。</p>
 </li>
-<li><p><strong>而java语言内部使用的就是UTF-16编码，这种编码方式以代码单元为单位对字符进行存储，UTF-16中一个代码单元占16位，也就是两个字节，由于两个字节并不能表示所有字符，它用1-2个代码单元表示字符</strong>。</p>
+<li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220418084542067.png" alt="image-20220418084542067"></p>
+</li>
+<li><p><strong>注意</strong>：这里<code>char</code>数组被<code>final</code>修饰<strong>不代表不可变</strong>，因为数组是引用类型，final修饰引用类型的时候代表引用不可更改，即我们<strong>只是不能将这个<code>value</code>属性指向新的引用</strong>，但是<strong>它原本指向的这个<code>char</code>数组中的字符我们是可以更改的</strong>。</p>
+</li>
+<li><p>因此，<strong>如果我们可以通过更改<code>value</code>指向的<code>char</code>数组本身，就可以改变字符串</strong>。正常情况下我们是无法更改的，这也是我们说字符串不可变的原因，但是我们通过极端方法也是可以更改的，例如<strong>使用反射可以得到这个私有的value属性，然后通过爆破我们就可以访问这个私有属性了</strong>，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String  s = &quot;aabbc&quot;;</span><br><span class="line">Class&lt;? extends String&gt; aClass = s.getClass();</span><br><span class="line">Field value = aClass.getDeclaredField(&quot;value&quot;);//得到这个value属性</span><br><span class="line">value.setAccessible(true);//将它设置成可以访问</span><br><span class="line">char[] chars =  (char[]) value.get(s);</span><br><span class="line">System.out.println(s);//在修改之前输出s</span><br><span class="line">chars[0] = &#x27;k&#x27;;         //修改s</span><br><span class="line">System.out.println(s);//输出修改之后的s</span><br></pre></td></tr></table></figure>
+
+<p><strong>结果如下</strong>：<img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220418091040434.png" alt="image-20220418091040434"></p>
 <ul>
-<li><strong>首先要知道Unicode不止2^16个字符</strong>。</li>
-<li><strong>一个代码单元两字节最多表示65536个字符，在这个范围之内的字符一个代码单元就能表示，即两字节表示</strong>；</li>
-<li><strong>而超过这个范围之外的字符则需要两个代码单元存储，也就是四个字节</strong>。</li>
+<li><strong>可以看出这个字符串确实被改变了</strong>。</li>
 </ul>
 </li>
-<li><p><strong>由于一个<code>char</code>只有两个字节，那么在字符需要四字节才能表示的时候<code>char</code>类型就无法表示了</strong>。</p>
+</ul>
+<h1 id="证明我们是真的修改了字符串"><a href="#证明我们是真的修改了字符串" class="headerlink" title="证明我们是真的修改了字符串"></a>证明我们是真的修改了字符串</h1><h2 id="字符串的hashCode-方法"><a href="#字符串的hashCode-方法" class="headerlink" title="字符串的hashCode()方法"></a>字符串的<code>hashCode()</code>方法</h2><ul>
+<li><p><strong>这里我们不能用<code>hashCode()</code>返回的哈希值来判断是否是同一个字符串</strong>，因为<code>hashCode</code>码值不等于地址，字符串的<code>hashCode</code>码是通过对每个字符进行一定的规则的累加得到的，然而<code>String</code>类中有一个int类型的属性叫<code>hash</code>，<strong>当这个<code>hash</code>=0的时候就会去计算这个String的<code>hashCode</code>码值</strong>，但是计算完后就会将计算结果赋值给这个<code>hash</code>属性；<strong>如果<code>hash</code>不等于0就返回这个属性值作为当前字符串的<code>hashCode</code><strong>。因此我们第一次计算调用<code>hashCode()</code>的时候由于<code>int</code>类型的属性默认为0，所以会逐个字符计算<code>hash</code>值，</strong>第二次调用<code>hashCode()</code>的时候返回的<code>hash</code>值其实是第一次计算出来缓存好的</strong>，因此肯定是相同的，所以此时调用<code>hashCode()</code>方法返回的值无法用来判断是否为同一个字符串。</p>
+<ul>
+<li><p><strong>源码如下</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private int hash; // Default to 0</span><br><span class="line">public int hashCode() &#123;</span><br><span class="line">    int h = hash;//得到当前属性hash的值</span><br><span class="line">    if (h == 0 &amp;&amp; value.length &gt; 0) &#123;//如果它为0就计算当前字符串的hashCode</span><br><span class="line">        char val[] = value;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; value.length; i++) &#123;</span><br><span class="line">            h = 31 * h + val[i];</span><br><span class="line">        &#125;</span><br><span class="line">        hash = h;//计算完了后赋值给hash属性</span><br><span class="line">    &#125;</span><br><span class="line">    return h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
 </li>
 </ul>
-<h2 id="关于Unicode"><a href="#关于Unicode" class="headerlink" title="关于Unicode"></a>关于Unicode</h2><ul>
-<li><p><strong>Unicode有17个平面，每个平面最多能表示两个字节65536个字符。</strong> </p>
+<ul>
+<li><p>我们可以这样判断修改过后的字符串到底是<strong>原地修改</strong>得到的还是<strong>重新赋值</strong>得到的：<strong>将这个字符串的引用赋值给另一个字符串变量tempC，我们修改这个字符串前后都输出这个tempC，如果我们是原地修改，那么这个tempC输出的值前后两次肯定一样；如果是重新赋值，那么tempC的值前后两次肯定不同</strong>。</p>
+<ul>
+<li><pre><code>String  s = &quot;aabbc&quot;;
+Class&lt;? extends String&gt; aClass = s.getClass();
+Field value = aClass.getDeclaredField(&quot;value&quot;);//得到这个value属性
+value.setAccessible(true);//将它设置成可以访问
+char[] chars =  (char[]) value.get(s);
+
+String tempC = s;
+System.out.println(tempC );//在修改之前输出tempC 
+chars[0] = &#39;k&#39;;         //修改s
+System.out.println(tempC );//输出修改之后的tempC 
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  - **结果如下**：![image-20220418092752119](https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220418092752119.png)</span><br><span class="line"></span><br><span class="line">- **如果是重新赋值的情况**，例如：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+String  s = &quot;aabbc&quot;;
+String tempC = s;
+System.out.println(tempC);
+s = &quot;sss&quot;;
+System.out.println(tempC);
+</code></pre>
+<ul>
+<li><strong>结果如下</strong>：<img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220418092930118.png" alt="image-20220418092930118"></li>
+</ul>
 </li>
-<li><p><strong>Unicode字符集的范围：<code>0x0000~0x10FFFF</code><strong>：</strong>16进制表示，前两位代表平面（0~0x10,刚好17个平面），后四位代表平面内表达的字符数（4个16进制数，最多655366个字符）。</strong></p>
+</ul>
 </li>
-<li><p><strong>在只需要用到第0个平面字符的时候范围是<code>0x0000~0xFFFF</code>，不需要表示平面号，一个字节就能存储，我们平时大多数都是这样</strong>。</p>
-</li>
-<li><p><strong>在字符超出第0个平面表示范围的时候，需要存储平面号，一个字节有8位，17个平面的17用二进制是0-10000，只需要五位，因此一个字节就能表示平面号，如果超出第0个平面表示范围，只需要总共三个字节就可以表示所有Unicode字符，但是utf-16两字节一单元，所以需要四个字节表示</strong>。</p>
-</li>
-<li><p>而java在<strong>最初</strong>采用Unicode字符集的时候<strong>Unicode字符还没有超过65536个</strong>，后来加入大量中文等文字才超过，此时一个<code>char</code>的16位就不能表示所有字符了。</p>
-</li>
-<li><p>例如：<code>𝄞</code>。</p>
+<li><p><strong>因此可知字符串确实是可以通过反射修改的</strong>。</p>
 </li>
 </ul>
 
@@ -278,7 +302,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/" title="java中char为什么无法表示全部字符">http://example.com/2022/03/15/char无法表示全部字符/</a>
+    <a href="http://example.com/2022/04/18/Sring%E5%A6%82%E4%BD%95%E6%94%B9%E5%8F%98/" title="Sring如何改变">http://example.com/2022/04/18/Sring如何改变/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -291,7 +315,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           </div>
 
         
@@ -300,13 +324,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/" rel="prev" title="MySQL数据库中的自增长问题">
-      <i class="fa fa-chevron-left"></i> MySQL数据库中的自增长问题
+    <a href="/2022/04/12/LeetCode752%E6%89%93%E5%BC%80%E8%BD%AC%E7%9B%98%E9%94%81/" rel="prev" title="LeetCode752:打开转盘锁">
+      <i class="fa fa-chevron-left"></i> LeetCode752:打开转盘锁
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/" rel="next" title="单个字符的字符串长度可能为2">
-      单个字符的字符串长度可能为2 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -365,7 +386,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88java%E4%B8%AD%E6%9C%89%E7%9A%84%E5%AD%97%E7%AC%A6char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text">为什么java中有的字符char无法表示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EUnicode"><span class="nav-number">1.1.</span> <span class="nav-text">关于Unicode</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4String%E7%B1%BB%E5%9E%8B%E4%B8%8D%E5%8F%AF%E5%8F%98%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">为什么说String类型不可变？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%81%E6%98%8E%E6%88%91%E4%BB%AC%E6%98%AF%E7%9C%9F%E7%9A%84%E4%BF%AE%E6%94%B9%E4%BA%86%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.</span> <span class="nav-text">证明我们是真的修改了字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84hashCode-%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">字符串的hashCode()方法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
