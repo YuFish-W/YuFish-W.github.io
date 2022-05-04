@@ -266,10 +266,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-04-26 12:48:54 / 修改时间：20:59:10" itemprop="dateCreated datePublished" datetime="2022-04-26T12:48:54+08:00">2022-04-26</time>
+              <time title="创建时间：2022-04-26 12:48:54" itemprop="dateCreated datePublished" datetime="2022-04-26T12:48:54+08:00">2022-04-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-04 10:59:17" itemprop="dateModified" datetime="2022-05-04T10:59:17+08:00">2022-05-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -286,7 +292,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.7k</span>
+              <span>3.6k</span>
             </span>
 
         </div>
@@ -302,18 +308,18 @@
 <li><p>例如使用<code>Arraylist</code>集合返回的一个iterator迭代器，我们<strong>这样使用会报错</strong>：</p>
 <ul>
 <li><p>```java<br>ArrayList<integer> arrayList = new ArrayList&lt;&gt;();<br>arrayList.add(1);<br>Iterator<integer> iterator = arrayList.iterator();//获得迭代器<br>arrayList.add(2);<br>if (iterator.hasNext()) System.out.println(iterator.next());</integer></integer></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ **分析**：&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">  + 我们来看**`iterator.next()`方法源码**：</span><br><span class="line"></span><br><span class="line">    ```java</span><br><span class="line">    public E next() &#123;</span><br><span class="line">        checkForComodification();//调用这个方法检查，我们刚刚报错就是因为调用这个方法</span><br><span class="line">        int i = cursor;</span><br><span class="line">        if (i &gt;= size)</span><br><span class="line">            throw new NoSuchElementException();</span><br><span class="line">        Object[] elementData = ArrayList.this.elementData;</span><br><span class="line">        if (i &gt;= elementData.length)</span><br><span class="line">            throw new ConcurrentModificationException();</span><br><span class="line">        cursor = i + 1;</span><br><span class="line">        return (E) elementData[lastRet = i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    final void checkForComodification() &#123;</span><br><span class="line">        if (modCount != expectedModCount)</span><br><span class="line">            throw new ConcurrentModificationException();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-<li><p><strong><code>ArrayList</code></strong> 继承了 <strong><code>AbstractList</code>，</strong> 其中**<code>AbstractList</code>** 中有个**<code>modCount</code>** 代表了<strong>集合修改的次数</strong>。在**<code>ArrayList</code>的<code>iterator</code>的<code>next()</code>方法中会判断** <strong><code>expectedModCount</code>与</strong> <strong><code>modCount</code>是否相等，如果相等继续执行，不相等报错</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  &lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">+ **分析**：</span><br><span class="line"></span><br><span class="line">  + 我们来看**`iterator.next()`方法源码**：</span><br><span class="line"></span><br><span class="line">    ```java</span><br><span class="line">    public E next() &#123;</span><br><span class="line">        checkForComodification();//调用这个方法检查，我们刚刚报错就是因为调用这个方法</span><br><span class="line">        int i = cursor;</span><br><span class="line">        if (i &gt;= size)</span><br><span class="line">            throw new NoSuchElementException();</span><br><span class="line">        Object[] elementData = ArrayList.this.elementData;</span><br><span class="line">        if (i &gt;= elementData.length)</span><br><span class="line">            throw new ConcurrentModificationException();</span><br><span class="line">        cursor = i + 1;</span><br><span class="line">        return (E) elementData[lastRet = i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    final void checkForComodification() &#123;</span><br><span class="line">        if (modCount != expectedModCount)</span><br><span class="line">            throw new ConcurrentModificationException();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong><code>ArrayList</code></strong> 继承了 <strong><code>AbstractList</code>，</strong> 其中<code>AbstractList</code>中有个<code>modCount</code>代表了<strong>集合修改的次数</strong>。<strong>在<code>ArrayList</code>的<code>iterator</code>的<code>next()</code>方法中会判断<code>expectedModCount</code>与<code>modCount</code>是否相等，如果相等继续执行，不相等报错</strong>。</p>
 </li>
-<li><p>这个<code>expectedModCount</code>是迭代器这个类的一个属性，**调用<code>ArrayList</code>自身的<code>add</code>和``remove<code>等改变集合大小的方法都会导致</code>modCount+1<code>，但是不会修改</code>expectedModCount`**。</p>
+<li><p>这个<code>expectedModCount</code>是迭代器这个类的一个属性，<strong>调用<code>ArrayList</code>自身的<code>add</code>和``remove<code>等改变集合大小的方法都会导致</code>modCount+1<code>，但是不会修改</code>expectedModCount`。</strong> </p>
 </li>
 <li><p>返回的<strong>迭代器是<code>ArrayList</code>的一个私有内部类(下文有这个内部类的源码）</strong>，在调用集合的iterator()方法返回迭代器的时候底层是new一个新的迭代器返回，它在<strong>创建的时候会将当前<code>modCount</code>的值赋给<code>expectedModCount</code>，因此创建的时候两者相等</strong>。</p>
 </li>
 <li><p><strong>因此我们在创建迭代器后，如果使用了<code>ArrayList</code>本身的add方法导致<code>modCount+1</code>后，此时<code>modCount</code>和<code>expectedModCount</code>不相等了，再调用迭代器的next()方法就会报错</strong>。</p>
 <ul>
-<li><p>注意：这里不止调用<code>add</code>会报错，调用<code>ArrayList</code>本身的<code>remove</code>也会报错，**关键在于这些方法修改了<code>modCount</code>但是没有修改<code>expectedModCount</code>**。</p>
+<li><p>注意：这里不止调用<code>add</code>会报错，调用<code>ArrayList</code>本身的<code>remove</code>也会报错，<strong>关键在于这些方法修改了<code>modCount</code>但是没有修改<code>expectedModCount</code>。</strong> </p>
 </li>
-<li><p>**如果我们是用迭代器的<code>remove</code>方法则不会报错，因为迭代器的remove方法在删除元素后会将新的<code>modCount</code>的值赋给<code>expectedModCount</code>**：</p>
+<li><p><strong>如果我们是用迭代器的<code>remove</code>方法则不会报错，因为迭代器的remove方法在删除元素后会将新的<code>modCount</code>的值赋给<code>expectedModCount</code>：</strong> </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (lastRet &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">    checkForComodification();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ArrayList.<span class="keyword">this</span>.remove(lastRet);</span><br><span class="line">        cursor = lastRet;<span class="comment">//这个cursor表示的是下一个需要遍历的元素，lastRet表示上一次遍历到的元素</span></span><br><span class="line">        lastRet = -<span class="number">1</span>;</span><br><span class="line">        expectedModCount = modCount;<span class="comment">//这里会保持两者是一致的</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IndexOutOfBoundsException ex) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
