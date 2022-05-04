@@ -22,20 +22,18 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="使用优先权队列PriorityQueue，将所有链表的头结点加入，每次poll弹出最小的，然后再加入这个节点的下一个，以此类推，能将所有链表有序合并。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode23:合并多个有序链表">
-<meta property="og:url" content="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/index.html">
+  <meta name="description" content="功成名就不是目的">
+<meta property="og:type" content="website">
+<meta property="og:title" content="酒书茶社">
+<meta property="og:url" content="http://example.com/categories/java%E6%89%A9%E5%B1%95/index.html">
 <meta property="og:site_name" content="酒书茶社">
-<meta property="og:description" content="使用优先权队列PriorityQueue，将所有链表的头结点加入，每次poll弹出最小的，然后再加入这个节点的下一个，以此类推，能将所有链表有序合并。">
+<meta property="og:description" content="功成名就不是目的">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-20T09:26:03.000Z">
-<meta property="article:modified_time" content="2022-03-20T09:28:22.994Z">
 <meta property="article:author" content="YuFish-W">
-<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="酒书茶社、YuFish-W">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/">
+<link rel="canonical" href="http://example.com/categories/java%E6%89%A9%E5%B1%95/">
 
 
 <script id="page-configurations">
@@ -43,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>LeetCode23:合并多个有序链表 | 酒书茶社</title>
+  <title>分类: java扩展 | 酒书茶社</title>
   
 
 
@@ -150,144 +148,51 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content category">
             
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="YuFish-W">
-      <meta itemprop="description" content="功成名就不是目的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="酒书茶社">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          LeetCode23:合并多个有序链表
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-03-20 17:26:03 / 修改时间：17:28:22" itemprop="dateCreated datePublished" datetime="2022-03-20T17:26:03+08:00">2022-03-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">java扩展
+          <small>分类</small>
+        </h2>
+      </div>
 
       
-        <ul>
-<li><strong>使用优先权队列<code>PriorityQueue</code>，将所有链表的头结点加入，每次<code>poll</code>弹出最小的，然后再加入这个节点的下一个，以此类推，能将所有链表有序合并</strong>。<span id="more"></span></li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public ListNode mergeKLists(ListNode[] lists) &#123;</span><br><span class="line">        if(lists.length == 0)&#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        PriorityQueue&lt;ListNode&gt; listNodes = new PriorityQueue&lt;&gt;(</span><br><span class="line">            lists.length , (o1,o2) -&gt; o1.val - o2.val</span><br><span class="line">        );/*传入链表程度和比较器，o1.val - o2.val 小于0表示o1更小，属于升序排列，这是</span><br><span class="line">          lambda表达式，效果和使用匿名类一样*/</span><br><span class="line">        for (ListNode listNode : lists) &#123;</span><br><span class="line">            if (listNode != null) &#123;</span><br><span class="line">                listNodes.add(listNode);</span><br><span class="line">                /*只加入头结点而不是全部加入，poll其中一个的时候就加入这个头结点的next，这样</span><br><span class="line">                  这个优先权队列始终只有K各节点，可以保证调整队列的复杂度是logk,n个结点全部</span><br><span class="line">                  加入和弹出总的时间复杂度你nlogk，如果一次性全部加入，每次调整优先级的复杂度</span><br><span class="line">                  是logn，总的时间复杂度是nlogn</span><br><span class="line">                */</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode res = new ListNode(-1);</span><br><span class="line">        ListNode virtualHeadNode = res;</span><br><span class="line">        while (!listNodes.isEmpty())&#123;</span><br><span class="line">            virtualHeadNode.next = listNodes.poll();</span><br><span class="line">            virtualHeadNode = virtualHeadNode.next;</span><br><span class="line">            if(virtualHeadNode.next != null) &#123;</span><br><span class="line">                listNodes.add(virtualHeadNode.next);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        virtualHeadNode.next = null;</span><br><span class="line">        /*只加头结点进入优先权队列可以不要这句，但是如果全部加入，可能会有多个相同的值，他们之间的相对</span><br><span class="line">          位置不一定和原来一样，可能最后一个原来是第一个，这样它的next就是下一个而不是null，这里就会</span><br><span class="line">          形成环。</span><br><span class="line">        */</span><br><span class="line">        return res.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>总结</strong>：<strong>合并多个有序链表</strong>：<strong>使用优先权队列</strong>。队列里只存放头结点，取出一个头结点再加入下一个，避免有序结点相对顺序变化后最后形成环的问题，且时间复杂度<code>nlogk</code>，k为头结点数，即链表数；如果全部加入则<code>nlogn</code>，且需要将最后加入的结点的<code>next=null</code>，避免出现环。</li>
-</ul>
-
+    <div class="collection-year">
+      <span class="collection-header">2022</span>
     </div>
 
-    <div>
-	  
-	    <div>
-    
-        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
-    
-</div>
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-	  
-	</div>
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-05-04T10:53:06+08:00"
+              content="2022-05-04">
+          05-04
+        </time>
+      </div>
 
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/05/04/springMVC%E7%9A%84%E6%8B%A6%E6%88%AA%E5%99%A8%E5%88%86%E6%9E%90/" itemprop="url">
+            <span itemprop="name">f</span>
+          </a>
+      </div>
 
-    
-    
-    
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>YuFish-W
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/" title="LeetCode23:合并多个有序链表">http://example.com/2022/03/20/LeetCode23多表合并/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-
-      
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/" rel="prev" title="关于正则表达式`*`为什么会在行尾匹配出一个空串">
-      <i class="fa fa-chevron-left"></i> 关于正则表达式`*`为什么会在行尾匹配出一个空串
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/" rel="next" title="LeetCode503：下一个更大元素">
-      LeetCode503：下一个更大元素 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+    </div>
+  </div>
   
   
+  
+
   
 
 

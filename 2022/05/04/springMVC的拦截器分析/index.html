@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+<meta name="baidu-site-verification" content="code-ggUTnhuHfI" />
+<meta name="google-site-verification" content="Fx1G5n_aH60ZKxRzgNpbIhPP6rmaQKVbLDw_SqiQtE8" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon%2032.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon%2016.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 拦截器的作用时机 和过滤器一样，拦截器也可以拦截请求。 过滤器是在DispatcherServlet处理之前拦截，拦截器是在DispatcherServlet处理请求然后调用控制器方法(即我们自己写的处理请求的方法，用@RequestMapping标注)之前进行拦截。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="f">
+<meta property="og:url" content="http://example.com/2022/05/04/springMVC%E7%9A%84%E6%8B%A6%E6%88%AA%E5%99%A8%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="酒书茶社">
+<meta property="og:description" content="1. 拦截器的作用时机 和过滤器一样，拦截器也可以拦截请求。 过滤器是在DispatcherServlet处理之前拦截，拦截器是在DispatcherServlet处理请求然后调用控制器方法(即我们自己写的处理请求的方法，用@RequestMapping标注)之前进行拦截。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/tmpB871.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/10ee178ca64d7b85a0c7252eba4c5e4f.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/cd000447b3e29a9a79ec53c9ae21f025.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/36ce20c62f1d84e280e55b4f90f8e2f0.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220503142150596.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/6aace45ad24a261a9e49ee4d67d1ac0f.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/f430bc42cf01abf8cd8ba8ed28301b11.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/681ed2a49cb710764c0c61c5c2cfacb2.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/0863178cbe17cb75a0d3ac469b4eddbc.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/cf8a4f8e44552be402c9bfa36bc37a27.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/54837dc787070d49ab5b1e9b3dce7aa0.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/f430bc42cf01abf8cd8ba8ed28301b11.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/f430bc42cf01abf8cd8ba8ed28301b11.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/54837dc787070d49ab5b1e9b3dce7aa0.png">
+<meta property="article:published_time" content="2022-05-04T02:53:06.000Z">
+<meta property="article:modified_time" content="2022-05-04T02:54:18.488Z">
+<meta property="article:author" content="YuFish-W">
+<meta property="article:tag" content="ssm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/tmpB871.png">
+
+<link rel="canonical" href="http://example.com/2022/05/04/springMVC%E7%9A%84%E6%8B%A6%E6%88%AA%E5%99%A8%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>f | 酒书茶社</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="酒书茶社" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">酒书茶社</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人是生而自由的，却无往不在枷锁之中。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/YuFish-W" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/04/springMVC%E7%9A%84%E6%8B%A6%E6%88%AA%E5%99%A8%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="YuFish-W">
+      <meta itemprop="description" content="功成名就不是目的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="酒书茶社">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          f
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-04 10:53:06 / 修改时间：10:54:18" itemprop="dateCreated datePublished" datetime="2022-05-04T10:53:06+08:00">2022-05-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E6%89%A9%E5%B1%95/" itemprop="url" rel="index"><span itemprop="name">java扩展</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.7k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-拦截器的作用时机"><a href="#1-拦截器的作用时机" class="headerlink" title="1. 拦截器的作用时机"></a>1. 拦截器的作用时机</h1><ul>
+<li>和过滤器一样，拦截器也可以拦截请求。</li>
+<li>过滤器是在<code>DispatcherServlet</code>处理之前拦截，拦截器是在<code>DispatcherServlet</code>处理请求然后调用控制器方法(即我们自己写的处理请求的方法，用<code>@RequestMapping</code>标注)之前进行拦截。<span id="more"></span></li>
+</ul>
+<h1 id="2-拦截器的三个默认方法"><a href="#2-拦截器的三个默认方法" class="headerlink" title="2. 拦截器的三个默认方法"></a>2. 拦截器的三个默认方法</h1><ul>
+<li>实现拦截器需要实现<code>HandlerInterceptor</code>这个接口，这个<strong>接口</strong>中有三个<strong>默认方法</strong>，<strong>这三个方法的执行顺序</strong>：<ul>
+<li><strong>preHandle</strong>：<strong>控制器方法执行之前</strong>执行preHandle()，返回值是一个boolean，表示是否拦截或放行，返回true为放行，即调用控制器方法；返回false表示拦截，即不调用控制器方法</li>
+<li><strong>postHandle</strong>：控制器方法执行之后执行postHandle()</li>
+<li><strong>afterComplation</strong>：处理完视图和模型数据，渲染视图完毕之后执行afterComplation()</li>
+</ul>
+</li>
+<li>我们实现接口然后重写这三个方法，就会在对应的时机被自动执行。</li>
+</ul>
+<h1 id="3-分析拦截器方法执行时机"><a href="#3-分析拦截器方法执行时机" class="headerlink" title="3. 分析拦截器方法执行时机"></a>3. 分析拦截器方法执行时机</h1><h2 id="3-1-preHandle-和postHandle-执行时机"><a href="#3-1-preHandle-和postHandle-执行时机" class="headerlink" title="3.1 preHandle()和postHandle()执行时机"></a>3.1 <code>preHandle()</code>和<code>postHandle()</code>执行时机</h2><ul>
+<li><p><strong>在处理请求的时候会调用<code>DispatcherServlet</code>，这里面有如下代码</strong>:</p>
+</li>
+<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/tmpB871.png" alt="tmpB871" style="zoom: 80%;" />
+
+<ul>
+<li><p><code>mv=ha.handle()</code>这里就是调用<strong>处理请求</strong>的方法，返回值是一个<code>ModelAndView</code>类型的对象。</p>
+</li>
+<li><p><strong>上图这里可以看见在<code>mv=ha.handle()</code>之前和之后调用了<code>applayPreHandle()</code>和<code>applyPostHandle()</code>两个方法</strong>。这两个方法就是执行所有拦截器的<code>preHandle()</code>方法和<code>postHandle()</code>方法。<u>**因此可以看见在处理请求之前执行<code>preHandle()</code>，处理请求之后执行<code>postHandle()</code>**。</u></p>
+</li>
+<li><p><strong>上图的<code>mappedHandler</code>是一个处理执行链</strong>，类型为<code>HandlerExecutionChain</code> </p>
+<ul>
+<li>这个对象包含<strong>三个属性</strong>，如下图所示：<ul>
+<li><strong>第一个</strong><code>handler</code>表示<strong>当前请求对应的控制器方法</strong>；</li>
+<li><strong>第二个</strong>表示当前请求对应的<strong>所有拦截器集合</strong>，可以看见<strong>第一个是自带的拦截器</strong>，第二个是我们配置的；</li>
+<li><strong>第三个</strong>表示的是<code>applyPreHandle()</code>这个方法执行完后<strong>最后一个<code>PreHandle()</code>方法返回<code>ture</code>的拦截器的索引</strong>。</li>
+<li><img src="https://img-blog.csdnimg.cn/img_convert/10ee178ca64d7b85a0c7252eba4c5e4f.png" alt="image-20220503155412733"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>既然<strong>有拦截就要有放行</strong>，拦截器的三个方法中要想要<strong>进行拦截肯定得在处理器方法执行之前</strong>，即<strong>只有PreHandle()方法会进行拦截然后判断是否放行</strong>。看下三个方法的源码，<strong>只有<code>PreHandle()</code>方法有返回值，返回true代表放行，false代表不放行</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/cd000447b3e29a9a79ec53c9ae21f025.png" alt="image-20220503144628331"></p>
+</li>
+<li><p><strong>这里调用<code>applyPreHandler()</code>方法的源码</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">applyPreHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//这里循环遍历所有的interceptor,按顺序遍历，这个顺序就是我们在配置文件中配置的顺序，除了我们配置的还有一个自带的，</span></span><br><span class="line">    <span class="comment">//这个拦截器是第一个生效的，索引是0</span></span><br><span class="line">    <span class="comment">//for循环的第三个表示将每个返回true的拦截器的索引,赋值给interceptorIndex属性,然后再让索引自增，即interceptorIndex记录的就是</span></span><br><span class="line">    <span class="comment">//这个applyPreHandeler()方法执行完后最后一个放行的拦截器的索引</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.interceptorList.size(); <span class="keyword">this</span>.interceptorIndex = i++) &#123;</span><br><span class="line">        HandlerInterceptor interceptor = (HandlerInterceptor)<span class="keyword">this</span>.interceptorList.get(i);</span><br><span class="line">        <span class="comment">//这里会调用每一个interceptor的preHandle方法，然后如果返回false表示不放行</span></span><br><span class="line">        <span class="keyword">if</span> (!interceptor.preHandle(request, response, <span class="keyword">this</span>.handler)) &#123;</span><br><span class="line">            <span class="keyword">this</span>.triggerAfterCompletion(request, response, (Exception)<span class="keyword">null</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果<code>preHandle()</code>返回false则进入if语句，里面同样会返回false，然后返回到上一层调用的地方：<img src="https://img-blog.csdnimg.cn/img_convert/36ce20c62f1d84e280e55b4f90f8e2f0.png" alt="image-20220503144932312"><ul>
+<li><strong>这里是false则进入if语句，直接retrun，因此不会执行下面的控制器方法，这就意味着<code>preHandle()</code>返回false代表不放行</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-2-afterComplation方法执行时机"><a href="#3-2-afterComplation方法执行时机" class="headerlink" title="3.2 afterComplation方法执行时机"></a>3.2 <code>afterComplation</code>方法执行时机</h2><ul>
+<li><p><strong>在<code>DispatcherServlet</code>中有如下代码</strong>：</p>
+</li>
+<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220503142150596.png" alt="image-20220503142150596" style="zoom:67%;" /></li>
+<li><ul>
+<li><strong>这里的<code>this.render()</code>方法就是渲染视图的</strong>，在这个方法下面调用了<code>treggerAfterCompletion()</code>方法，这个方法会调用<strong>不放行的那个拦截器之前的所有拦截器的<code>afterComplation</code>方法</strong>。<u><strong>因此在渲染视图之后调用<code>afterComplation</code></strong></u>。</li>
+<li>但是如果<strong>前面的<code>PreHandle</code>方法如果不放行</strong>，则执行不到这里，但是<strong>前面的<code>applyPreHandler()</code>方法中会在不放行的时候自己调用<code>treggerAfterCompletion()</code>方法</strong>，因此<strong>放行和不放行执行<code>treggerAfterCompletion()</code>方法的地方不是同一个</strong>。</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-多个拦截器时每个方法的执行顺序"><a href="#4-多个拦截器时每个方法的执行顺序" class="headerlink" title="4. 多个拦截器时每个方法的执行顺序"></a>4. 多个拦截器时每个方法的执行顺序</h1><ul>
+<li>若每个拦截器的preHandle()都返回true<ul>
+<li>此时多个拦截器的执行顺序和<strong>拦截器在SpringMVC的配置文件的配置顺序</strong>有关：</li>
+<li><strong><code>preHandle()</code>会按照配置的顺序执行，而<code>postHandle()</code>和<code>afterComplation()</code>会按照配置的反序执行</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="4-1-分析顺序执行和反序执行"><a href="#4-1-分析顺序执行和反序执行" class="headerlink" title="4.1 分析顺序执行和反序执行"></a>4.1 分析顺序执行和反序执行</h2><p><strong>这里看源码</strong>：</p>
+<h3 id="preHandle"><a href="#preHandle" class="headerlink" title="preHandle"></a>preHandle</h3><ul>
+<li><p>这里调用所有拦截器的<code>preHandle()</code>方法：<img src="https://img-blog.csdnimg.cn/img_convert/6aace45ad24a261a9e49ee4d67d1ac0f.png" alt="image-20220503160647835"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f430bc42cf01abf8cd8ba8ed28301b11.png" alt="image-20220503160746584"></p>
+<ul>
+<li>这里for循环遍历<strong>从索引0开始遍历</strong>interceptorList集合中的所有拦截器，这个集合<strong>拦截器的索引顺序就是我们在配置文件中配置的顺序</strong>，因此<code>preHandle()</code>是<strong>按照配置顺序执行</strong> </li>
+</ul>
+</li>
+</ul>
+<h3 id="postHandle"><a href="#postHandle" class="headerlink" title="postHandle"></a>postHandle</h3><ul>
+<li><p><strong>这里会调用所有拦截器的<code>postHandle()</code>方法</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/681ed2a49cb710764c0c61c5c2cfacb2.png" alt="image-20220503160932167"></p>
+<ul>
+<li>这个方法的调用是在<code>applyPreHandler()</code>这个方法执行完后执行的，<strong>因此如果这个<code>applyPreHandler()</code>方法在遍历所有拦截器的<code>preHandle()</code>方法时碰到了返回false的，即不放行，则会直接return掉，不会执行这个<code>applyPostHandle()</code>方法</strong>。<strong>因此只要有一个拦截器不放行，则所有拦截器的<code>postHandle()</code>都不执行</strong>，如下图：</li>
+<li><img src="https://img-blog.csdnimg.cn/img_convert/0863178cbe17cb75a0d3ac469b4eddbc.png" alt="image-20220503162156080"></li>
+</ul>
+</li>
+<li><p>如果所有的<code>PreHandle()</code>方法都放行，则会执行这个<code>applyPostHandle()</code>方法，从这里<u><strong>可以看到它是从<code>interceptorList</code>集合的最后一个索引开始向前遍历的，因此是反序</strong></u> </p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/img_convert/cf8a4f8e44552be402c9bfa36bc37a27.png" alt="image-20220503160954516"></li>
+</ul>
+</li>
+</ul>
+<h3 id="afterComplation"><a href="#afterComplation" class="headerlink" title="afterComplation"></a>afterComplation</h3><ul>
+<li><p>下面代码会执行所有拦截器的<code>afterComplation()</code>方法，可以看出<u><strong>for循环遍历拦截器集合的时候也是从后往前遍历的</strong></u> </p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/54837dc787070d49ab5b1e9b3dce7aa0.png" alt="image-20220503161448647"></p>
+</li>
+</ul>
+<p>上述的**<code>triggerAfterCompletion()</code>方法有两个地方可能会执行**：</p>
+<ul>
+<li><ol>
+<li><p><strong>如果有拦截器不放行</strong>：在执行所有<code>PreHandle()</code>方法的<code>applyPreHandler()</code>方法中，如果碰到某个拦截器的<code>PreHandle()</code>方法不放行，就会执行<code>triggerAfterCompletion()</code>方法。<strong>此时不会渲染视图，因为被拦截了</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f430bc42cf01abf8cd8ba8ed28301b11.png" alt="image-20220503160746584"></p>
+</li>
+<li><p><strong>如果全部放行</strong>：则会在视图渲染之后执行，上面有分析。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>有拦截器不放行时</strong>：</p>
+<ul>
+<li><p><strong>源码</strong>：for循环里面的if语句在判断时就会执行<code>preHandle()</code>，如果<strong>不放行则进入if语句，里面会调用<code>triggerAfterCompletion()</code>方法</strong> <img src="https://img-blog.csdnimg.cn/img_convert/f430bc42cf01abf8cd8ba8ed28301b11.png" alt="image-20220503160746584"></p>
+</li>
+<li><p><strong>此时<code>preHandle()</code>返回false的那个拦截器之前的拦截器的<code>afterComplation()</code>会执行，理由如下</strong>：</p>
+<ul>
+<li><p><strong>这里会调用最后一个放行的拦截器和它之前的所有拦截器的<code>afterComplation()</code>方法</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/54837dc787070d49ab5b1e9b3dce7aa0.png" alt="image-20220503161448647"></p>
+</li>
+<li><p><strong><code>this.interceptorIndex</code>就是在<code>applyPreHandler()</code>方法中赋值的，它记录的是最后一个放行的拦截器在集合中的索引，而<code>preHandle()</code>方法在碰到返回false的<code>preHandle()</code>拦截器方法后就会执行这个<code>triggerAfterCompletion()</code>方法(即这个拦截器的<code>preHandle()</code>方法不放行)，此时<code>this.interceptorIndex</code>就记录的是最后一个放行的拦截器索引</strong>。</p>
+</li>
+<li><p><u><strong>因此返回false的拦截器之前的拦截器的<code>afterComplation()</code>都会执行</strong></u> </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>若某个拦截器的preHandle()返回了false</strong> </p>
+<ul>
+<li>即如果某个拦截器的<code>preHandle()</code>返回了false，<strong>则<code>preHandle()</code>执行次数会比<code>afterComplation()</code>执行次数多一次，多的就是按个返回false的<code>preHandle()</code></strong> </li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div>
+	  
+	    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+	  
+	</div>
+
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>YuFish-W
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/05/04/springMVC%E7%9A%84%E6%8B%A6%E6%88%AA%E5%99%A8%E5%88%86%E6%9E%90/" title="f">http://example.com/2022/05/04/springMVC的拦截器分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ssm/" rel="tag"># ssm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/26/%E9%9B%86%E5%90%88%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%99%A8next%E6%96%B9%E6%B3%95%E5%88%86%E6%9E%90/" rel="prev" title="在java集合中调用remove方法后调用iterator.next()报错">
+      <i class="fa fa-chevron-left"></i> 在java集合中调用remove方法后调用iterator.next()报错
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%8B%A6%E6%88%AA%E5%99%A8%E7%9A%84%E4%BD%9C%E7%94%A8%E6%97%B6%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">1. 拦截器的作用时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%8B%A6%E6%88%AA%E5%99%A8%E7%9A%84%E4%B8%89%E4%B8%AA%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2. 拦截器的三个默认方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%88%86%E6%9E%90%E6%8B%A6%E6%88%AA%E5%99%A8%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E6%97%B6%E6%9C%BA"><span class="nav-number">3.</span> <span class="nav-text">3. 分析拦截器方法执行时机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-preHandle-%E5%92%8CpostHandle-%E6%89%A7%E8%A1%8C%E6%97%B6%E6%9C%BA"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 preHandle()和postHandle()执行时机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-afterComplation%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E6%97%B6%E6%9C%BA"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 afterComplation方法执行时机</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%A4%9A%E4%B8%AA%E6%8B%A6%E6%88%AA%E5%99%A8%E6%97%B6%E6%AF%8F%E4%B8%AA%E6%96%B9%E6%B3%95%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text">4. 多个拦截器时每个方法的执行顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%88%86%E6%9E%90%E9%A1%BA%E5%BA%8F%E6%89%A7%E8%A1%8C%E5%92%8C%E5%8F%8D%E5%BA%8F%E6%89%A7%E8%A1%8C"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 分析顺序执行和反序执行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#preHandle"><span class="nav-number">4.1.1.</span> <span class="nav-text">preHandle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#postHandle"><span class="nav-number">4.1.2.</span> <span class="nav-text">postHandle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#afterComplation"><span class="nav-number">4.1.3.</span> <span class="nav-text">afterComplation</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YuFish-W"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">YuFish-W</p>
+  <div class="site-description" itemprop="description">功成名就不是目的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YuFish-W" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YuFish-W" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+      
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=423228325&auto=1&height=66">
+          </iframe>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-truck"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YuFish-W</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">28k</span>
+</div>
+
+        
+
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      已有<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人访问
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次
+    </span>
+  
+</div>
+
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":130,"height":270},"mobile":{"show":false},"log":false});</script></body>
+</html>
