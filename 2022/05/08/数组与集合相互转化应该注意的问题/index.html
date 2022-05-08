@@ -22,21 +22,25 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="*代表匹配0个或者多个，例如5*表示匹配0个或者多个5，在匹配的时候系统会每个字符依次匹配，即调用.find()过后返回到groups数组中的位置是从第一个字符开始找5，如果第一个字符不是5就相当于找到了0个5，此时groups数组中索引的第一二个是(0,0)，意思是从0到0的位置有0个5，这个时候用字符串找子串的方式return这个范围的子串给我们，即此时我们得到了一个&quot;&quot;">
+  <meta name="description" content="数组转换成集合 可以使用Arrays.asList()方法。   &#96;&#96;&#96;javaInteger[] a &#x3D; {1,2,3,4};List list &#x3D; Arrays.asList(a);System.out.println(list); 123456789+ 输出结果：![image-20220508191253736](https:&#x2F;&#x2F;yufish-pic-1310579125.cos.ap-n">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于正则表达式&#96;*&#96;为什么会在行尾匹配出一个空串">
-<meta property="og:url" content="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/index.html">
+<meta property="og:title" content="数组集合互相转换的时候应该注意的问题">
+<meta property="og:url" content="http://example.com/2022/05/08/%E6%95%B0%E7%BB%84%E4%B8%8E%E9%9B%86%E5%90%88%E7%9B%B8%E4%BA%92%E8%BD%AC%E5%8C%96%E5%BA%94%E8%AF%A5%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="酒书茶社">
-<meta property="og:description" content="*代表匹配0个或者多个，例如5*表示匹配0个或者多个5，在匹配的时候系统会每个字符依次匹配，即调用.find()过后返回到groups数组中的位置是从第一个字符开始找5，如果第一个字符不是5就相当于找到了0个5，此时groups数组中索引的第一二个是(0,0)，意思是从0到0的位置有0个5，这个时候用字符串找子串的方式return这个范围的子串给我们，即此时我们得到了一个&quot;&quot;">
+<meta property="og:description" content="数组转换成集合 可以使用Arrays.asList()方法。   &#96;&#96;&#96;javaInteger[] a &#x3D; {1,2,3,4};List list &#x3D; Arrays.asList(a);System.out.println(list); 123456789+ 输出结果：![image-20220508191253736](https:&#x2F;&#x2F;yufish-pic-1310579125.cos.ap-n">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-18T12:23:31.000Z">
-<meta property="article:modified_time" content="2022-03-20T09:30:30.711Z">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191454595.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191917993.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508192044362.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508185549110.png">
+<meta property="article:published_time" content="2022-05-08T11:29:51.000Z">
+<meta property="article:modified_time" content="2022-05-08T11:31:39.479Z">
 <meta property="article:author" content="YuFish-W">
 <meta property="article:tag" content="java">
-<meta property="article:tag" content="正则表达式">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191454595.png">
 
-<link rel="canonical" href="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/">
+<link rel="canonical" href="http://example.com/2022/05/08/%E6%95%B0%E7%BB%84%E4%B8%8E%E9%9B%86%E5%90%88%E7%9B%B8%E4%BA%92%E8%BD%AC%E5%8C%96%E5%BA%94%E8%AF%A5%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98/">
 
 
 <script id="page-configurations">
@@ -49,7 +53,7 @@
   };
 </script>
 
-  <title>关于正则表达式`*`为什么会在行尾匹配出一个空串 | 酒书茶社</title>
+  <title>数组集合互相转换的时候应该注意的问题 | 酒书茶社</title>
   
 
 
@@ -158,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/08/%E6%95%B0%E7%BB%84%E4%B8%8E%E9%9B%86%E5%90%88%E7%9B%B8%E4%BA%92%E8%BD%AC%E5%8C%96%E5%BA%94%E8%AF%A5%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -171,7 +175,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          关于正则表达式`*`为什么会在行尾匹配出一个空串
+          数组集合互相转换的时候应该注意的问题
         </h1>
 
         <div class="post-meta">
@@ -180,16 +184,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-03-18 20:23:31" itemprop="dateCreated datePublished" datetime="2022-03-18T20:23:31+08:00">2022-03-18</time>
+              <time title="创建时间：2022-05-08 19:29:51 / 修改时间：19:31:39" itemprop="dateCreated datePublished" datetime="2022-05-08T19:29:51+08:00">2022-05-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-20 17:30:30" itemprop="dateModified" datetime="2022-03-20T17:30:30+08:00">2022-03-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -213,7 +211,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>1.9k</span>
             </span>
 
         </div>
@@ -225,36 +223,65 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ul>
-<li><p><code>*</code>代表<strong>匹配0个或者多个</strong>，例如<code>5*</code>表示匹配0个或者多个5，在<strong>匹配的时候系统会每个字符依次匹配</strong>，即调用<code>.find()</code>过后返回到<code>groups</code>数组中的位置是<strong>从第一个字符开始找</strong>5，<strong>如果第一个字符不是5就相当于找到了0个5，此时<code>groups</code>数组中索引的第一二个是(0,0)<strong>，</strong>意思是从0到0的位置有0个5，这个时候用字符串找子串的方式<code>return</code>这个范围的子串给我们，即此时我们得到了一个<code>&quot;&quot;</code>空串，此时第一次匹配结束，之后以此类推</strong>。<span id="more"></span></p>
+        <h1 id="数组转换成集合"><a href="#数组转换成集合" class="headerlink" title="数组转换成集合"></a>数组转换成集合</h1><ul>
+<li><p><strong>可以使用<code>Arrays.asList()</code>方法。</strong> </p>
 <ul>
-<li>**用<code>5\*</code>匹配字符串<code>&quot;a555fds651&quot;</code>**：<ul>
-<li>**第一次<code>find()</code>找到0个5开始于0结束于0，返回<code>&quot;&quot;</code>**；</li>
-<li>**第二次<code>find()</code>找到3个5开始于1结束于4，返回<code>555</code>**；</li>
-<li>**最后匹配来到了1，同样返回<code>&quot;&quot;</code>，但是还没有结束，还会在最后返回一个<code>&quot;&quot;</code>**。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>在使用正则表达式<code>.find()</code>匹配的时候</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public boolean find() &#123;</span><br><span class="line">    int nextSearchIndex = last;//将下一个搜索位置移到last，last表示上次搜索位置的结束位置，因为搜索子串是左闭右开区间，因此这个最右的字符头一次没有匹配到，这次从这开始</span><br><span class="line">    if (nextSearchIndex == first)//如果下一次搜索的开始位置等于上一个子串开始位置first，则往后移一位，只有last=first即搜到空子串才回这样</span><br><span class="line">        nextSearchIndex++;</span><br><span class="line"></span><br><span class="line">    //下面的from和to代表父串的开始和结束位置，即(0,length)</span><br><span class="line">    // If next search starts before region, start it at region</span><br><span class="line">    if (nextSearchIndex &lt; from)//下一个搜索位置小于0则移到0</span><br><span class="line">        nextSearchIndex = from;</span><br><span class="line"></span><br><span class="line">    // If next search starts beyond region then it fails</span><br><span class="line">    if (nextSearchIndex &gt; to) &#123;</span><br><span class="line">        //！！！！这句就是出现问题的关键！！！！！！！！这里的to表示父串长度，这里判断大于搜索位置大于父串长度才会结束搜索，但是我们知道字符串索引是从0开始的，因此不需要大于这个长度，只要等于这个长度其实就搜不到了。</span><br><span class="line">        //因此我们nextSerchIndex=to即搜索索引是父串长度的位置的时候仍然会继续以to位置为开始索引开始搜索</span><br><span class="line">        for (int i = 0; i &lt; groups.length; i++)</span><br><span class="line">            groups[i] = -1;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    return search(nextSearchIndex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>```java<br>Integer[] a = {1,2,3,4};<br>List<Integer> list = Arrays.asList(a);<br>System.out.println(list);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ 输出结果：![image-20220508191253736](https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191253736.png)，集合里存放的是单个的数字。</span><br><span class="line"></span><br><span class="line">+ **&lt;u&gt;特别注意&lt;/u&gt;**：这里**数组不能使用`int[]`来定义**，因为集合需要指定泛型，而泛型只能是引用类型，`Arrays.asList()`方法返回的集合的泛型会和数组类型一致，但是如果数组类型是基本数据类型而不是引用类型，则会将**整个数组`int[]`当成泛型类型**。此时集合里的元素就不再是单个的数字，而是整个整个的数组了：</span><br><span class="line"></span><br><span class="line">  ```java</span><br><span class="line">  int[] a = &#123;1,2,3,4&#125;;</span><br><span class="line">  List&lt;int[]&gt; list = Arrays.asList(a);</span><br><span class="line">  System.out.println(list);</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p><strong>以to(父串length，由于索引从0开始，实际没这个位置的字符)位置为开始索引开始搜索的时候*自然搜不到我们要的，此时则代表从to到to找到了0个子串，然后根据子串搜索源码可以知道，即使子串开始索引等于length长度，仍然不会报索引越界的错误，因为开始索引只要不小于0就行。如果开始和结束位置都是length，子串长度为0，返回<code>&quot;&quot;</code>空串</strong>。</p>
-<ul>
-<li><p><strong>java中<code>substring()</code>源码</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public String substring(int beginIndex, int endIndex) &#123;//代表子串开始位置和结束位置</span><br><span class="line">    if (beginIndex &lt; 0) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(beginIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    if (endIndex &gt; value.length) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(endIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    int subLen = endIndex - beginIndex;</span><br><span class="line">    if (subLen &lt; 0) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(subLen);</span><br><span class="line">    &#125;</span><br><span class="line">    return ((beginIndex == 0) &amp;&amp; (endIndex == value.length)) ? this</span><br><span class="line">        : new String(value, beginIndex, subLen);</span><br><span class="line">&#125;//this代表要找的父字符串</span><br></pre></td></tr></table></figure>
+<li>输出结果：<img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191454595.png" alt="image-20220508191454595">，集合里存放的是数组。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong><code>Arrays.asList</code>方法返回一个<code>List</code>，是一个视图，它的底层仍然是数组，因此不能使用<code>add</code>,<code>remove</code>方法，因为这会改变数组大小，只能使用访问底层数组的<code>get</code>和修改数组元素的<code>set</code>方法。</strong> </p>
+<ol>
+<li><p>修改方法<code>set()</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Integer[] a = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(a);</span><br><span class="line">System.out.println(list);</span><br><span class="line">list.set(<span class="number">0</span>,<span class="number">111</span>);</span><br><span class="line">System.out.println(list);</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><strong>可以看到<code>sbustring()</code>会先判断输入的子串索引是否合法，即是否在0到父串长度之间，然后计算要得到的自传长度<code>int subLen = endIndex - beginIndex</code>,如果这个长度不小于0，就进行最后的返回值，即如果<code>(beginIndex == 0) &amp;&amp; (endIndex == value.length)</code>成立，即要找的子串就是父串本身，则返回父串，否则<code>new String(value, beginIndex, subLen)</code>，代表new一个新串，从父串的<code>beginIndex</code>位置开始加入<code>sunLen</code>个字符</strong>。</li>
-<li><strong>这也能看出为什么返回子串是左闭右开区间，因为返回子串的时候是从开始位置放入搜索区间长度个字符，例如1-3只返回从1开始2个字符，因此取的是1和2,3总是取不到的</strong>。</li>
+<li>结果：<img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191917993.png" alt="image-20220508191917993"> </li>
+</ul>
+</li>
+<li><p><code>add()/remove()</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer[] a = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(a);</span><br><span class="line">list.add(<span class="number">1</span>);<span class="comment">//list.remove(1);</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结果：<img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508192044362.png" alt="image-20220508192044362"> </li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><strong>从源码分析：</strong> <ul>
+<li><strong>这个方法返回的是一个<code>Arrays</code>的内部类<code>java.util.Arrays$ArrayList</code>。这个内部类继承了<code>AbstractList</code>，而<code>AbstractList</code>又继承了<code>List</code>。因此我们得用<code>List</code>来接收这个结果，不能用<code>ArrayList</code>！！！</strong> </li>
+<li><strong>此时我们使用返回的<code>List</code>类型的集合并调用这个集合的方法，在运行的时候根据动态绑定机制会去运行类型<code>java.util.Arrays$ArrayList</code>中调用这个方法，而<code>java.util.Arrays$ArrayList</code>这个类是没有<code>add()</code>和<code>remove()</code>这两个方法的，因此我们调用会失败。</strong> </li>
+</ul>
+</li>
+<li>额外：集合的<code>subList()</code>方法返回的视图没有操作限制，可以将任何增删改操作应用于这个视图，同时它会影响到原集合例如删除这个子视图相当于删除了元集合中的这些元素。</li>
+</ul>
+</li>
+</ul>
+<h1 id="集合转换成数组"><a href="#集合转换成数组" class="headerlink" title="集合转换成数组"></a>集合转换成数组</h1><ul>
+<li><p><strong>List集合的<code>toArray()</code>方法可以将集合转成对应类型的数组：</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Integer&gt; arrayList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">arrayList.add(<span class="number">1</span>);</span><br><span class="line">arrayList.add(<span class="number">2</span>);</span><br><span class="line">arrayList.add(<span class="number">3</span>);</span><br><span class="line">arrayList.add(<span class="number">5</span>);</span><br><span class="line">Object[] objects1 = arrayList.toArray();<span class="comment">//直接返回会返回一个Object类型的数组</span></span><br><span class="line">Integer[] integers1 = arrayList.toArray(<span class="keyword">new</span> Integer[<span class="number">0</span>]);<span class="comment">//添加这个参数即可，下面解释</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>如果直接调用<code>toArray()</code>将返回一个对象数组，此时由于数组的类型是不能强制转换的，即即使当前<code>Obeject</code>数组中的元素都是<code>Integer</code>类型也无法将它转换成<code>Integer</code>类型的数组。</strong> </li>
+<li><strong>想要获得指定类型的数组必须在方法里new一个这种类型的数组，此时就会返回一个同类型的数组。参数中数组的长度小于集合大小会自动扩大到集合大小，长度大于集合大小多余的位置填<code>null</code>。</strong> </li>
+<li><strong>对返回的数组的操作不会影响到该集合：</strong> <ul>
+<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508185549110.png" alt="image-20220508185549110"></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
+<li><p><strong>数组没有类型转换，即不能将int类型的数组转换成Object类型的数组。但是集合这样是可以的：</strong> </p>
+<ul>
+<li><pre><code class="java">List&lt;Integer&gt; f = new ArrayList&lt;&gt;();
+ArrayList&lt;Integer&gt; c = (ArrayList&lt;Integer&gt;)f;
+</code></pre>
 </li>
-<li><p><strong>因此*在匹配字符串的时候最后总是会匹配到一个<code>&quot;&quot;</code>空串</strong>。</p>
+</ul>
 </li>
 </ul>
 
@@ -284,7 +311,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2022/03/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%9F%E5%8F%B7%E9%99%90%E5%AE%9A%E7%AC%A6/" title="关于正则表达式&#96;*&#96;为什么会在行尾匹配出一个空串">http://example.com/2022/03/18/正则表达式星号限定符/</a>
+    <a href="http://example.com/2022/05/08/%E6%95%B0%E7%BB%84%E4%B8%8E%E9%9B%86%E5%90%88%E7%9B%B8%E4%BA%92%E8%BD%AC%E5%8C%96%E5%BA%94%E8%AF%A5%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98/" title="数组集合互相转换的时候应该注意的问题">http://example.com/2022/05/08/数组与集合相互转化应该注意的问题/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -298,7 +325,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/java/" rel="tag"># java</a>
-              <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag"># 正则表达式</a>
           </div>
 
         
@@ -307,13 +333,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/16/%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6/" rel="prev" title="单个字符的字符串长度可能为2">
-      <i class="fa fa-chevron-left"></i> 单个字符的字符串长度可能为2
+    <a href="/2022/05/04/springMVC%E7%9A%84%E6%8B%A6%E6%88%AA%E5%99%A8%E5%88%86%E6%9E%90/" rel="prev" title="springMVC的拦截器分析">
+      <i class="fa fa-chevron-left"></i> springMVC的拦截器分析
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/" rel="next" title="LeetCode23:合并多个有序链表">
-      LeetCode23:合并多个有序链表 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -372,6 +395,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E6%88%90%E9%9B%86%E5%90%88"><span class="nav-number">1.</span> <span class="nav-text">数组转换成集合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E8%BD%AC%E6%8D%A2%E6%88%90%E6%95%B0%E7%BB%84"><span class="nav-number">2.</span> <span class="nav-text">集合转换成数组</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
