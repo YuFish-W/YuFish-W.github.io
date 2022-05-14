@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/05/14/LeetCode743%E7%BD%91%E7%BB%9C%E5%BB%B6%E8%BF%9F/</loc>
+    <lastmod>2022-05-14</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2022/05/08/%E6%95%B0%E7%BB%84%E4%B8%8E%E9%9B%86%E5%90%88%E7%9B%B8%E4%BA%92%E8%BD%AC%E5%8C%96%E5%BA%94%E8%AF%A5%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98/</loc>
     <lastmod>2022-05-08</lastmod>
   </url>
