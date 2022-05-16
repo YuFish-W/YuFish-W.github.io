@@ -154,6 +154,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/16/f/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="YuFish-W">
+      <meta itemprop="description" content="功成名就不是目的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="酒书茶社">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/16/f/" class="post-title-link" itemprop="url">分析如何将map/model的数据放入request保存域</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-16 20:16:46 / 修改时间：20:18:07" itemprop="dateCreated datePublished" datetime="2022-05-16T20:16:46+08:00">2022-05-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E6%89%A9%E5%B1%95/" itemprop="url" rel="index"><span itemprop="name">java扩展</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>15k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="分析如何将map-model的数据放入request保存域"><a href="#分析如何将map-model的数据放入request保存域" class="headerlink" title="分析如何将map/model的数据放入request保存域"></a>分析如何将map/model的数据放入request保存域</h1><ul>
+<li><strong>以下源码不需要全看，主要看写了中文注释的地方即可，一步一步进去就明白了</strong>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/16/f/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+	  
+	</div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/14/LeetCode743%E7%BD%91%E7%BB%9C%E5%BB%B6%E8%BF%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -177,10 +265,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-05-14 19:31:25 / 修改时间：19:32:36" itemprop="dateCreated datePublished" datetime="2022-05-14T19:31:25+08:00">2022-05-14</time>
+              <time title="创建时间：2022-05-14 19:31:25" itemprop="dateCreated datePublished" datetime="2022-05-14T19:31:25+08:00">2022-05-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-16 20:16:11" itemprop="dateModified" datetime="2022-05-16T20:16:11+08:00">2022-05-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -210,51 +304,7 @@
 
       
           <p><strong>如题：</strong> <img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220514183856067.png" alt="image-20220514183856067"></p>
-<p><strong>分析思路：</strong> </p>
-<ul>
-<li><p>从实例的途中就可以看出这是一个有向带权图，每条边的权重表示从一个节点发送信号到另一个节点所需要的时间。</p>
-</li>
-<li><p><strong>题目要我们返回从某一个节点开始发送信号，需要多久才能使所有节点都收到这个信号，这里有两层含义</strong>：</p>
-<ul>
-<li><strong>第一层</strong>：如果当前节点到另一个节点有两条路径，这两条路径都能到达，我们应该选取花费时间更少的那条</li>
-<li><strong>第二层</strong>：需要保证所有节点都能收到该信号，因此所需要的时间应为当前节点到其他节点的需要花费时间中需要时间最久的那个时间，这样才能保证在这个时间内所有节点都能收到该信号</li>
-</ul>
-</li>
-<li><p>因此，<strong>第一个问题是</strong>如何得到当前节点到另一个节点的所有路径中花费时间最短的路径？</p>
-<ul>
-<li><strong>这个问题我们可以用<code>dijkstra</code>算法解决，这个算法就是解决最短路径问题的。</strong> </li>
-<li><strong>注意<code>dijkstra</code>算法的使用条件：加权有向图，没有负权重</strong>，因此当前问题满足条件。</li>
-</ul>
-</li>
-<li><p><strong>第二个问题</strong>是如何知道到哪个节点所需要的 最短路径时间 是最长的？</p>
-<ul>
-<li><strong>我们可以在<code>dijkstra</code>算法计算每一个节点的耗费时间的同时利用一个数组记录当前节点到每一个节点所需要的最短时间。</strong> </li>
-</ul>
-</li>
-</ul>
-<p><strong>代码：</strong> </p>
-<ul>
-<li><code>dijkstra</code>算法实质上是在<code>BFS</code>层次遍历图的过程中计算最短路径的，因此我们需要构建图，这里用邻接表法构建图。</li>
-<li><code>dijkstra</code>需要一个数组记录开始结点到其他所有节点的最短路径长度，我们可以这样实现：<ul>
-<li>初始化一个<code>distFromStart</code>，记录的值<strong>初始化为无穷大</strong>（因为我们要缩小这个值）。</li>
-<li>在遍历图的过程中找到当前结点的所有邻居节点，然后计算<strong>从开始结点到当前结点的路径长度</strong>加上<strong>当前节点到邻居节点的权重</strong>，即<strong>当前路径到该达邻居节点的路径长度</strong>，判断这个长度和<code>distFromStart</code>数组记录的长度的大小，**<code>distFromStart</code>数组始终记录更小的那个值。** <ul>
-<li><strong>上述条件中我们可以知道的是当前结点到邻居节点的权重，那么我们如何知道开始节点到当前节点的路径长度？</strong> <ul>
-<li>我们可以<strong>用一个类来记录这个信息</strong>，这个类有属性<code>id</code>表示节点编号，属性<code>distFromStart</code>表示开始结点到当前结点的路径长度。在<code>BFS</code>过程中我们用这个类的对象来代表每一个节点，加入到队列中遍历。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>这样我们在遍历的时候弹出队列中的节点就可以得到开始结点到当前结点的路径长度了，在利用建立的邻接表可以根据这个节点的<code>id</code>找到它的每一个邻居，由此可以完成判断。</strong> </li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="comment">//表里每一个节点的类型是int[]，该数组长度为2，0索引存放目的节点，1索引存放到目的节点的权重。</span></span><br><span class="line">    List&lt;<span class="keyword">int</span>[]&gt;[] graph;</span><br><span class="line">    <span class="comment">//实时记录每个结点到起始结点的最短距离,在每次寻找邻居节点的时候用来判断当前路径走这条路是否可行</span></span><br><span class="line">    <span class="keyword">int</span>[] distFromStart;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">networkDelayTime</span><span class="params">(<span class="keyword">int</span>[][] times, <span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//用邻接表法建图</span></span><br><span class="line">        built(times, n);</span><br><span class="line">        <span class="comment">//用dijkstra计算每个结点和起始结点的最短路径</span></span><br><span class="line">        dijkstra(graph, k);</span><br><span class="line">        <span class="comment">//找最大时间，代表所有结点收到信号的最短时间</span></span><br><span class="line">        <span class="keyword">int</span> maxTime = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//从1开始，结点编号没有0</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; distFromStart.length; i++) &#123;</span><br><span class="line">            <span class="comment">//如果长度还是101则表示路径长度没有更新，即表示这个节点无法到达，直接返回-1</span></span><br><span class="line">            <span class="keyword">if</span> (distFromStart[i] == <span class="number">101</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (distFromStart[i] &gt; maxTime) maxTime = distFromStart[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">built</span><span class="params">(<span class="keyword">int</span>[][] times, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//由于节点的编号是从1开始的，所以初始化大小n+1</span></span><br><span class="line">        graph = <span class="keyword">new</span> ArrayList[n + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n + <span class="number">1</span>; i++) &#123;</span><br><span class="line">            graph[i] = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] time : times) &#123;</span><br><span class="line">            <span class="keyword">int</span> start = time[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> to = time[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">int</span> weight = time[<span class="number">2</span>];</span><br><span class="line">            graph[start].add(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;to, weight&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//记录每个几点的基本信息，即编号和与起始结点的路径长度</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> id;</span><br><span class="line">        <span class="keyword">int</span> distFromStart;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> distFromStart)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.id = id;</span><br><span class="line">            <span class="keyword">this</span>.distFromStart = distFromStart;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">(List&lt;<span class="keyword">int</span>[]&gt;[] graph, <span class="keyword">int</span> start)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//优先权队列对 从开始结点到当前结点的距离distFromStart 从小到大排序</span></span><br><span class="line">        PriorityQueue&lt;Node&gt; priorityQueue = <span class="keyword">new</span> PriorityQueue&lt;&gt;((a, b) -&gt; a.distFromStart - b.distFromStart);</span><br><span class="line"></span><br><span class="line">        distFromStart = <span class="keyword">new</span> <span class="keyword">int</span>[graph.length];</span><br><span class="line">        <span class="comment">//权重最大为100，初始化为一个大于它的数</span></span><br><span class="line">        Arrays.fill(distFromStart, <span class="number">101</span>);</span><br><span class="line">        distFromStart[start] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        priorityQueue.offer(<span class="keyword">new</span> Node(start, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (!priorityQueue.isEmpty()) &#123;</span><br><span class="line">            Node Node = priorityQueue.poll();</span><br><span class="line">            <span class="keyword">int</span> curNodeID = Node.id;<span class="comment">//当前结点id</span></span><br><span class="line">            <span class="keyword">int</span> curDistFromStart = Node.distFromStart;<span class="comment">//当前路径下开始节点到当前结点的路径长度</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (curDistFromStart &gt; distFromStart[curNodeID]) &#123;</span><br><span class="line">                <span class="comment">// 表示已经有一条更短的路径到达 curNode 节点了</span></span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span>[] neighbor : graph[curNodeID]) &#123;</span><br><span class="line">                <span class="keyword">int</span> weight = neighbor[<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">int</span> nextNodeID = neighbor[<span class="number">0</span>];</span><br><span class="line">                <span class="keyword">if</span> (curDistFromStart + weight &lt; distFromStart[nextNodeID]) &#123;</span><br><span class="line">                    distFromStart[nextNodeID] = curDistFromStart + weight;</span><br><span class="line">                    priorityQueue.offer(<span class="keyword">new</span> Node(nextNodeID, curDistFromStart + weight));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>上面我们使用优先权队列保存每个而不是普通队列，这样效率更高。<strong>因为我们要找的是开始节点到当前节点的最短路径，在找这条最短路径的过程中我们如果能够保证每次都从更短的子路径开始找，则最终的找到的路径是最短路径的概率会更高。这是一种贪心策略。</strong>  </li>
-<li>在<code>BFS</code>遍历图的时候我们不需要使用<code>visited</code>数组保证我们不走回头路，因为我们只有在找到更短路径的时候才回把节点加入队列中，如果走回头路的话这个路径肯定比数组中记录的更长。</li>
-</ul>
-
+<p><strong>分析思路：</strong>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/05/14/LeetCode743%E7%BD%91%E7%BB%9C%E5%BB%B6%E8%BF%9F/#more" rel="contents">
@@ -1080,105 +1130,6 @@ ArrayList&lt;Integer&gt; c = (ArrayList&lt;Integer&gt;)f;
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="YuFish-W">
-      <meta itemprop="description" content="功成名就不是目的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="酒书茶社">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/" class="post-title-link" itemprop="url">LeetCode503：下一个更大元素</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-22 18:51:49" itemprop="dateCreated datePublished" datetime="2022-03-22T18:51:49+08:00">2022-03-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-28 19:43:07" itemprop="dateModified" datetime="2022-03-28T19:43:07+08:00">2022-03-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><p><strong>题目如下</strong>：</p>
-<ul>
-<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220322165023100.png" alt="image-20220322165023100"></li>
-</ul>
-</li>
-<li><p>分析：该题可以用<strong>单调栈</strong>来完成，<strong>单调栈就是一种通过特殊操作使栈中元素有序的栈</strong>。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/03/22/LeetCode503%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-	  
-	</div>
-
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1250,7 +1201,7 @@ ArrayList&lt;Integer&gt; c = (ArrayList&lt;Integer&gt;)f;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1311,7 +1262,7 @@ ArrayList&lt;Integer&gt; c = (ArrayList&lt;Integer&gt;)f;
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">33k</span>
+    <span title="站点总字数">49k</span>
 </div>
 
         
