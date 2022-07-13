@@ -179,7 +179,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-07-13 18:29:18 / 修改时间：18:31:00" itemprop="dateCreated datePublished" datetime="2022-07-13T18:29:18+08:00">2022-07-13</time>
+              <time title="创建时间：2022-07-13 18:29:18 / 修改时间：18:33:35" itemprop="dateCreated datePublished" datetime="2022-07-13T18:29:18+08:00">2022-07-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -212,28 +212,6 @@
           <h1 id="解析java中两个线程分别i-一百次的结果"><a href="#解析java中两个线程分别i-一百次的结果" class="headerlink" title="解析java中两个线程分别i++一百次的结果"></a>解析<code>java</code>中两个线程分别i++一百次的结果</h1><h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><ul>
 <li>假设<strong>i从0开始</strong>，那么<strong>两个线程</strong>分别<strong>i++一百次</strong>后i的值有可能是：<code>2-200</code>。</li>
 </ul>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><ul>
-<li>首先我们要知道<code>java</code>中的<code>i++</code><strong>不是原子操作</strong>，因为这个操作分为三个步骤：<ol>
-<li>将内存中i的值读到寄存器</li>
-<li>在寄存器中自增</li>
-<li>将自增后的值写回内存</li>
-</ol>
-</li>
-</ul>
-<h3 id="①i-200"><a href="#①i-200" class="headerlink" title="①i=200"></a>①i=200</h3><ul>
-<li>这种情况<strong>比较理想</strong>，假如两个线程之间没有发生打断对方<code>i++</code>时候三个步骤中的任何一步，那么<code>i</code>的值就会顺理成章自增200次，最后得到200。</li>
-</ul>
-<h3 id="②i-2"><a href="#②i-2" class="headerlink" title="②i=2"></a>②i=2</h3><ul>
-<li>这种情况<strong>比较极端</strong>：<ul>
-<li><strong>线程一</strong>将<code>i=0</code>的值取出到寄存器中，寄存器中的值+1变成1，还未写回内存，<strong>被线程二打断</strong>，此时内存中<code>i=0</code>，进程一寄存器的值为1</li>
-<li><strong>线程二</strong>完成99次自增操作，此时内存中<code>i=99</code>，<strong>被线程一打断</strong>，线程一将寄存器中的1写回内存，此时内存中的<code>i=99</code>被覆盖成<code>i=1</code>，然后<strong>线程一又被线程二打断</strong> </li>
-<li>此时<strong>线程二</strong>只剩最后一次自增操作，它首先将此时内存中<code>i=1</code>的值读到寄存器中，寄存器中的值加一变成2，<strong>被线程一打断</strong> </li>
-<li>此时内存中<code>i=1</code>，<strong>线程一</strong>完成剩下的全部自增操作，此时<code>i=100</code>，<strong>轮到线程二</strong> </li>
-<li><strong>线程二</strong>将寄存器中的2写回内存，最后内存中<code>i=2</code> </li>
-</ul>
-</li>
-</ul>
-
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/07/13/java%E4%B8%AD%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8Bi++100%E6%AC%A1%E7%BB%93%E6%9E%9C/#more" rel="contents">
