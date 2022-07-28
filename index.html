@@ -179,7 +179,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-07-28 14:51:33 / 修改时间：14:57:05" itemprop="dateCreated datePublished" datetime="2022-07-28T14:51:33+08:00">2022-07-28</time>
+              <time title="创建时间：2022-07-28 14:51:33 / 修改时间：15:01:19" itemprop="dateCreated datePublished" datetime="2022-07-28T14:51:33+08:00">2022-07-28</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -550,7 +550,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-28 14:58:30" itemprop="dateModified" datetime="2022-07-28T14:58:30+08:00">2022-07-28</time>
+                <time title="修改时间：2022-07-28 15:02:11" itemprop="dateModified" datetime="2022-07-28T15:02:11+08:00">2022-07-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -584,7 +584,7 @@
 <li><p><strong>可以使用<code>Arrays.asList()</code>方法。</strong> </p>
 <ul>
 <li><p>```java<br>Integer[] a = {1,2,3,4};<br>List<integer> list = Arrays.asList(a);<br>System.out.println(list);</integer></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ 输出结果：![image-20220508191253736](https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191253736.png)，集合里存放的是单个的数字。&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">+ **&lt;u&gt;特别注意&lt;/u&gt;**：这里**数组不能使用`int[]`来定义**，因为集合需要指定泛型，而泛型只能是引用类型，`Arrays.asList()`方法返回的集合的泛型会和数组类型一致，但是如果数组类型是基本数据类型而不是引用类型，则会将**整个数组`int[]`当成泛型类型**。此时集合里的元素就不再是单个的数字，而是整个整个的数组了：</span><br><span class="line"></span><br><span class="line">  ```java</span><br><span class="line">  int[] a = &#123;1,2,3,4&#125;;</span><br><span class="line">  List&lt;int[]&gt; list = Arrays.asList(a);</span><br><span class="line">  System.out.println(list);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ 输出结果：![image-20220508191253736](https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191253736.png)，集合里存放的是单个的数字。 &lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">+ **&lt;u&gt;特别注意&lt;/u&gt;**：这里**数组不能使用`int[]`来定义**，因为集合需要指定泛型，而泛型只能是引用类型，`Arrays.asList()`方法返回的集合的泛型会和数组类型一致，但是如果数组类型是基本数据类型而不是引用类型，则会将**整个数组`int[]`当成泛型类型**。此时集合里的元素就不再是单个的数字，而是整个整个的数组了：</span><br><span class="line"></span><br><span class="line">  ```java</span><br><span class="line">  int[] a = &#123;1,2,3,4&#125;;</span><br><span class="line">  List&lt;int[]&gt; list = Arrays.asList(a);</span><br><span class="line">  System.out.println(list);</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>输出结果：<img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220508191454595.png" alt="image-20220508191454595">，集合里存放的是数组。</li>
