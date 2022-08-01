@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+<meta name="baidu-site-verification" content="code-ggUTnhuHfI" />
+<meta name="google-site-verification" content="Fx1G5n_aH60ZKxRzgNpbIhPP6rmaQKVbLDw_SqiQtE8" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon%2032.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon%2016.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="使用Feign时Feign、Ribbon、Hystrix超时时间分析ribbon和feign超时时间分析 ribbon和Feign默认超时时间都是1s  下面是RibbonClientConfiguration 类，里面指明了ribbon的默认连接超时时间和默认读取超时时间都是1s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ff">
+<meta property="og:url" content="http://example.com/2022/08/02/Feign%E3%80%81Ribbon%E3%80%81Hystrix%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4/index.html">
+<meta property="og:site_name" content="酒书茶社">
+<meta property="og:description" content="使用Feign时Feign、Ribbon、Hystrix超时时间分析ribbon和feign超时时间分析 ribbon和Feign默认超时时间都是1s  下面是RibbonClientConfiguration 类，里面指明了ribbon的默认连接超时时间和默认读取超时时间都是1s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220802034730409.png">
+<meta property="article:published_time" content="2022-08-01T20:18:01.000Z">
+<meta property="article:modified_time" content="2022-08-01T20:20:48.288Z">
+<meta property="article:author" content="YuFish-W">
+<meta property="article:tag" content="微服务调用">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220802034730409.png">
+
+<link rel="canonical" href="http://example.com/2022/08/02/Feign%E3%80%81Ribbon%E3%80%81Hystrix%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ff | 酒书茶社</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="酒书茶社" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">酒书茶社</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人是生而自由的，却无往不在枷锁之中。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/YuFish-W" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/02/Feign%E3%80%81Ribbon%E3%80%81Hystrix%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="YuFish-W">
+      <meta itemprop="description" content="功成名就不是目的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="酒书茶社">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ff
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-08-02 04:18:01 / 修改时间：04:20:48" itemprop="dateCreated datePublished" datetime="2022-08-02T04:18:01+08:00">2022-08-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E6%89%A9%E5%B1%95/" itemprop="url" rel="index"><span itemprop="name">java扩展</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="使用Feign时Feign、Ribbon、Hystrix超时时间分析"><a href="#使用Feign时Feign、Ribbon、Hystrix超时时间分析" class="headerlink" title="使用Feign时Feign、Ribbon、Hystrix超时时间分析"></a>使用<code>Feign</code>时<code>Feign、Ribbon、Hystrix</code>超时时间分析</h1><h2 id="ribbon和feign超时时间分析"><a href="#ribbon和feign超时时间分析" class="headerlink" title="ribbon和feign超时时间分析"></a><code>ribbon</code>和<code>feign</code>超时时间分析</h2><ul>
+<li><code>ribbon</code>和<code>Feign</code>默认超时时间都是<code>1s</code> <ul>
+<li>下面是<code>RibbonClientConfiguration </code>类，里面指明了<code>ribbon</code>的<strong>默认连接超时时间</strong>和<strong>默认读取超时时间</strong>都是1s <span id="more"></span><ul>
+<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220802034730409.png" alt="image-20220802034730409"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>配置方法</li>
+</ul>
+<blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&gt;feign:</span></span><br><span class="line"><span class="string">&gt;#</span> <span class="string">设置</span> <span class="string">feign</span> <span class="string">超时时间</span></span><br><span class="line"><span class="string">&gt;client:</span></span><br><span class="line"><span class="string">&gt;config:</span></span><br><span class="line"><span class="comment"># default 设置的全局超时时间，指定服务名称可以设置单个服务的超时时间</span></span><br><span class="line"><span class="attr">default:</span></span><br><span class="line"><span class="comment">#不设置connectTimeout会导致readTimeout设置不生效</span></span><br><span class="line">  <span class="comment">#超时时间默认为1s</span></span><br><span class="line">  <span class="comment">#建立连接所用的时间，适用于网络状况正常的情况下，两端连接所需要的时间</span></span><br><span class="line">  <span class="attr">connectTimeout:</span> <span class="number">5000</span></span><br><span class="line">  <span class="comment">#指建立连接后从服务端读取到可用资源所用的时间</span></span><br><span class="line">  <span class="attr">readTimeout:</span> <span class="number">5000</span></span><br><span class="line"></span><br><span class="line"><span class="string">&gt;#设置feign客户端超时时间(OpenFeign默认支持ribbon)</span></span><br><span class="line"><span class="string">&gt;ribbon:</span></span><br><span class="line"><span class="string">&gt;#指的是建立连接所用的时间，适用于网络状况正常的情况下,两端连接所用的时间</span></span><br><span class="line"><span class="string">&gt;ConnectTimeout:</span> <span class="number">5000</span></span><br><span class="line"><span class="string">&gt;#指的是建立连接后从服务器读取到可用资源所用的时间</span></span><br><span class="line"><span class="string">&gt;ReadTimeout:</span> <span class="number">5000</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意：<code>Feign</code> 和 <code>Ribbon</code> 的超时时间<strong>只会有一个生效</strong> </li>
+<li>当我们没有显式配饰<code>feign</code>的超时时间的是时候，如果配置了<code>ribbon</code>的超时时间，则只有这个配置会生效，<code>feign</code>默认的1s超时无效</li>
+<li>如果我们<code>feign</code>和<code>ribbon</code>的超时时间都配置了，会以<code>feign</code>配置的为准</li>
+</ul>
+</blockquote>
+<h2 id="hystrix超时时间分析"><a href="#hystrix超时时间分析" class="headerlink" title="hystrix超时时间分析"></a><code>hystrix</code>超时时间分析</h2><ul>
+<li><p><code>hystrix</code> 的默认超时时间是 1s，这个配置在 <code>HystrixCommandProperties</code> 类中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Integer default_executionTimeoutInMilliseconds = <span class="number">1000</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>配置方法：</p>
+</li>
+</ul>
+<blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置 hystrix 超时时间</span></span><br><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">hystrix:</span></span><br><span class="line"> <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="comment">#注意：这个hystrix要单独配置才会生效，不能接着上面的feign里面的hystrix配置，那样是无效的</span></span><br><span class="line"><span class="attr">hystrix:</span></span><br><span class="line"><span class="attr">command:</span></span><br><span class="line"> <span class="attr">default:</span></span><br><span class="line">   <span class="attr">execution:</span></span><br><span class="line">     <span class="attr">isolation:</span></span><br><span class="line">       <span class="attr">thread:</span></span><br><span class="line">         <span class="attr">timeoutInMilliseconds:</span> <span class="number">6000</span> <span class="comment">#超时时间为6s</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><p><strong>注意：我们如果没有开启<code>feign</code>的<code>hystrix</code>功能的话那么<code>hystrix</code>的超时时间就不会生效，即有没有配置</strong> </p>
+<ul>
+<li><p>```yaml<br>feign:<br>  hystrix:</p>
+<pre><code>enabled: true
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ 如果配置了`hystrix`功能，那么它的**超时时间默认就是开启的**，且**该时间是1秒**，这个时间和`ribbon`的超时时间**会同时起作用**，不像上面的`feign`的超时时间和`ribbon`超时时间二选一，我们可以通过上面的配置`hystrix`的超时时间让它更长，或者显式禁用`hystrix`的超时时间：</span><br><span class="line"></span><br><span class="line">  + ```yaml</span><br><span class="line">    hystrix:</span><br><span class="line">      command:</span><br><span class="line">        default:</span><br><span class="line">          execution:</span><br><span class="line">            timeout:</span><br><span class="line">            #这里表示禁用hystrix的超时时间限制</span><br><span class="line">              enabled: false</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：如果我们禁用了<code>hystrix</code>的超时时间配置，那么我们在方法上用<code>@HystrixCommand</code>里这样配置超时时间也会失效：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="meta">@HystrixCommand(fallbackMethod = &quot;xxxxx&quot;,commandProperties = &#123;</span></span><br><span class="line"><span class="meta">  @HystrixProperty(name=&quot;execution.isolation.thread.timeoutInMilliseconds&quot;,value=&quot;1500&quot;)</span></span><br><span class="line"><span class="meta">&gt;&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>也就是说这里的1.5s超时配置无效</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+<ul>
+<li>开启<code>feign</code>的<code>hystrix</code>功能后我们可以通过注解在方法上面配置针对该方法的超时时间，<strong>这个时间限制是在上面配置文件之后的，即先判断时间是否超出配置文件中的（没配置就是默认1s），再判断是否超出当前注解里面规定的</strong> </li>
+</ul>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand(fallbackMethod = &quot;paymentTimeOutFallbackMethod&quot;,commandProperties = &#123;</span></span><br><span class="line"><span class="meta">        @HystrixProperty(name=&quot;execution.isolation.thread.timeoutInMilliseconds&quot;,value=&quot;1500&quot;)</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>如果注解里面禁用了超时时间配置，那么这里也不会生效</strong></li>
+</ul>
+</blockquote>
+<ul>
+<li><p><strong>再次提醒：<code>hystrix</code>的超时时间配置和<code>ribbon</code>的超时时间配置是同时生效的</strong> </p>
+<ul>
+<li><p>例如如果我们远程调用另一服务，而另一服务需要运行<code>3s</code>，那么此时我们如果不想报错，就需要<strong>同时配置</strong><code>hystrix</code>和<code>ribbon</code>的超时时间超过<code>3s</code>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#只有在feign中开启了hystrix功能后，hystrix的超时时间才回生效，如果我们压根不使用hystrix的功能就不用配置了</span></span><br><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">hystrix:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">hystrix:</span></span><br><span class="line">  <span class="attr">command:</span></span><br><span class="line">    <span class="attr">default:</span></span><br><span class="line">      <span class="attr">execution:</span></span><br><span class="line">        <span class="attr">isolation:</span></span><br><span class="line">          <span class="attr">thread:</span></span><br><span class="line">            <span class="attr">timeoutInMilliseconds:</span> <span class="number">6000</span></span><br><span class="line"><span class="attr">ribbon:</span></span><br><span class="line">  <span class="attr">ReadTimeout:</span> <span class="number">5000</span></span><br><span class="line">  <span class="attr">ConectTimeout:</span> <span class="number">5000</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div>
+	  
+	    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+	  
+	</div>
+
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>YuFish-W
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/08/02/Feign%E3%80%81Ribbon%E3%80%81Hystrix%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4/" title="ff">http://example.com/2022/08/02/Feign、Ribbon、Hystrix超时时间/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8/" rel="tag"># 微服务调用</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/28/LeetCode315%E8%AE%A1%E7%AE%97%E5%8F%B3%E4%BE%A7%E5%B0%8F%E4%BA%8E%E5%BD%93%E5%89%8D%E5%85%83%E7%B4%A0%E6%95%B0/" rel="prev" title="LeetCode315：计算右侧小于当前元素的个数">
+      <i class="fa fa-chevron-left"></i> LeetCode315：计算右侧小于当前元素的个数
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Feign%E6%97%B6Feign%E3%80%81Ribbon%E3%80%81Hystrix%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">使用Feign时Feign、Ribbon、Hystrix超时时间分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ribbon%E5%92%8Cfeign%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">ribbon和feign超时时间分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hystrix%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">hystrix超时时间分析</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YuFish-W"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">YuFish-W</p>
+  <div class="site-description" itemprop="description">功成名就不是目的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YuFish-W" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YuFish-W" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+      
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=423228325&auto=1&height=66">
+          </iframe>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-truck"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YuFish-W</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">54k</span>
+</div>
+
+        
+
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      已有<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人访问
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次
+    </span>
+  
+</div>
+
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":130,"height":270},"mobile":{"show":false},"log":false});</script></body>
+</html>
