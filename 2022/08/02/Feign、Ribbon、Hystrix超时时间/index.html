@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220802034730409.png">
 <meta property="article:published_time" content="2022-08-01T20:18:01.000Z">
-<meta property="article:modified_time" content="2022-08-01T20:20:48.288Z">
+<meta property="article:modified_time" content="2022-08-01T20:37:28.456Z">
 <meta property="article:author" content="YuFish-W">
 <meta property="article:tag" content="微服务调用">
 <meta name="twitter:card" content="summary">
@@ -183,7 +183,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-08-02 04:18:01 / 修改时间：04:20:48" itemprop="dateCreated datePublished" datetime="2022-08-02T04:18:01+08:00">2022-08-02</time>
+              <time title="创建时间：2022-08-02 04:18:01 / 修改时间：04:37:28" itemprop="dateCreated datePublished" datetime="2022-08-02T04:18:01+08:00">2022-08-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -208,7 +208,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
+              <span>2.2k</span>
             </span>
 
         </div>
@@ -231,7 +231,7 @@
 <li>配置方法</li>
 </ul>
 <blockquote>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&gt;feign:</span></span><br><span class="line"><span class="string">&gt;#</span> <span class="string">设置</span> <span class="string">feign</span> <span class="string">超时时间</span></span><br><span class="line"><span class="string">&gt;client:</span></span><br><span class="line"><span class="string">&gt;config:</span></span><br><span class="line"><span class="comment"># default 设置的全局超时时间，指定服务名称可以设置单个服务的超时时间</span></span><br><span class="line"><span class="attr">default:</span></span><br><span class="line"><span class="comment">#不设置connectTimeout会导致readTimeout设置不生效</span></span><br><span class="line">  <span class="comment">#超时时间默认为1s</span></span><br><span class="line">  <span class="comment">#建立连接所用的时间，适用于网络状况正常的情况下，两端连接所需要的时间</span></span><br><span class="line">  <span class="attr">connectTimeout:</span> <span class="number">5000</span></span><br><span class="line">  <span class="comment">#指建立连接后从服务端读取到可用资源所用的时间</span></span><br><span class="line">  <span class="attr">readTimeout:</span> <span class="number">5000</span></span><br><span class="line"></span><br><span class="line"><span class="string">&gt;#设置feign客户端超时时间(OpenFeign默认支持ribbon)</span></span><br><span class="line"><span class="string">&gt;ribbon:</span></span><br><span class="line"><span class="string">&gt;#指的是建立连接所用的时间，适用于网络状况正常的情况下,两端连接所用的时间</span></span><br><span class="line"><span class="string">&gt;ConnectTimeout:</span> <span class="number">5000</span></span><br><span class="line"><span class="string">&gt;#指的是建立连接后从服务器读取到可用资源所用的时间</span></span><br><span class="line"><span class="string">&gt;ReadTimeout:</span> <span class="number">5000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line">    <span class="comment"># 设置 feign 超时时间</span></span><br><span class="line">    <span class="attr">client:</span></span><br><span class="line">        <span class="attr">config:</span></span><br><span class="line">        <span class="comment"># default 设置的全局超时时间，指定服务名称可以设置单个服务的超时时间</span></span><br><span class="line">        <span class="comment">#超时时间默认为1s</span></span><br><span class="line">        <span class="attr">default:</span></span><br><span class="line">             <span class="comment">#不设置connectTimeout会导致readTimeout设置不生效</span></span><br><span class="line">             <span class="comment">#建立连接所用的时间，适用于网络状况正常的情况下，两端连接所需要的时间</span></span><br><span class="line">            <span class="attr">connectTimeout:</span> <span class="number">5000</span></span><br><span class="line">             <span class="comment">#指建立连接后从服务端读取到可用资源所用的时间</span></span><br><span class="line">            <span class="attr">readTimeout:</span> <span class="number">5000</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置feign客户端超时时间(OpenFeign默认支持ribbon)</span></span><br><span class="line"><span class="attr">ribbon:</span></span><br><span class="line">    <span class="comment">#指的是建立连接所用的时间，适用于网络状况正常的情况下,两端连接所用的时间</span></span><br><span class="line">    <span class="attr">ConnectTimeout:</span> <span class="number">5000</span></span><br><span class="line">    <span class="comment">#指的是建立连接后从服务器读取到可用资源所用的时间</span></span><br><span class="line">    <span class="attr">ReadTimeout:</span> <span class="number">5000</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>注意：<code>Feign</code> 和 <code>Ribbon</code> 的超时时间<strong>只会有一个生效</strong> </li>
@@ -246,27 +246,23 @@
 </li>
 </ul>
 <blockquote>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置 hystrix 超时时间</span></span><br><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">hystrix:</span></span><br><span class="line"> <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="comment">#注意：这个hystrix要单独配置才会生效，不能接着上面的feign里面的hystrix配置，那样是无效的</span></span><br><span class="line"><span class="attr">hystrix:</span></span><br><span class="line"><span class="attr">command:</span></span><br><span class="line"> <span class="attr">default:</span></span><br><span class="line">   <span class="attr">execution:</span></span><br><span class="line">     <span class="attr">isolation:</span></span><br><span class="line">       <span class="attr">thread:</span></span><br><span class="line">         <span class="attr">timeoutInMilliseconds:</span> <span class="number">6000</span> <span class="comment">#超时时间为6s</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置 hystrix 超时时间</span></span><br><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">hystrix:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="comment">#注意：这个hystrix要单独配置才会生效，不能接着上面的feign里面的hystrix配置，那样是无效的</span></span><br><span class="line"><span class="attr">hystrix:</span></span><br><span class="line">  <span class="attr">command:</span></span><br><span class="line">    <span class="attr">default:</span></span><br><span class="line">      <span class="attr">execution:</span></span><br><span class="line">        <span class="attr">isolation:</span></span><br><span class="line">          <span class="attr">thread:</span></span><br><span class="line">            <span class="attr">timeoutInMilliseconds:</span> <span class="number">6000</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <ul>
 <li><p><strong>注意：我们如果没有开启<code>feign</code>的<code>hystrix</code>功能的话那么<code>hystrix</code>的超时时间就不会生效，即有没有配置</strong> </p>
-<ul>
-<li><p>```yaml<br>feign:<br>  hystrix:</p>
-<pre><code>enabled: true
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ 如果配置了`hystrix`功能，那么它的**超时时间默认就是开启的**，且**该时间是1秒**，这个时间和`ribbon`的超时时间**会同时起作用**，不像上面的`feign`的超时时间和`ribbon`超时时间二选一，我们可以通过上面的配置`hystrix`的超时时间让它更长，或者显式禁用`hystrix`的超时时间：</span><br><span class="line"></span><br><span class="line">  + ```yaml</span><br><span class="line">    hystrix:</span><br><span class="line">      command:</span><br><span class="line">        default:</span><br><span class="line">          execution:</span><br><span class="line">            timeout:</span><br><span class="line">            #这里表示禁用hystrix的超时时间限制</span><br><span class="line">              enabled: false</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">hystrix:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果配置了<code>hystrix</code>功能，那么它的<strong>超时时间默认就是开启的</strong>，且<strong>该时间是1秒</strong>，这个时间和<code>ribbon</code>的超时时间<strong>会同时起作用</strong>，不像上面的<code>feign</code>的超时时间和<code>ribbon</code>超时时间二选一，我们可以通过上面的配置<code>hystrix</code>的超时时间让它更长，或者显式禁用<code>hystrix</code>的超时时间：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">hystrix:</span></span><br><span class="line">  <span class="attr">command:</span></span><br><span class="line">    <span class="attr">default:</span></span><br><span class="line">      <span class="attr">execution:</span></span><br><span class="line">        <span class="attr">timeout:</span></span><br><span class="line">        <span class="comment">#这里表示禁用hystrix的超时时间限制</span></span><br><span class="line">          <span class="attr">enabled:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>注意：如果我们禁用了<code>hystrix</code>的超时时间配置，那么我们在方法上用<code>@HystrixCommand</code>里这样配置超时时间也会失效：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="meta">@HystrixCommand(fallbackMethod = &quot;xxxxx&quot;,commandProperties = &#123;</span></span><br><span class="line"><span class="meta">  @HystrixProperty(name=&quot;execution.isolation.thread.timeoutInMilliseconds&quot;,value=&quot;1500&quot;)</span></span><br><span class="line"><span class="meta">&gt;&#125;)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> &gt;<span class="meta">@HystrixCommand(fallbackMethod = &quot;xxxxx&quot;,commandProperties = &#123;</span></span><br><span class="line"><span class="meta">@HystrixProperty(name=&quot;execution.isolation.thread.timeoutInMilliseconds&quot;,value=&quot;1500&quot;)</span></span><br><span class="line"><span class="meta"> &gt;&#125;)</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>也就是说这里的1.5s超时配置无效</li>
 </ul>
 </blockquote>
-</li>
-</ul>
 </li>
 </ul>
 </blockquote>
