@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-08-01T20:39:41.994Z</updated>
+  <updated>2022-08-15T11:42:01.180Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,71 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>解决虚拟机linux磁盘容量扩容以及重启网络连接图标消失问题</title>
+    <link href="http://example.com/2022/08/15/linux%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9/"/>
+    <id>http://example.com/2022/08/15/linux%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9/</id>
+    <published>2022-08-15T11:40:30.000Z</published>
+    <updated>2022-08-15T11:42:01.180Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p><strong>亲测有效</strong> </p></blockquote><h2 id="这里操作的是centos系统"><a href="#这里操作的是centos系统" class="headerlink" title="这里操作的是centos系统"></a>这里操作的是<code>centos</code>系统</h2><ul><li><strong>首先在关机状态下扩展磁盘容量</strong> <ul><li><strong>点击扩展，设置好自定的容量然后开机</strong> <ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806220825854.png" alt="image-20220806220825854"></li></ul></li></ul></li><li><strong>开机后此时磁盘容量不会变化</strong>，此时输入<code>lsblk</code>查看当前磁盘和磁盘分区情况<ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220805130021957.png" alt="image-20220805130021957"></li><li>比如需要<strong>将新扩容的容量加入到<code>sda3</code>分区里面</strong> </li></ul></li><li><strong>首先<code>fdisk /dev/sda</code>进入要扩容的分区<code>sda</code></strong> </li><li><strong>然后输出<code>d</code>删除磁盘分区，然后输入此次我们要删除的分区编号<code>3</code></strong><ul><li><strong>这里不用担心原先的文件会消失，我们重启之前重新分配就好</strong> </li></ul></li><li><strong>然后输入<code>n</code>表示<u>创建新分区</u>，再输入<code>p</code>表示创建主分区，选择编号是3即创建<code>sda3</code>，然后之后的指定容量<u>直接按回车</u>表示<u>将剩余的全部分给这个新分区</u></strong>  </li><li><strong>然后出入<code>w</code>表示保存</strong> </li><li><strong><code>reboot</code>重启</strong> </li><li>此时<code>lsblk</code>查看到<code>sda3</code><strong>逻辑磁盘容量增加为指定容量</strong>，而且这个<strong>磁盘和原先一样都是挂载在同一个目录的</strong>，因为我们在<strong>配置文件中配置了磁盘分区和目录挂载的对应关系</strong>，因此我们删除这个分区然后在<strong>创建同编号的<code>sda3</code>分区</strong>这个<strong>挂载关系是一样的</strong> <ul><li>查看该配置文件<code>vim /etc/fstab</code>：<ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806222654673.png" alt="image-20220806222654673"><ul><li>第一个指的是磁盘文件，我们可以直接写<code>/dev/sda3</code>与磁盘分区对应上，也可以找到磁盘文件里面的对应这个分区的<code>UUID</code>然后使用，我这里是系统生成的时候选用的<code>UUID</code></li><li>第二个就是我们挂载的目录</li></ul></li></ul></li></ul></li><li>此时<code>df -h</code>看到<strong>文件系统层发现磁盘大小没变</strong>，<strong>需要手动刷新</strong><ul><li><code>resize2fs /dev/sda3</code> </li><li>然后<code>reboot</code>重启</li></ul></li><li><strong>如果重启发现网络连接图标直接消失，使用这个命令：</strong> <ul><li><code>mv /var/lib/NetworkManager /var/lib/NetworkManager.bak</code></li><li><strong>然后重启</strong> </li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;亲测有效&lt;/strong&gt; &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;这里操作的是centos系统&quot;&gt;&lt;a href=&quot;#这里操作的是centos系统&quot; class=&quot;headerlink&quot; title=&quot;这里操作的是centos系统&quot;&gt;&lt;/a&gt;这里操作的是&lt;code&gt;centos&lt;/code&gt;系统&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;首先在关机状态下扩展磁盘容量&lt;/strong&gt; &lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;点击扩展，设置好自定的容量然后开机&lt;/strong&gt; &lt;ul&gt;
+&lt;li&gt;&lt;img src=&quot;https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806220825854.png&quot; alt=&quot;image-20220806220825854&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;开机后此时磁盘容量不会变化&lt;/strong&gt;，此时输入&lt;code&gt;lsblk&lt;/code&gt;查看当前磁盘和磁盘分区情况&lt;ul&gt;
+&lt;li&gt;&lt;img src=&quot;https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220805130021957.png&quot; alt=&quot;image-20220805130021957&quot;&gt;&lt;/li&gt;
+&lt;li&gt;比如需要&lt;strong&gt;将新扩容的容量加入到&lt;code&gt;sda3&lt;/code&gt;分区里面&lt;/strong&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;首先&lt;code&gt;fdisk /dev/sda&lt;/code&gt;进入要扩容的分区&lt;code&gt;sda&lt;/code&gt;&lt;/strong&gt; &lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;然后输出&lt;code&gt;d&lt;/code&gt;删除磁盘分区，然后输入此次我们要删除的分区编号&lt;code&gt;3&lt;/code&gt;&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;这里不用担心原先的文件会消失，我们重启之前重新分配就好&lt;/strong&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;然后输入&lt;code&gt;n&lt;/code&gt;表示&lt;u&gt;创建新分区&lt;/u&gt;，再输入&lt;code&gt;p&lt;/code&gt;表示创建主分区，选择编号是3即创建&lt;code&gt;sda3&lt;/code&gt;，然后之后的指定容量&lt;u&gt;直接按回车&lt;/u&gt;表示&lt;u&gt;将剩余的全部分给这个新分区&lt;/u&gt;&lt;/strong&gt;  &lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;然后出入&lt;code&gt;w&lt;/code&gt;表示保存&lt;/strong&gt; &lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;reboot&lt;/code&gt;重启&lt;/strong&gt; &lt;/li&gt;
+&lt;li&gt;此时&lt;code&gt;lsblk&lt;/code&gt;查看到&lt;code&gt;sda3&lt;/code&gt;&lt;strong&gt;逻辑磁盘容量增加为指定容量&lt;/strong&gt;，而且这个&lt;strong&gt;磁盘和原先一样都是挂载在同一个目录的&lt;/strong&gt;，因为我们在&lt;strong&gt;配置文件中配置了磁盘分区和目录挂载的对应关系&lt;/strong&gt;，因此我们删除这个分区然后在&lt;strong&gt;创建同编号的&lt;code&gt;sda3&lt;/code&gt;分区&lt;/strong&gt;这个&lt;strong&gt;挂载关系是一样的&lt;/strong&gt; &lt;ul&gt;
+&lt;li&gt;查看该配置文件&lt;code&gt;vim /etc/fstab&lt;/code&gt;：&lt;ul&gt;
+&lt;li&gt;&lt;img src=&quot;https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806222654673.png&quot; alt=&quot;image-20220806222654673&quot;&gt;&lt;ul&gt;
+&lt;li&gt;第一个指的是磁盘文件，我们可以直接写&lt;code&gt;/dev/sda3&lt;/code&gt;与磁盘分区对应上，也可以找到磁盘文件里面的对应这个分区的&lt;code&gt;UUID&lt;/code&gt;然后使用，我这里是系统生成的时候选用的&lt;code&gt;UUID&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;第二个就是我们挂载的目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;此时&lt;code&gt;df -h&lt;/code&gt;看到&lt;strong&gt;文件系统层发现磁盘大小没变&lt;/strong&gt;，&lt;strong&gt;需要手动刷新&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;resize2fs /dev/sda3&lt;/code&gt; &lt;/li&gt;
+&lt;li&gt;然后&lt;code&gt;reboot&lt;/code&gt;重启&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;如果重启发现网络连接图标直接消失，使用这个命令：&lt;/strong&gt; &lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mv /var/lib/NetworkManager /var/lib/NetworkManager.bak&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;然后重启&lt;/strong&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</summary>
+    
+    
+    
+    <category term="linux" scheme="http://example.com/categories/linux/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>使用Feign时Feign、Ribbon、Hystrix超时时间分析</title>
@@ -459,30 +524,6 @@
     
     <summary type="html">&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;自动增长的时候如果有其他列是也是唯一的(主键、唯一键都行)，但是添加元素的时候重复添加导致失败，也会导致+1，下一次成功添加的时候就比之前+2了，这样每失败一次都会+1&lt;/strong&gt;。</summary>
-    
-    
-    
-    <category term="数据库" scheme="http://example.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-    <category term="数据库" scheme="http://example.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在IDEA中使用apache-dbutils查询返回对象时封装属性的问题</title>
-    <link href="http://example.com/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/"/>
-    <id>http://example.com/2022/03/13/apache-dbutils%E5%B0%81%E8%A3%85%E9%97%AE%E9%A2%98/</id>
-    <published>2022-03-13T13:15:25.000Z</published>
-    <updated>2022-03-20T09:32:14.003Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="此处是操作MySQL数据库"><a href="#此处是操作MySQL数据库" class="headerlink" title="此处是操作MySQL数据库"></a>此处是操作MySQL数据库</h2><ul><li><p><strong>在使用<code>apache-dbutils</code>的时候，查询过程中如果创建的javabean对象里的属性比查询到的字段多，则此时创建的对象属性值是<code>null</code>，引用类型的属性默认<code>null</code> 。</strong></p><ul><li><strong>创建测试表和测试类</strong>：<span id="more"></span></li></ul><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#创建一个测试表</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test0(</span><br><span class="line">id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">NAME <span class="type">VARCHAR</span>(<span class="number">10</span>));</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test0 <span class="keyword">VALUES</span>(<span class="keyword">NULL</span>,<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test0 <span class="keyword">VALUES</span>(<span class="keyword">NULL</span>,<span class="string">&#x27;b&#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test0 <span class="keyword">VALUES</span>(<span class="keyword">NULL</span>,<span class="string">&#x27;c&#x27;</span>);</span><br></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个多一个属性 pwd 的javabean类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test0</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String pwd;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">test0</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPwd</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPwd</span><span class="params">(String pwd)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pwd = pwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;test0&#123;&quot;</span> +</span><br><span class="line">            <span class="string">&quot;id=&quot;</span> + id +</span><br><span class="line">            <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">            <span class="string">&quot;, pwd=&#x27;&quot;</span> + pwd + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">            <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><p><strong>测试方法</strong>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">query</span><span class="params">()</span></span>&#123;</span><br><span class="line">    QueryRunner qr = <span class="keyword">new</span> QueryRunner();</span><br><span class="line">    Connection connection= <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">        <span class="comment">//这里是使用的一个自己创建的管理数据库连接关闭的工具类</span></span><br><span class="line">        </span><br><span class="line">        List&lt;test0&gt; query = qr.query(connection, <span class="string">&quot;select * from test0&quot;</span>, <span class="keyword">new</span> BeanListHandler&lt;test0&gt;(test0.class));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (test0 t : query)&#123;</span><br><span class="line">            System.out.println(t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (SQLException throwables) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(throwables);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        JDBCUtilsByDruid.closeConnection(<span class="keyword">null</span>,<span class="keyword">null</span>,connection);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>结果如下</strong>：<img src="https://img-blog.csdnimg.cn/62ac59dfab8041979d1ca6fc37b56492.png"></p><p><strong>可以看到如果创建的<code>javabean</code>对象中比表中的字段多，并不会报错，此时值为<code>null</code>(因为在类中属性都有默认值，引用类型对应的是<code>null</code>)</strong></p></li></ul></li><li><p><strong>如果创建的javabean类里面的属性名和需要查询的表里的字段名不相同，则无法赋值成功，会是Null。因为底层是通过我们给出的Class对象通过反射找到和表中字段对应的属性，利用<code>setXX()</code>方法给它赋值，找不到这个对应的属性则无法复制，而属性是有默认值的，引用类型默认是Null</strong>。</p><ul><li><p>例如在创建表的时候将<code>name</code>换成<code>name0</code>:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test0(</span><br><span class="line">id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">NAME0 <span class="type">VARCHAR</span>(<span class="number">10</span>));</span><br></pre></td></tr></table></figure><p><strong>此时运行结果为</strong>：<img src="https://img-blog.csdnimg.cn/021c09be1a86429bb7428b6474f966a7.png"></p></li></ul></li><li><p><strong>如果在多表查询的时候有表中有相同名字的字段，此时应该在查询的时候使用<code>AS</code>给属性别名</strong>。</p></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;此处是操作MySQL数据库&quot;&gt;&lt;a href=&quot;#此处是操作MySQL数据库&quot; class=&quot;headerlink&quot; title=&quot;此处是操作MySQL数据库&quot;&gt;&lt;/a&gt;此处是操作MySQL数据库&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;在使用&lt;code&gt;apache-dbutils&lt;/code&gt;的时候，查询过程中如果创建的javabean对象里的属性比查询到的字段多，则此时创建的对象属性值是&lt;code&gt;null&lt;/code&gt;，引用类型的属性默认&lt;code&gt;null&lt;/code&gt; 。&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;创建测试表和测试类&lt;/strong&gt;：</summary>
     
     
     
