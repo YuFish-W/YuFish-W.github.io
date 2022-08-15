@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-08-15T11:42:01.180Z</updated>
+  <updated>2022-08-15T14:48:44.766Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://example.com/2022/08/15/linux%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9/"/>
     <id>http://example.com/2022/08/15/linux%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9/</id>
     <published>2022-08-15T11:40:30.000Z</published>
-    <updated>2022-08-15T11:42:01.180Z</updated>
+    <updated>2022-08-15T14:48:44.766Z</updated>
     
-    <content type="html"><![CDATA[<blockquote><p><strong>亲测有效</strong> </p></blockquote><h2 id="这里操作的是centos系统"><a href="#这里操作的是centos系统" class="headerlink" title="这里操作的是centos系统"></a>这里操作的是<code>centos</code>系统</h2><ul><li><strong>首先在关机状态下扩展磁盘容量</strong> <ul><li><strong>点击扩展，设置好自定的容量然后开机</strong> <ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806220825854.png" alt="image-20220806220825854"></li></ul></li></ul></li><li><strong>开机后此时磁盘容量不会变化</strong>，此时输入<code>lsblk</code>查看当前磁盘和磁盘分区情况<ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220805130021957.png" alt="image-20220805130021957"></li><li>比如需要<strong>将新扩容的容量加入到<code>sda3</code>分区里面</strong> </li></ul></li><li><strong>首先<code>fdisk /dev/sda</code>进入要扩容的分区<code>sda</code></strong> </li><li><strong>然后输出<code>d</code>删除磁盘分区，然后输入此次我们要删除的分区编号<code>3</code></strong><ul><li><strong>这里不用担心原先的文件会消失，我们重启之前重新分配就好</strong> </li></ul></li><li><strong>然后输入<code>n</code>表示<u>创建新分区</u>，再输入<code>p</code>表示创建主分区，选择编号是3即创建<code>sda3</code>，然后之后的指定容量<u>直接按回车</u>表示<u>将剩余的全部分给这个新分区</u></strong>  </li><li><strong>然后出入<code>w</code>表示保存</strong> </li><li><strong><code>reboot</code>重启</strong> </li><li>此时<code>lsblk</code>查看到<code>sda3</code><strong>逻辑磁盘容量增加为指定容量</strong>，而且这个<strong>磁盘和原先一样都是挂载在同一个目录的</strong>，因为我们在<strong>配置文件中配置了磁盘分区和目录挂载的对应关系</strong>，因此我们删除这个分区然后在<strong>创建同编号的<code>sda3</code>分区</strong>这个<strong>挂载关系是一样的</strong> <ul><li>查看该配置文件<code>vim /etc/fstab</code>：<ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806222654673.png" alt="image-20220806222654673"><ul><li>第一个指的是磁盘文件，我们可以直接写<code>/dev/sda3</code>与磁盘分区对应上，也可以找到磁盘文件里面的对应这个分区的<code>UUID</code>然后使用，我这里是系统生成的时候选用的<code>UUID</code></li><li>第二个就是我们挂载的目录</li></ul></li></ul></li></ul></li><li>此时<code>df -h</code>看到<strong>文件系统层发现磁盘大小没变</strong>，<strong>需要手动刷新</strong><ul><li><code>resize2fs /dev/sda3</code> </li><li>然后<code>reboot</code>重启</li></ul></li><li><strong>如果重启发现网络连接图标直接消失，使用这个命令：</strong> <ul><li><code>mv /var/lib/NetworkManager /var/lib/NetworkManager.bak</code></li><li><strong>然后重启</strong> </li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<blockquote><p><strong>亲测有效</strong> </p></blockquote><h2 id="这里操作的是centos系统"><a href="#这里操作的是centos系统" class="headerlink" title="这里操作的是centos系统"></a>这里操作的是<code>centos</code>系统</h2><ul><li><strong>首先在关机状态下扩展磁盘容量</strong> <ul><li><strong>点击扩展，设置好自定的容量然后开机</strong> <span id="more"></span><ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806220825854.png" alt="image-20220806220825854"></li></ul></li></ul></li><li><strong>开机后此时磁盘容量不会变化</strong>，此时输入<code>lsblk</code>查看当前磁盘和磁盘分区情况<ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220805130021957.png" alt="image-20220805130021957"></li><li>比如需要<strong>将新扩容的容量加入到<code>sda3</code>分区里面</strong> </li></ul></li><li><strong>首先<code>fdisk /dev/sda</code>进入要扩容的分区<code>sda</code></strong> </li><li><strong>然后输出<code>d</code>删除磁盘分区，然后输入此次我们要删除的分区编号<code>3</code></strong><ul><li><strong>这里不用担心原先的文件会消失，我们重启之前重新分配就好</strong> </li></ul></li><li><strong>然后输入<code>n</code>表示<u>创建新分区</u>，再输入<code>p</code>表示创建主分区，选择编号是3即创建<code>sda3</code>，然后之后的指定容量<u>直接按回车</u>表示<u>将剩余的全部分给这个新分区</u></strong>  </li><li><strong>然后出入<code>w</code>表示保存</strong> </li><li><strong><code>reboot</code>重启</strong> </li><li>此时<code>lsblk</code>查看到<code>sda3</code><strong>逻辑磁盘容量增加为指定容量</strong>，而且这个<strong>磁盘和原先一样都是挂载在同一个目录的</strong>，因为我们在<strong>配置文件中配置了磁盘分区和目录挂载的对应关系</strong>，因此我们删除这个分区然后在<strong>创建同编号的<code>sda3</code>分区</strong>这个<strong>挂载关系是一样的</strong> <ul><li>查看该配置文件<code>vim /etc/fstab</code>：<ul><li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806222654673.png" alt="image-20220806222654673"><ul><li>第一个指的是磁盘文件，我们可以直接写<code>/dev/sda3</code>与磁盘分区对应上，也可以找到磁盘文件里面的对应这个分区的<code>UUID</code>然后使用，我这里是系统生成的时候选用的<code>UUID</code></li><li>第二个就是我们挂载的目录</li></ul></li></ul></li></ul></li><li>此时<code>df -h</code>看到<strong>文件系统层发现磁盘大小没变</strong>，<strong>需要手动刷新</strong><ul><li><code>resize2fs /dev/sda3</code> </li><li>然后<code>reboot</code>重启</li></ul></li><li><strong>如果重启发现网络连接图标直接消失，使用这个命令：</strong> <ul><li><code>mv /var/lib/NetworkManager /var/lib/NetworkManager.bak</code></li><li><strong>然后重启</strong> </li></ul></li></ul>]]></content>
     
     
     <summary type="html">&lt;blockquote&gt;
@@ -31,48 +31,7 @@
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;这里操作的是centos系统&quot;&gt;&lt;a href=&quot;#这里操作的是centos系统&quot; class=&quot;headerlink&quot; title=&quot;这里操作的是centos系统&quot;&gt;&lt;/a&gt;这里操作的是&lt;code&gt;centos&lt;/code&gt;系统&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;首先在关机状态下扩展磁盘容量&lt;/strong&gt; &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;点击扩展，设置好自定的容量然后开机&lt;/strong&gt; &lt;ul&gt;
-&lt;li&gt;&lt;img src=&quot;https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806220825854.png&quot; alt=&quot;image-20220806220825854&quot;&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;开机后此时磁盘容量不会变化&lt;/strong&gt;，此时输入&lt;code&gt;lsblk&lt;/code&gt;查看当前磁盘和磁盘分区情况&lt;ul&gt;
-&lt;li&gt;&lt;img src=&quot;https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220805130021957.png&quot; alt=&quot;image-20220805130021957&quot;&gt;&lt;/li&gt;
-&lt;li&gt;比如需要&lt;strong&gt;将新扩容的容量加入到&lt;code&gt;sda3&lt;/code&gt;分区里面&lt;/strong&gt; &lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;首先&lt;code&gt;fdisk /dev/sda&lt;/code&gt;进入要扩容的分区&lt;code&gt;sda&lt;/code&gt;&lt;/strong&gt; &lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;然后输出&lt;code&gt;d&lt;/code&gt;删除磁盘分区，然后输入此次我们要删除的分区编号&lt;code&gt;3&lt;/code&gt;&lt;/strong&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;这里不用担心原先的文件会消失，我们重启之前重新分配就好&lt;/strong&gt; &lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;然后输入&lt;code&gt;n&lt;/code&gt;表示&lt;u&gt;创建新分区&lt;/u&gt;，再输入&lt;code&gt;p&lt;/code&gt;表示创建主分区，选择编号是3即创建&lt;code&gt;sda3&lt;/code&gt;，然后之后的指定容量&lt;u&gt;直接按回车&lt;/u&gt;表示&lt;u&gt;将剩余的全部分给这个新分区&lt;/u&gt;&lt;/strong&gt;  &lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;然后出入&lt;code&gt;w&lt;/code&gt;表示保存&lt;/strong&gt; &lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;reboot&lt;/code&gt;重启&lt;/strong&gt; &lt;/li&gt;
-&lt;li&gt;此时&lt;code&gt;lsblk&lt;/code&gt;查看到&lt;code&gt;sda3&lt;/code&gt;&lt;strong&gt;逻辑磁盘容量增加为指定容量&lt;/strong&gt;，而且这个&lt;strong&gt;磁盘和原先一样都是挂载在同一个目录的&lt;/strong&gt;，因为我们在&lt;strong&gt;配置文件中配置了磁盘分区和目录挂载的对应关系&lt;/strong&gt;，因此我们删除这个分区然后在&lt;strong&gt;创建同编号的&lt;code&gt;sda3&lt;/code&gt;分区&lt;/strong&gt;这个&lt;strong&gt;挂载关系是一样的&lt;/strong&gt; &lt;ul&gt;
-&lt;li&gt;查看该配置文件&lt;code&gt;vim /etc/fstab&lt;/code&gt;：&lt;ul&gt;
-&lt;li&gt;&lt;img src=&quot;https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220806222654673.png&quot; alt=&quot;image-20220806222654673&quot;&gt;&lt;ul&gt;
-&lt;li&gt;第一个指的是磁盘文件，我们可以直接写&lt;code&gt;/dev/sda3&lt;/code&gt;与磁盘分区对应上，也可以找到磁盘文件里面的对应这个分区的&lt;code&gt;UUID&lt;/code&gt;然后使用，我这里是系统生成的时候选用的&lt;code&gt;UUID&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;第二个就是我们挂载的目录&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;此时&lt;code&gt;df -h&lt;/code&gt;看到&lt;strong&gt;文件系统层发现磁盘大小没变&lt;/strong&gt;，&lt;strong&gt;需要手动刷新&lt;/strong&gt;&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;resize2fs /dev/sda3&lt;/code&gt; &lt;/li&gt;
-&lt;li&gt;然后&lt;code&gt;reboot&lt;/code&gt;重启&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;如果重启发现网络连接图标直接消失，使用这个命令：&lt;/strong&gt; &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;mv /var/lib/NetworkManager /var/lib/NetworkManager.bak&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;然后重启&lt;/strong&gt; &lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</summary>
+&lt;li&gt;&lt;strong&gt;点击扩展，设置好自定的容量然后开机&lt;/strong&gt;</summary>
     
     
     
