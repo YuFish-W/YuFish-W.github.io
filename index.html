@@ -154,7 +154,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/16/N%E7%9A%87%E5%90%8E/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/16/LeetCode51N%E7%9A%87%E5%90%8E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -168,7 +168,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/08/16/N%E7%9A%87%E5%90%8E/" class="post-title-link" itemprop="url">LeetCode51:N皇后</a>
+            <a href="/2022/08/16/LeetCode51N%E7%9A%87%E5%90%8E/" class="post-title-link" itemprop="url">LeetCode51:N皇后</a>
         </h2>
 
         <div class="post-meta">
@@ -179,7 +179,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-08-16 12:27:33 / 修改时间：12:27:24" itemprop="dateCreated datePublished" datetime="2022-08-16T12:27:33+08:00">2022-08-16</time>
+              <time title="创建时间：2022-08-16 12:27:33 / 修改时间：12:29:20" itemprop="dateCreated datePublished" datetime="2022-08-16T12:27:33+08:00">2022-08-16</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -216,32 +216,10 @@
 </ul>
 <p><strong>思路：</strong></p>
 <ul>
-<li><p>该题是经典回溯法题目</p>
-</li>
-<li><p>我们从第一行开始逐行放置皇后，然后放置第二行的皇后，第二行皇后放置的时候需要和第一行皇后比较位置，如果是同一列或者在同一斜线上就不能放置</p>
-</li>
-<li><p><strong>我们可以使用一个select数组记录每一行皇后放在第几列，<u>数组的下标表示第几行，值表示第几列</u>，例如select[3]=1，表示第三行的皇后放置在第一列</strong> </p>
-<ul>
-<li><p><strong>检验是否同一列：</strong></p>
-<ul>
-<li>例如我们检验第4行皇后能否放在第4列，只需要遍历select数组0-3的值，看是否有select[i]=4，</li>
-</ul>
-</li>
-<li><p><strong>检验是否同一斜线：</strong></p>
-<ul>
-<li>例如我们检验第4行皇后能否放在第4列，只需要遍历select数组0-3的值，<strong>检查每一行皇后所在列数和当前列数差值的绝对值是否等于每一行皇后的行数和当前行数差值的绝对值是否相等</strong>，如果相等则它们处于同一斜线</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="comment">//用来返回最后所有放置的结果</span></span><br><span class="line">    List&lt;List&lt;String&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">//用来统计单次放置的结果，统计完后加入到res</span></span><br><span class="line">    List&lt;String&gt; add;</span><br><span class="line">    <span class="comment">//长度为n，select[0]=1表示第0行的皇后放在1的位置</span></span><br><span class="line">    <span class="keyword">int</span>[] select;</span><br><span class="line">    <span class="comment">//用来配合select形成每行的结果，加入到add中</span></span><br><span class="line">    <span class="keyword">char</span>[] temp;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; solveNQueens(<span class="keyword">int</span> n) &#123;</span><br><span class="line">        add = <span class="keyword">new</span> ArrayList&lt;&gt;(n);</span><br><span class="line">        select = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        temp = <span class="keyword">new</span> <span class="keyword">char</span>[n];</span><br><span class="line">        backTrack(n,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//回溯法，从第row行开始，每行遍历0-n位置组个选择</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">backTrack</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> row,<span class="keyword">int</span> col)</span></span>&#123;</span><br><span class="line">        <span class="comment">//当row==n的时候说明将0-n-1位置的皇后放置好了，select数组记录了每一行皇后放置的位置</span></span><br><span class="line">        <span class="keyword">if</span> (row==n)&#123;</span><br><span class="line">            <span class="comment">//将上次的结果清理</span></span><br><span class="line">            add.clear();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">                Arrays.fill(temp,<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">                temp[select[i]]=<span class="string">&#x27;Q&#x27;</span>;</span><br><span class="line">                add.add(<span class="keyword">new</span> String(temp));</span><br><span class="line">            &#125;</span><br><span class="line">            res.add(<span class="keyword">new</span> ArrayList&lt;&gt;(add));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!canSet(select,row,i))<span class="keyword">continue</span>;</span><br><span class="line">            <span class="comment">//回溯法一般做出选择之后需要撤销选择，但这里不需要撤销，</span></span><br><span class="line">            <span class="comment">// 因为我们下次选择的时候会覆盖这次选择结果，撤不撤销无所谓</span></span><br><span class="line">            select[row] = i;</span><br><span class="line">            backTrack(n,row+<span class="number">1</span>,i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canSet</span><span class="params">(<span class="keyword">int</span>[] n,<span class="keyword">int</span> row,<span class="keyword">int</span> col)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; row; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (n[i]==col||Math.abs(i-row)==Math.abs(n[i]-col))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<li><p>该题是经典回溯法题目
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/08/16/N%E7%9A%87%E5%90%8E/#more" rel="contents">
+              <a class="btn" href="/2022/08/16/LeetCode51N%E7%9A%87%E5%90%8E/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
