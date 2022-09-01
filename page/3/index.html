@@ -154,6 +154,122 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/15/%E6%B3%A8%E9%87%8A%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B9%9F%E5%8F%AF%E8%83%BD%E4%BC%9A%E6%89%A7%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="YuFish-W">
+      <meta itemprop="description" content="功成名就不是目的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="酒书茶社">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/15/%E6%B3%A8%E9%87%8A%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B9%9F%E5%8F%AF%E8%83%BD%E4%BC%9A%E6%89%A7%E8%A1%8C/" class="post-title-link" itemprop="url">java中char为什么无法表示全部字符</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-15 13:15:00" itemprop="dateCreated datePublished" datetime="2022-03-15T13:15:00+08:00">2022-03-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-01 18:15:50" itemprop="dateModified" datetime="2022-09-01T18:15:50+08:00">2022-09-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>367</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>java中正常情况下注释中的代码都不会被执行，但是有一些特殊情况值得注意：</p>
+</li>
+<li><p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// \u000a a=1;</span></span><br><span class="line"><span class="comment">// \u000a b=2;</span></span><br><span class="line">System.out.println(a + <span class="string">&quot;---&quot;</span> + b);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这里输出的结果是<code>1---2</code></li>
+</ul>
+</li>
+<li><p>上面注释中的内容前面有<code>\u000a</code>串字符，这是<code>unicode</code>字符</p>
+<ul>
+<li><code>\u000a</code>在<code>unicode</code>中是<strong>换行</strong>的意思</li>
+</ul>
+</li>
+<li><p>java编写代码的时候可以<strong>在源代码中直接写<code>unicode</code>字符</strong>，他们会<strong>在任何词汇翻译之前执行</strong>，因此注释符号<code>//</code>之后的代码最开始就会别换行成：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// </span></span><br><span class="line">a=<span class="number">1</span>;</span><br><span class="line"><span class="comment">// </span></span><br><span class="line">b=<span class="number">2</span>;</span><br><span class="line">System.out.println(a + <span class="string">&quot;---&quot;</span> + b);</span><br></pre></td></tr></table></figure></li>
+<li><p>同样的<strong>回车符</strong>也能起到这种效果：</p>
+<ul>
+<li><code>\u000d</code>在<code>unicode</code>中是回车的意思</li>
+</ul>
+</li>
+</ul>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/15/%E6%B3%A8%E9%87%8A%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B9%9F%E5%8F%AF%E8%83%BD%E4%BC%9A%E6%89%A7%E8%A1%8C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+	  
+	</div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/14/MySQL%E8%87%AA%E5%A2%9E%E9%95%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -411,7 +527,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -472,7 +588,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">56k</span>
+    <span title="站点总字数">57k</span>
 </div>
 
         
