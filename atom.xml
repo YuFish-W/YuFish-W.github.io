@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-08-16T04:29:20.393Z</updated>
+  <updated>2022-09-01T10:22:20.584Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java注释中的代码也可能会被执行</title>
+    <link href="http://example.com/2022/09/01/%E6%B3%A8%E9%87%8A%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B9%9F%E5%8F%AF%E8%83%BD%E4%BC%9A%E6%89%A7%E8%A1%8C/"/>
+    <id>http://example.com/2022/09/01/%E6%B3%A8%E9%87%8A%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B9%9F%E5%8F%AF%E8%83%BD%E4%BC%9A%E6%89%A7%E8%A1%8C/</id>
+    <published>2022-09-01T10:21:00.000Z</published>
+    <updated>2022-09-01T10:22:20.584Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p>java中正常情况下注释中的代码都不会被执行，但是有一些特殊情况值得注意：<span id="more"></span></p></li><li><p>例如：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// \u000a a=1;</span></span><br><span class="line"><span class="comment">// \u000a b=2;</span></span><br><span class="line">System.out.println(a + <span class="string">&quot;---&quot;</span> + b);</span><br></pre></td></tr></table></figure><ul><li>这里输出的结果是<code>1---2</code></li></ul></li><li><p>上面注释中的内容前面有<code>\u000a</code>串字符，这是<code>unicode</code>字符</p><ul><li><code>\u000a</code>在<code>unicode</code>中是<strong>换行</strong>的意思</li></ul></li><li><p>java编写代码的时候可以<strong>在源代码中直接写<code>unicode</code>字符</strong>，他们会<strong>在任何词汇翻译之前执行</strong>，因此注释符号<code>//</code>之后的代码最开始就会别换行成：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// </span></span><br><span class="line">a=<span class="number">1</span>;</span><br><span class="line"><span class="comment">// </span></span><br><span class="line">b=<span class="number">2</span>;</span><br><span class="line">System.out.println(a + <span class="string">&quot;---&quot;</span> + b);</span><br></pre></td></tr></table></figure></li><li><p>同样的<strong>回车符</strong>也能起到这种效果：</p><ul><li><code>\u000d</code>在<code>unicode</code>中是回车的意思</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;java中正常情况下注释中的代码都不会被执行，但是有一些特殊情况值得注意：</summary>
+    
+    
+    
+    <category term="java基础" scheme="http://example.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+  </entry>
   
   <entry>
     <title>LeetCode51:N皇后</title>
@@ -467,28 +489,6 @@
     
     <summary type="html">&lt;h1 id=&quot;为什么单个字符的字符串长度为2？&quot;&gt;&lt;a href=&quot;#为什么单个字符的字符串长度为2？&quot; class=&quot;headerlink&quot; title=&quot;为什么单个字符的字符串长度为2？&quot;&gt;&lt;/a&gt;为什么单个字符的字符串长度为2？&lt;/h1&gt;&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;我们知道字符串的&lt;code&gt;.length()&lt;/code&gt;方法会返回字符串的长度，但以下有的字符串只有一个字符，&lt;code&gt;.length()&lt;/code&gt;返回的长度却是2，例如&lt;/strong&gt;:</summary>
-    
-    
-    
-    <category term="java基础" scheme="http://example.com/categories/java%E5%9F%BA%E7%A1%80/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>java中char为什么无法表示全部字符</title>
-    <link href="http://example.com/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/"/>
-    <id>http://example.com/2022/03/15/char%E6%97%A0%E6%B3%95%E8%A1%A8%E7%A4%BA%E5%85%A8%E9%83%A8%E5%AD%97%E7%AC%A6/</id>
-    <published>2022-03-15T05:15:00.000Z</published>
-    <updated>2022-03-20T09:30:46.379Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="为什么java中有的字符char无法表示"><a href="#为什么java中有的字符char无法表示" class="headerlink" title="为什么java中有的字符char无法表示"></a>为什么java中有的字符char无法表示</h1><ul><li><p><strong>首先要知道Unicode字符集和UTF-8、UTF-16等的区别：Unicode属于一种规则，它规定了什么字符该由哪种数字表示，而UTF-8、UTF-16是实现这种规则的，它们分别用不同的法式在计算机中存储这个数字</strong>。<span id="more"></span></p></li><li><p><strong>而java语言内部使用的就是UTF-16编码，这种编码方式以代码单元为单位对字符进行存储，UTF-16中一个代码单元占16位，也就是两个字节，由于两个字节并不能表示所有字符，它用1-2个代码单元表示字符</strong>。</p><ul><li><strong>首先要知道Unicode不止2^16个字符</strong>。</li><li><strong>一个代码单元两字节最多表示65536个字符，在这个范围之内的字符一个代码单元就能表示，即两字节表示</strong>；</li><li><strong>而超过这个范围之外的字符则需要两个代码单元存储，也就是四个字节</strong>。</li></ul></li><li><p><strong>由于一个<code>char</code>只有两个字节，那么在字符需要四字节才能表示的时候<code>char</code>类型就无法表示了</strong>。</p></li></ul><h2 id="关于Unicode"><a href="#关于Unicode" class="headerlink" title="关于Unicode"></a>关于Unicode</h2><ul><li><p><strong>Unicode有17个平面，每个平面最多能表示两个字节65536个字符。</strong> </p></li><li><p><strong>Unicode字符集的范围：<code>0x0000~0x10FFFF</code><strong>：</strong>16进制表示，前两位代表平面（0~0x10,刚好17个平面），后四位代表平面内表达的字符数（4个16进制数，最多655366个字符）。</strong></p></li><li><p><strong>在只需要用到第0个平面字符的时候范围是<code>0x0000~0xFFFF</code>，不需要表示平面号，一个字节就能存储，我们平时大多数都是这样</strong>。</p></li><li><p><strong>在字符超出第0个平面表示范围的时候，需要存储平面号，一个字节有8位，17个平面的17用二进制是0-10000，只需要五位，因此一个字节就能表示平面号，如果超出第0个平面表示范围，只需要总共三个字节就可以表示所有Unicode字符，但是utf-16两字节一单元，所以需要四个字节表示</strong>。</p></li><li><p>而java在<strong>最初</strong>采用Unicode字符集的时候<strong>Unicode字符还没有超过65536个</strong>，后来加入大量中文等文字才超过，此时一个<code>char</code>的16位就不能表示所有字符了。</p></li><li><p>例如：<code>𝄞</code>。</p></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;为什么java中有的字符char无法表示&quot;&gt;&lt;a href=&quot;#为什么java中有的字符char无法表示&quot; class=&quot;headerlink&quot; title=&quot;为什么java中有的字符char无法表示&quot;&gt;&lt;/a&gt;为什么java中有的字符char无法表示&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;首先要知道Unicode字符集和UTF-8、UTF-16等的区别：Unicode属于一种规则，它规定了什么字符该由哪种数字表示，而UTF-8、UTF-16是实现这种规则的，它们分别用不同的法式在计算机中存储这个数字&lt;/strong&gt;。</summary>
     
     
     
