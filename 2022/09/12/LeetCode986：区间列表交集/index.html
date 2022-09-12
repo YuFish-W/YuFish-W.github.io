@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220912201939434.png">
 <meta property="article:published_time" content="2022-09-12T12:57:34.000Z">
-<meta property="article:modified_time" content="2022-09-12T12:56:32.652Z">
+<meta property="article:modified_time" content="2022-09-12T13:28:31.852Z">
 <meta property="article:author" content="YuFish-W">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary">
@@ -183,7 +183,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-09-12 20:57:34 / 修改时间：20:56:32" itemprop="dateCreated datePublished" datetime="2022-09-12T20:57:34+08:00">2022-09-12</time>
+              <time title="创建时间：2022-09-12 20:57:34 / 修改时间：21:28:31" itemprop="dateCreated datePublished" datetime="2022-09-12T20:57:34+08:00">2022-09-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,55 +236,9 @@
 </li>
 </ul>
 </li>
-<li><pre><code class="java">class Solution &#123;
-    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) &#123;
-        //用集合来保存临时结果，最后将它转成数组就行
-        LinkedList&lt;int[]&gt; tempRes = new LinkedList&lt;&gt;();
-        int n1 = firstList.length;
-        int n2 = secondList.length;
-        int i = 0, j = 0;
-        while (i &lt; n1 &amp;&amp; j &lt; n2) &#123;
-            int firstLeft = firstList[i][0];
-            int firstRight = firstList[i][1];
-            int secondLeft = secondList[j][0];
-            int secondRight = secondList[j][1];
-            //下面说的左右区间指的是第一个区间和第二个区间i和j当前指向的子区间
-            //总共有六种情况，左右区间的右端点哪个更小，就让指针指向该区间数组的下一个区间
-            //1：右区间全在左区间左边，无交集，此时右区间右移
-            if (secondRight &lt; firstLeft) &#123;
-                j++;
-            &#125; 
-            //2：右区间的右端点在左区间中间，左端点还在左区间左边，有交集，右区间继续右移
-            else if (secondLeft &lt; firstLeft &amp;&amp; secondRight &lt;= firstRight) &#123;
-                tempRes.addLast(new int[]&#123;firstLeft, secondRight&#125;);
-                j++;
-            &#125;
-            //3：右区间被左区间覆盖，右区间继续右移
-            else if (secondLeft &gt;= firstLeft &amp;&amp; secondRight &lt;= firstRight) &#123;
-                tempRes.addLast(new int[]&#123;secondLeft, secondRight&#125;);
-                j++;
-            &#125;
-            //4：左区间被右区间覆盖，此时左区间右移
-            else if (secondLeft &lt; firstLeft &amp;&amp; secondRight &gt; firstRight)&#123;
-                tempRes.addLast(new int[]&#123;firstLeft,firstRight&#125;);
-                i++;
-            &#125;
-            //5：右区间左端点在左区间中间，右端点在左区间右边，左区间继续右移
-            else if (secondLeft &lt;= firstRight &amp;&amp; secondRight &gt; firstRight) &#123;
-                tempRes.addLast(new int[]&#123;secondLeft, firstRight&#125;);
-                i++;
-            &#125; 
-            //6：右区间整体在左区间右边，左区间右移
-            else if (secondLeft &gt; firstRight) &#123;
-                i++;
-            &#125;
-        &#125;
-        return tempRes.toArray(new int[0][0]);
-    &#125;
-&#125;
-</code></pre>
-</li>
 </ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[][] intervalIntersection(<span class="keyword">int</span>[][] firstList, <span class="keyword">int</span>[][] secondList) &#123;</span><br><span class="line">        <span class="comment">//用集合来保存临时结果，最后将它转成数组就行</span></span><br><span class="line">        LinkedList&lt;<span class="keyword">int</span>[]&gt; tempRes = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> n1 = firstList.length;</span><br><span class="line">        <span class="keyword">int</span> n2 = secondList.length;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) &#123;</span><br><span class="line">            <span class="keyword">int</span> firstLeft = firstList[i][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> firstRight = firstList[i][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">int</span> secondLeft = secondList[j][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> secondRight = secondList[j][<span class="number">1</span>];</span><br><span class="line">            <span class="comment">//下面说的左右区间指的是第一个区间和第二个区间i和j当前指向的子区间</span></span><br><span class="line">            <span class="comment">//总共有六种情况，左右区间的右端点哪个更小，就让指针指向该区间数组的下一个区间</span></span><br><span class="line">            <span class="comment">//1：右区间全在左区间左边，无交集，此时右区间右移</span></span><br><span class="line">            <span class="keyword">if</span> (secondRight &lt; firstLeft) &#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125; </span><br><span class="line">            <span class="comment">//2：右区间的右端点在左区间中间，左端点还在左区间左边，有交集，右区间继续右移</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (secondLeft &lt; firstLeft &amp;&amp; secondRight &lt;= firstRight) &#123;</span><br><span class="line">                tempRes.addLast(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;firstLeft, secondRight&#125;);</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//3：右区间被左区间覆盖，右区间继续右移</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (secondLeft &gt;= firstLeft &amp;&amp; secondRight &lt;= firstRight) &#123;</span><br><span class="line">                tempRes.addLast(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;secondLeft, secondRight&#125;);</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//4：左区间被右区间覆盖，此时左区间右移</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (secondLeft &lt; firstLeft &amp;&amp; secondRight &gt; firstRight)&#123;</span><br><span class="line">                tempRes.addLast(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;firstLeft,firstRight&#125;);</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//5：右区间左端点在左区间中间，右端点在左区间右边，左区间继续右移</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (secondLeft &lt;= firstRight &amp;&amp; secondRight &gt; firstRight) &#123;</span><br><span class="line">                tempRes.addLast(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;secondLeft, firstRight&#125;);</span><br><span class="line">                i++;</span><br><span class="line">            &#125; </span><br><span class="line">            <span class="comment">//6：右区间整体在左区间右边，左区间右移</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (secondLeft &gt; firstRight) &#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> tempRes.toArray(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">0</span>][<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
