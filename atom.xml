@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-09-12T13:28:31.852Z</updated>
+  <updated>2022-09-24T09:55:25.805Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>高幂运算之后取模技巧</title>
+    <link href="http://example.com/2022/09/24/%E9%AB%98%E5%B9%82%E8%BF%90%E7%AE%97%E4%B9%8B%E5%90%8E%E5%8F%96%E6%A8%A1%E6%8A%80%E5%B7%A7/"/>
+    <id>http://example.com/2022/09/24/%E9%AB%98%E5%B9%82%E8%BF%90%E7%AE%97%E4%B9%8B%E5%90%8E%E5%8F%96%E6%A8%A1%E6%8A%80%E5%B7%A7/</id>
+    <published>2022-09-24T09:27:33.000Z</published>
+    <updated>2022-09-24T09:55:25.805Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p><strong>对于两数相乘然后取模有以下公式：</strong><br>$$<br>(a * b) % k = (a % k)(b % k) % k<br>$$</p><span id="more"></span></li><li><p><strong>证明：</strong> </p><p><strong>假设</strong><br>$$<br>a = Ak +B；b = Ck + D<br>$$</p><p><strong>其中 <code>A,B,C,D</code> 是任意常数，那么：</strong><br>$$<br>a*b = ACk^2 + ADk + BCk +BD<br>\<br>(a * b) % k = (ACk^2 + ADk + BCk +BD)%k<br>\=0+0+0+BD % k<br>\=BD % k<br>$$</p><p>又因为：<br>$$<br>a % k = B；b % k = D<br>$$</p><p><strong>所以：</strong><br>$$<br>(a * b) % k = BD % k = (a % k)(b % k) % k<br>$$</p></li></ul><h2 id="高幂运算的情况"><a href="#高幂运算的情况" class="headerlink" title="高幂运算的情况"></a>高幂运算的情况</h2><blockquote><ul><li><strong>由于高幂运算很容易造成数字溢出，因此不能直接求幂</strong> </li></ul></blockquote><ul><li><p><strong>而高幂运算后取模，例如<code>a^c%k</code>，相当于c个a连乘然后对k取模：<code>(a*a*a....*a) % k</code></strong>  </p><ul><li><strong>这里b个a相乘很容易溢出，应该考虑如何缩小相乘的结果</strong> </li></ul></li><li><p>根据上面公式可知：<br>$$<br>(a<em>a</em>a…*a) % k=((a%k)(a%k)(a%k)…(a%k)) % k<br>$$</p><ul><li><p>设<code>b=(a%k)</code>，则相当于<br>$$<br>(a<em>a</em>a…<em>a) % k=(b</em>b<em>b</em>…b)%k<br>$$</p><ul><li>其中<code>b</code>是小于k的，这样就保证了<strong>每个因子都小于k</strong>，然后我们需要进一步缩小相乘结果</li></ul></li></ul></li><li><p><strong>c个b相乘对k取模，可以把前面两个因子相乘结果看做一个数，后面c-2个因子相乘的结果看做一个数：</strong><br>$$<br>(b<em>b</em>b*…b)%k  = ((b<em>b)%k * (b</em>b<em>b..<em>b)%k)%k<br>\= ((b</em>b)%k * (b%k)(b%k)(b%k)…(b%k))%k<br>\=((b</em>b)%k <em>b</em>b*…*b)%k<br>$$</p><ul><li>假设<code>B=b*b</code>，那么有<br>$$<br>((b<em>b)%k <em>b</em>b</em>…<em>b)%k=(B</em>b<em>b….<em>b)%k<br>\=((B</em>b)%k * (b</em>b…*b) )%k<br>$$</li></ul></li><li><p>以此类推，因此可以<strong>得出结论</strong>，**<font color='#0000FF'>在高幂运算之后取模，我们可以先将底数取一次模，然后求幂的过程中，两两相乘后再次取模</font>** </p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算a的c次方对k取模的结果</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pow</span><span class="params">(<span class="keyword">int</span> a ,<span class="keyword">int</span> c ,<span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">    <span class="comment">// 保证每个因子都小于base</span></span><br><span class="line">    a %= k;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; c; i++) &#123;</span><br><span class="line">        <span class="comment">// 两两相乘</span></span><br><span class="line">        res *= a;</span><br><span class="line">        <span class="comment">// 对乘法结果求模</span></span><br><span class="line">        res %= k;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ul><blockquote><ul><li><strong>很多个不同数相乘后取模也可以这样做，只需要第一步for循环将每个数字先取一次模即可，防止两两相乘的时候</strong></li></ul></blockquote>]]></content>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;对于两数相乘然后取模有以下公式：&lt;/strong&gt;&lt;br&gt;$$&lt;br&gt;(a * b) % k = (a % k)(b % k) % k&lt;br&gt;$$&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="算法技巧" scheme="http://example.com/categories/%E7%AE%97%E6%B3%95%E6%8A%80%E5%B7%A7/"/>
+    
+    
+    <category term="小技巧" scheme="http://example.com/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
+    
+  </entry>
   
   <entry>
     <title>LeetCode986:区间列表交集</title>
@@ -475,28 +497,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;分析：该题可以用&lt;strong&gt;单调栈&lt;/strong&gt;来完成，&lt;strong&gt;单调栈就是一种通过特殊操作使栈中元素有序的栈&lt;/strong&gt;。</summary>
-    
-    
-    
-    <category term="算法" scheme="http://example.com/categories/%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="LeetCode" scheme="http://example.com/tags/LeetCode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode23:合并多个有序链表</title>
-    <link href="http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/"/>
-    <id>http://example.com/2022/03/20/LeetCode23%E5%A4%9A%E8%A1%A8%E5%90%88%E5%B9%B6/</id>
-    <published>2022-03-20T09:26:03.000Z</published>
-    <updated>2022-08-01T20:19:34.460Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li><p><strong>使用优先权队列<code>PriorityQueue</code>，将所有链表的头结点加入，每次<code>poll</code>弹出最小的，然后再加入这个节点的下一个，以此类推，能将所有链表有序合并</strong>。</p><span id="more"></span></li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeKLists</span><span class="params">(ListNode[] lists)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(lists.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        PriorityQueue&lt;ListNode&gt; listNodes = <span class="keyword">new</span> PriorityQueue&lt;&gt;(</span><br><span class="line">            lists.length , (o1,o2) -&gt; o1.val - o2.val</span><br><span class="line">        );<span class="comment">/*传入链表程度和比较器，o1.val - o2.val 小于0表示o1更小，属于升序排列，这是</span></span><br><span class="line"><span class="comment">          lambda表达式，效果和使用匿名类一样*/</span></span><br><span class="line">        <span class="keyword">for</span> (ListNode listNode : lists) &#123;</span><br><span class="line">            <span class="keyword">if</span> (listNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">                listNodes.add(listNode);</span><br><span class="line">                <span class="comment">/*只加入头结点而不是全部加入，poll其中一个的时候就加入这个头结点的next，这样</span></span><br><span class="line"><span class="comment">                  这个优先权队列始终只有K各节点，可以保证调整队列的复杂度是logk,n个结点全部</span></span><br><span class="line"><span class="comment">                  加入和弹出总的时间复杂度你nlogk，如果一次性全部加入，每次调整优先级的复杂度</span></span><br><span class="line"><span class="comment">                  是logn，总的时间复杂度是nlogn</span></span><br><span class="line"><span class="comment">                */</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode res = <span class="keyword">new</span> ListNode(-<span class="number">1</span>);</span><br><span class="line">        ListNode virtualHeadNode = res;</span><br><span class="line">        <span class="keyword">while</span> (!listNodes.isEmpty())&#123;</span><br><span class="line">            virtualHeadNode.next = listNodes.poll();</span><br><span class="line">            virtualHeadNode = virtualHeadNode.next;</span><br><span class="line">            <span class="keyword">if</span>(virtualHeadNode.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">                listNodes.add(virtualHeadNode.next);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        virtualHeadNode.next = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">/*只加头结点进入优先权队列可以不要这句，但是如果全部加入，可能会有多个相同的值，他们之间的相对</span></span><br><span class="line"><span class="comment">          位置不一定和原来一样，可能最后一个原来是第一个，这样它的next就是下一个而不是null，这里就会</span></span><br><span class="line"><span class="comment">          形成环。</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        <span class="keyword">return</span> res.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><strong>总结</strong>：<strong>合并多个有序链表</strong>：<strong>使用优先权队列</strong>。队列里只存放头结点，取出一个头结点再加入下一个，避免有序结点相对顺序变化后最后形成环的问题，且时间复杂度<code>nlogk</code>，k为头结点数，即链表数；如果全部加入则<code>nlogn</code>，且需要将最后加入的结点的<code>next=null</code>，避免出现环。</li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;使用优先权队列&lt;code&gt;PriorityQueue&lt;/code&gt;，将所有链表的头结点加入，每次&lt;code&gt;poll&lt;/code&gt;弹出最小的，然后再加入这个节点的下一个，以此类推，能将所有链表有序合并&lt;/strong&gt;。&lt;/p&gt;</summary>
     
     
     
