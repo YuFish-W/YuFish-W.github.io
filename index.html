@@ -177,10 +177,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-11-23 16:10:01 / 修改时间：16:33:07" itemprop="dateCreated datePublished" datetime="2022-11-23T16:10:01+08:00">2022-11-23</time>
+              <time title="创建时间：2022-11-23 16:10:01" itemprop="dateCreated datePublished" datetime="2022-11-23T16:10:01+08:00">2022-11-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-02 11:06:06" itemprop="dateModified" datetime="2023-03-02T11:06:06+08:00">2023-03-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -197,7 +203,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.1k</span>
+              <span>9.3k</span>
             </span>
 
         </div>
@@ -217,6 +223,66 @@
 <li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20221103171418397.png" alt="image-20221103171418397"></li>
 </ul>
 </blockquote>
+<h2 id="1-AQS同步队列结构"><a href="#1-AQS同步队列结构" class="headerlink" title="1.AQS同步队列结构"></a>1.AQS同步队列结构</h2><ul>
+<li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20221103175056016.png" alt="image-20221103175056016"></p>
+<ul>
+<li><p>这里面的<code>Node</code>是<code>AQS</code>的一个内部类，<strong>每个<code>Node</code>表示一个在同步队列中等待抢锁的线程</strong>，他们一起形成了一个双端队列，每个<code>Node</code>都有<code>prev</code>何<code>next</code>属性指向前后<code>Node</code>：</p>
+<ul>
+<li><p><strong><font color="red">注意：该队列第一个是虚拟结点，从第二个结点开始才是代表不同的线程</font></strong> </p>
+<ul>
+<li><p><strong>队列为空的时候是这么设置的：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (compareAndSetHead(<span class="keyword">new</span> Node()))</span><br><span class="line">    tail = head;<span class="comment">//头尾指针都指向虚拟头结点</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>new一个空结点当头结点，头尾指针都指向虚拟头结点</strong></li>
+<li>头尾指针相同的情况就是此时这样只有一个虚拟头结点，或者队列未初始化，都是null </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>即抢锁未成功的线程需要进入该队列阻塞等待</strong> </p>
+</li>
+<li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20221103175333066.png" alt="image-20221103175333066"></p>
+</li>
+<li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20221103175403435.png" alt="image-20221103175403435"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-ReentrantLock上锁方法lock"><a href="#2-ReentrantLock上锁方法lock" class="headerlink" title="2.ReentrantLock上锁方法lock()"></a>2.<code>ReentrantLock</code>上锁方法<code>lock()</code></h2><ol>
+<li><p>公平锁：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//直接尝试获得，这个1表示让锁状态计数器+1，这个状态是0表示锁没人占用，&gt;0表示有人使用，一般一个线程用lock()方法获得锁让该计数器从0变成1，unlock()一次就-1，变成0就表示锁没人占用。但是ReentrantLock是可重入锁，一个线程如果在释放锁前再次进入，就会让该计数器从1加到2，这样他就需要用unlock()释放两次锁</span></span><br><span class="line">    acquire(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>非公平锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//非公平锁直接尝试抢夺锁，compareAndSetState(0, 1)表示如果锁的状态计数器是0，则将它变成1，即该锁进入被占用状态</span></span><br><span class="line">    <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>))</span><br><span class="line">        <span class="comment">//如果修改锁状态成功，将当前线程设置成锁的拥有者</span></span><br><span class="line">        setExclusiveOwnerThread(Thread.currentThread());</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="comment">//如果抢夺失败，和公平锁一样进入acquire()</span></span><br><span class="line">        acquire(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><code>acquire()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//arg就是上面传入的1</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">acquire</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!tryAcquire(arg) &amp;&amp;</span><br><span class="line">        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</span><br><span class="line">        selfInterrupt();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>该方法是<code>AQS</code>类中的方法，<code>final</code>修饰让子类无法覆盖，它包含三个关键方法：</strong><ul>
+<li><strong><code>tryAcquire()</code>,<code>acquireQueued()</code>,<code>addWaiter()</code></strong> </li>
+<li><strong>其中<code>tryAcquire()</code>需要子类进行重写，另外两个不需要，这里使用的是设计模式中的模板设计模式</strong></li>
+</ul>
+</li>
+<li><strong>其中<code>acquireQueued()</code>方法返回的结果是当前线程是否被中断，中断表示一个状态表示，如果是，这里进入到<code>selfInterrupt()</code>里面再次将当前线程中断，因为里面返回是否中断的时候用的是静态的<code>Thread.intrrupt()</code>，这个方法除了返回中断标识，还会清空中断状态。</strong><ul>
+<li><strong>我认为用这样是为了让线程在<code>acquireQueued()</code>里继续运行完，因此将中断标识位清空，将结果返回，最后在这里自己主动中断。</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-tryAcquire-方法"><a href="#2-1-tryAcquire-方法" class="headerlink" title="2.1 tryAcquire()方法"></a>2.1 <code>tryAcquire()</code>方法</h3><ul>
+<li><p>该方法需要子类重写，因此公平锁和非公平锁实现不一样，但是只有一个地方不同：</p>
+<ul>
+<li><p>公平锁：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Thread current = Thread.currentThread();</span><br><span class="line">    <span class="keyword">int</span> c = getState();</span><br><span class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!hasQueuedPredecessors() &amp;&amp;</span><br><span class="line">            compareAndSetState(<span class="number">0</span>, acquires)) &#123;</span><br><span class="line">            setExclusiveOwnerThread(current);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</span><br><span class="line">        <span class="keyword">int</span> nextc = c + acquires;</span><br><span class="line">        <span class="keyword">if</span> (nextc &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">&quot;Maximum lock count exceeded&quot;</span>);</span><br><span class="line">        setState(nextc);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>非公平锁：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> nonfairTryAcquire(acquires);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">nonfairTryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Thread current = Thread.currentThread();</span><br><span class="line">    <span class="comment">//得到当前锁的状态</span></span><br><span class="line">    <span class="keyword">int</span> c = getState();</span><br><span class="line">    <span class="comment">//如果c==0表示锁没人占用</span></span><br><span class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">//如果当前锁状态是0，就替换成acquires，抢到该锁</span></span><br><span class="line">        <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, acquires)) &#123;</span><br><span class="line">            <span class="comment">//然后将该锁的拥有线程设置成自己，然后返回true</span></span><br><span class="line">            setExclusiveOwnerThread(current);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果c!=0表示当前锁被占用，检查是否是自己占用的，是的话就让锁的状态计数器+1，表示重入一次</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</span><br><span class="line">        <span class="keyword">int</span> nextc = c + acquires;</span><br><span class="line">        <span class="keyword">if</span> (nextc &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">&quot;Maximum lock count exceeded&quot;</span>);</span><br><span class="line">        setState(nextc);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//都不行就返回false，占用锁失败</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>可以看到两个方法的唯一区别是这条判断逻辑公平锁多了<code>!hasQueuedPredecessors()</code></p>
+</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/11/23/%E5%88%86%E6%9E%90juc%E4%B8%ADAQS%E9%98%BB%E5%A1%9E%E5%94%A4%E9%86%92%E6%9C%BA%E5%88%B6/#more" rel="contents">
@@ -1184,7 +1250,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-truck"></i>
   </span>
@@ -1194,7 +1260,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">78k</span>
+    <span title="站点总字数">79k</span>
 </div>
 
         

@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20221103175403435.png">
 <meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20221103190538946.png">
 <meta property="article:published_time" content="2022-11-23T08:10:01.000Z">
-<meta property="article:modified_time" content="2022-11-23T08:33:07.892Z">
+<meta property="article:modified_time" content="2023-03-02T03:06:06.673Z">
 <meta property="article:author" content="YuFish-W">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
@@ -185,10 +185,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-11-23 16:10:01 / 修改时间：16:33:07" itemprop="dateCreated datePublished" datetime="2022-11-23T16:10:01+08:00">2022-11-23</time>
+              <time title="创建时间：2022-11-23 16:10:01" itemprop="dateCreated datePublished" datetime="2022-11-23T16:10:01+08:00">2022-11-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-02 11:06:06" itemprop="dateModified" datetime="2023-03-02T11:06:06+08:00">2023-03-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -212,7 +218,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.1k</span>
+              <span>9.3k</span>
             </span>
 
         </div>
@@ -232,8 +238,6 @@
 <li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20221103171418397.png" alt="image-20221103171418397"></li>
 </ul>
 </blockquote>
-<span id="more"></span>
-
 <h2 id="1-AQS同步队列结构"><a href="#1-AQS同步队列结构" class="headerlink" title="1.AQS同步队列结构"></a>1.AQS同步队列结构</h2><ul>
 <li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20221103175056016.png" alt="image-20221103175056016"></p>
 <ul>
@@ -278,7 +282,7 @@
 </ul>
 </li>
 <li><strong>其中<code>acquireQueued()</code>方法返回的结果是当前线程是否被中断，中断表示一个状态表示，如果是，这里进入到<code>selfInterrupt()</code>里面再次将当前线程中断，因为里面返回是否中断的时候用的是静态的<code>Thread.intrrupt()</code>，这个方法除了返回中断标识，还会清空中断状态。</strong><ul>
-<li><strong>我认为用这样使为了让线程在<code>acquireQueued()</code>里继续运行完，因此将中断标识位清空，将结果返回，最后在这里自己主动中断。</strong></li>
+<li><strong>我认为用这样是为了让线程在<code>acquireQueued()</code>里继续运行完，因此将中断标识位清空，将结果返回，最后在这里自己主动中断。</strong></li>
 </ul>
 </li>
 </ul>
@@ -339,10 +343,16 @@ if (compareAndSetTail(t, node)) &#123;
     return t;
 &#125;
 </code></pre>
-}<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 2.3 `acquireQueued()`方法</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">final boolean acquireQueued(final Node node, int arg) &#123;</span><br><span class="line">    boolean failed = true;//表示是否取消排队</span><br><span class="line">    try &#123;</span><br><span class="line">        boolean interrupted = false;//是否被中断</span><br><span class="line">        for (;;) &#123;//死循环，除非取消排队或者抢到了锁，不会退出</span><br><span class="line">            </span><br><span class="line">            final Node p = node.predecessor();//得到当前结点的前驱结点</span><br><span class="line">            //如果p是头结点，就又用tryAcquire尝试抢锁，因为此时当前结点是第一个线程，无论公平还是非公平自己都能抢夺</span><br><span class="line">            if (p == head &amp;&amp; tryAcquire(arg)) &#123;</span><br><span class="line">                //抢锁成功，需要将结点出队，这里采用的方法是将当前结点当做下一轮的虚拟头结点，让原本的头结点p置空被GC回收，代码在底下</span><br><span class="line">                setHead(node);</span><br><span class="line">                p.next = null; // help GC</span><br><span class="line">                failed = false;//不取消排队</span><br><span class="line">                return interrupted;//未被中断false</span><br><span class="line">            &#125;</span><br><span class="line">            //shouldParkAfterFailedAcquire方法下面单独分析</span><br><span class="line">            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;</span><br><span class="line">                //前面返回true表示当前线程进入等待资源释放状态，因此需要阻塞，该方法直接将线程阻塞，代码在底下</span><br><span class="line">                parkAndCheckInterrupt())</span><br><span class="line">                interrupted = true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        if (failed)//最后看是否想取消排队</span><br><span class="line">            cancelAcquire(node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//===================================</span><br><span class="line">//setHead方法</span><br><span class="line">private void setHead(Node node) &#123;</span><br><span class="line">    head = node;</span><br><span class="line">    node.thread = null;</span><br><span class="line">    node.prev = null;</span><br><span class="line">&#125;</span><br><span class="line">//parkAndCheckInterrupt方法</span><br><span class="line">private final boolean parkAndCheckInterrupt() &#123;</span><br><span class="line">    LockSupport.park(this);//直接阻塞当前线程，用的是通行证阻塞</span><br><span class="line">    return Thread.interrupted();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+}<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 2.3 `acquireQueued()`方法</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">final boolean acquireQueued(final Node node, int arg) &#123;</span><br><span class="line">    boolean failed = true;//表示是否取消排队</span><br><span class="line">    try &#123;</span><br><span class="line">        boolean interrupted = false;//是否被中断</span><br><span class="line">        for (;;) &#123;//死循环，除非取消排队或者抢到了锁，不会退出？</span><br><span class="line">            </span><br><span class="line">            final Node p = node.predecessor();//得到当前结点的前驱结点</span><br><span class="line">            //如果p是头结点，就又用tryAcquire尝试抢锁，因为此时当前结点是第一个线程，无论公平还是非公平自己都能抢夺</span><br><span class="line">            if (p == head &amp;&amp; tryAcquire(arg)) &#123;</span><br><span class="line">                //抢锁成功，需要将结点出队，这里采用的方法是将当前结点当做下一轮的虚拟头结点，让原本的头结点p置空被GC回收，代码在底下</span><br><span class="line">                setHead(node);</span><br><span class="line">                p.next = null; // help GC</span><br><span class="line">                failed = false;//不取消排队</span><br><span class="line">                return interrupted;//未被中断false</span><br><span class="line">            &#125;</span><br><span class="line">            //shouldParkAfterFailedAcquire方法下面单独分析</span><br><span class="line">            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;</span><br><span class="line">                //前面返回true表示当前线程进入等待资源释放状态，因此需要阻塞，该方法直接将线程阻塞，代码在底下</span><br><span class="line">                parkAndCheckInterrupt())</span><br><span class="line">                interrupted = true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        if (failed)//最后看是否想取消排队</span><br><span class="line">            cancelAcquire(node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//===================================</span><br><span class="line">//setHead方法</span><br><span class="line">private void setHead(Node node) &#123;</span><br><span class="line">    head = node;</span><br><span class="line">    node.thread = null;</span><br><span class="line">    node.prev = null;</span><br><span class="line">&#125;</span><br><span class="line">//parkAndCheckInterrupt方法</span><br><span class="line">private final boolean parkAndCheckInterrupt() &#123;</span><br><span class="line">    LockSupport.park(this);//直接阻塞当前线程，用的是通行证阻塞</span><br><span class="line">    return Thread.interrupted();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 </ul>
+</li>
+<li><blockquote>
+<ul>
+<li><strong>可以看到死循环中只有一个出口就是<code>return</code>，也就是说没抢到锁就不会退出，但也不一定一直循环抢，后面会看当前线程的等待状态判断是否阻塞，阻塞后就等待其他抢到锁的线程退出的时候需要取消排队，<code>cancelAcquire(node)</code>就有唤醒机制，抢到后将排队意愿设置成取消，后面的方法会将当前线程对应的结点从同步队列中移除(就像链表移除结点，将前驱或后继连接)</strong> </li>
+</ul>
+</blockquote>
 </li>
 <li><p><strong><font color='blue'>注意：<code>parkAndCheckInterrupt()</code>方法结束阻塞后调用静态方法判断当前线程是否被中断，静态方法会清楚当前中断标志位，因此无论是否被终端，返回到上一层</font></strong> </p>
 </li>
@@ -540,7 +550,7 @@ if (compareAndSetTail(t, node)) &#123;
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-truck"></i>
   </span>
@@ -550,7 +560,7 @@ if (compareAndSetTail(t, node)) &#123;
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">78k</span>
+    <span title="站点总字数">79k</span>
 </div>
 
         
