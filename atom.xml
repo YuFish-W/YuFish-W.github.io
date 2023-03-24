@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-03-02T04:53:07.392Z</updated>
+  <updated>2023-03-24T04:27:53.299Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,39 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>为什么取模尽量对质数取</title>
+    <link href="http://example.com/2023/03/24/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%96%E6%A8%A1%E5%B0%BD%E9%87%8F%E5%AF%B9%E8%B4%A8%E6%95%B0%E5%8F%96/"/>
+    <id>http://example.com/2023/03/24/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%96%E6%A8%A1%E5%B0%BD%E9%87%8F%E5%AF%B9%E8%B4%A8%E6%95%B0%E5%8F%96/</id>
+    <published>2023-03-24T04:23:03.000Z</published>
+    <updated>2023-03-24T04:27:53.299Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>先说结论：因为对质数取模之后的结果发生碰撞概率更小。</p><ul><li>很多时候为了解决数字超过存储上限问题，我们可以对该数取模然后存储，这就导致不同的数字可能取模后结果一致，也就是发生了碰撞，这时我们就需要对比原数字。</li></ul></blockquote><ul><li>例如：<code>x%a</code>这样，假如x=39，a=9，此时我们理想的取模之后的范围根据a的值应该在在<code>0-8</code>之间<ul><li>但是由于<code>a=9=3*3</code>，<code>x=39=13*3</code>，此时他们有公约数3</li><li>而取模本质可以理解成先求出<code>相除</code>之后的整数部分<code>c</code>，然后<code>原数字-c*模数</code>。而此时<code>39/9</code>因为存在公约数3，将会约成<code>13/3</code>，此时可以发现真正的取值范围是<code>0-2</code>，也就是说缩小了<code>3</code>倍</li></ul></li><li>由此可见，如果取模的时候如果两个数字存在公约数<code>k</code>，则取模后的范围将会被缩小<code>k</code>倍</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;先说结论：因为对质数取模之后的结果发生碰撞概率更小。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;很多时候为了解决数字超过存储上限问题，我们可以对该数取模然后存储，这就导致不同的数字可能取模后结果一致，也就是发生了碰撞，这时我们就需要对比原数字。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;例如：&lt;code&gt;x%a&lt;/code&gt;这样，假如x=39，a=9，此时我们理想的取模之后的范围根据a的值应该在在&lt;code&gt;0-8&lt;/code&gt;之间&lt;ul&gt;
+&lt;li&gt;但是由于&lt;code&gt;a=9=3*3&lt;/code&gt;，&lt;code&gt;x=39=13*3&lt;/code&gt;，此时他们有公约数3&lt;/li&gt;
+&lt;li&gt;而取模本质可以理解成先求出&lt;code&gt;相除&lt;/code&gt;之后的整数部分&lt;code&gt;c&lt;/code&gt;，然后&lt;code&gt;原数字-c*模数&lt;/code&gt;。而此时&lt;code&gt;39/9&lt;/code&gt;因为存在公约数3，将会约成&lt;code&gt;13/3&lt;/code&gt;，此时可以发现真正的取值范围是&lt;code&gt;0-2&lt;/code&gt;，也就是说缩小了&lt;code&gt;3&lt;/code&gt;倍&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;由此可见，如果取模的时候如果两个数字存在公约数&lt;code&gt;k&lt;/code&gt;，则取模后的范围将会被缩小&lt;code&gt;k&lt;/code&gt;倍&lt;/li&gt;
+&lt;/ul&gt;
+</summary>
+    
+    
+    
+    <category term="tips" scheme="http://example.com/categories/tips/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>分析juc中AQS阻塞唤醒机制</title>
@@ -472,31 +505,6 @@
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;分析题目&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;题目用长度为4的字符串表示密码，我们&lt;strong&gt;转动密码的时候每一位上只能上或下转动一次&lt;/strong&gt;，我们&lt;strong&gt;可以理解转动一位密码就相当于更改这个密码字符串其中一个字符的值&lt;/strong&gt;，因此我们可以&lt;strong&gt;编写两个方法，分别代表将密码字符串中的某一位向上移动一位和向下移动一位&lt;/strong&gt;：</summary>
-    
-    
-    
-    <category term="算法" scheme="http://example.com/categories/%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="LeetCode" scheme="http://example.com/tags/LeetCode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode210:课程表</title>
-    <link href="http://example.com/2022/04/05/LeetCode210%E8%AF%BE%E7%A8%8B%E8%A1%A8/"/>
-    <id>http://example.com/2022/04/05/LeetCode210%E8%AF%BE%E7%A8%8B%E8%A1%A8/</id>
-    <published>2022-04-05T14:25:33.000Z</published>
-    <updated>2022-07-28T07:00:59.226Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>如题</strong>：<img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220405215303452.png" alt="image-20220405215303452"></p><ul><li><p><strong>解读题意</strong>：题目中的<code>numCourses</code>表示需要修读的<strong>课程总数</strong>，且<strong>课程编号是从<code>0-numCourses-1</code><strong>的，<code>prerequisites</code>表示</strong>每两门课之间的依赖关系</strong>。我们需要给出<strong>各门课程学习的先后顺序</strong>，保证合理完成全部课程。如果无法完成所有课程，就返回空数组。</p></li><li><p><strong>什么时候无法完成</strong>？<span id="more"></span></p><ul><li>当课程之间存在<strong>循环依赖的时候就无法完成</strong>，例如完成<code>[1,2],[2,1]</code>这样，因此<strong>我们可以将这些依赖关系抽象成一个有向图，需要做的就是检测图中有没有环</strong>。</li></ul></li><li><p><strong>如果可以完成，如何记录下来先后顺序</strong>？</p><ul><li><p>将所有课程依赖关系看成图，那么<strong>完成课程的顺序就是这个有向图的拓扑排序顺序</strong>，而拓扑排序就是一次遍历每个入度为0的结点，入度为0即不被任何结点指向。</p></li><li><p>有向图的拓扑排序可以利用<code>DFS</code>深度优先搜索或者<code>BFS</code>广度优先搜索进行，这里我们是用<code>DFS</code>：</p><ul><li><p><strong>对于<code>DFS</code>来说，图的拓扑排序可以理解为后序遍历的结果然后反转</strong>。因为<strong>后序遍历先遍历叶子节点，叶子节点其实就是出度为0的结点，否则就不是叶子，也就是说一次遍历出度为翻0的所有借点，反转后就是根据入度为0的顺序遍历了</strong>。如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void traverse(List&lt;Integer&gt;[] graph,int s)&#123;</span><br><span class="line">    for (Integer child : graph[s]) &#123;</span><br><span class="line">        traverse(graph,child);</span><br><span class="line">    &#125;</span><br><span class="line">    arrayList.add(s);//在遍历代码后的位置将当前结点加入集合中，这里就是后序遍历</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p><strong>注意：不能是先序遍历，因为有可能一个父母指向同一个孩子，此时先序遍历会直接遍历一个父母后就遍历孩子，此时该孩子还被另一个父结点指向，入度为1，遍历错误</strong>。</p></li></ul></li></ul></li><li><p><strong>代码如下</strong>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span>[] visited;<span class="comment">//用来记录遍历过的结点</span></span><br><span class="line">    <span class="keyword">boolean</span> Circle = <span class="keyword">false</span>;<span class="comment">//如果有环就将它置为true</span></span><br><span class="line">    <span class="keyword">boolean</span>[] onPath;<span class="comment">//用来判断是否存在环</span></span><br><span class="line">    ArrayList&lt;Integer&gt; arrayList;<span class="comment">//用来记录后序遍历的每个结点</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] findOrder(<span class="keyword">int</span> numCourses, <span class="keyword">int</span>[][] prerequisites) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[numCourses];<span class="comment">//用来返回最后的结果</span></span><br><span class="line">        arrayList = <span class="keyword">new</span> ArrayList&lt;&gt;(numCourses);</span><br><span class="line">        visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[numCourses];</span><br><span class="line">        <span class="comment">//visited数组此处不用来判断是否存在环，而是因为我们无法保证图联通，需要将所有节点依次作为</span></span><br><span class="line">        <span class="comment">// 开始结点遍历图，此时如果依次遍历abc，下一次以b开始又会遍历bc，这就出现了重复遍历</span></span><br><span class="line">        <span class="comment">//visited数组可以避免重复遍历的问题。</span></span><br><span class="line">        onPath = <span class="keyword">new</span> <span class="keyword">boolean</span>[numCourses];</span><br><span class="line">        <span class="comment">//因此使用onPath记录 当前 走过的路径，每次遍历到新结点时判断onPath是否为true,如果是</span></span><br><span class="line">        <span class="comment">//就代表之前遍历过这个结点，因此存在环，然后将Circle置为true。</span></span><br><span class="line">        List&lt;Integer&gt;[] graph = buildGraph(numCourses, prerequisites);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numCourses; i++) &#123;</span><br><span class="line">            traverse(graph,i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (Circle)<span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;&#125;;</span><br><span class="line">        Collections.reverse(arrayList);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arrayList.size(); i++) &#123;</span><br><span class="line">            res[i] = arrayList.get(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//建图，使用链表法，每个结点作为开始结点存在在List数组中，后面依次连接着它指向的结点</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;Integer&gt;[] buildGraph(<span class="keyword">int</span> numCourses,<span class="keyword">int</span>[][] prerequisites)&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt;[] res = <span class="keyword">new</span> ArrayList[numCourses];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; res.length; i++) &#123;</span><br><span class="line">            res[i] = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] p : prerequisites)&#123;</span><br><span class="line">            res[p[<span class="number">1</span>]].add(p[<span class="number">0</span>]);</span><br><span class="line">            <span class="comment">//由于学习p[0]之前需要学习p[1]，因此由p[1]指向p[0]</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//遍历图判断是否有环，并且记录后序遍历的结点</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traverse</span><span class="params">(List&lt;Integer&gt;[] graph,<span class="keyword">int</span> s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (onPath[s])&#123;</span><br><span class="line">            Circle = <span class="keyword">true</span>;</span><br><span class="line">            <span class="comment">//不是return，而是用全局变量记录，因为可能只是一个分支有环，return只是让当前分支不再继续，</span></span><br><span class="line">            <span class="comment">//此时我们应该让其它分支也不用再继续遍历。</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//要注意，我们的onPath数组需要在退出的时候清除标记，即只记录当前路径，因为如果和visited</span></span><br><span class="line">            <span class="comment">// 一样的话，就无法判断是有环而重复还是从子节点开始遍历而重复了，因为我们无法判断图是否连通，</span></span><br><span class="line">            <span class="comment">// 需要将所有结点遍历，如果遍历到了子节点那么也是ture，因此onPath只记录当前遍历的路径。</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//注意：这里必须将判断环写在头而不是下面的visited写在头，因为我们只是让visited起到避免</span></span><br><span class="line">            <span class="comment">//重复遍历子节点的问题，但他仍然是可以在一次遍历中检测环的，这是它的本职工作，我们只是不用罢了。</span></span><br><span class="line">            <span class="comment">//如果将visited放在头部，那么碰到环还是可以被他检测出来，那么它无法分辨到底是重复遍历子节点导致</span></span><br><span class="line">            <span class="comment">//条件成立还是因为环导致条件成立。</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(visited[s] || Circle)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        visited[s] = <span class="keyword">true</span>;</span><br><span class="line">        onPath[s] = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer child : graph[s]) &#123;</span><br><span class="line">            traverse(graph,child);</span><br><span class="line">        &#125;</span><br><span class="line">        arrayList.add(s);<span class="comment">//将当前结点加入集合中</span></span><br><span class="line">        onPath[s] = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;strong&gt;如题&lt;/strong&gt;：&lt;img src=&quot;https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic/image-20220405215303452.png&quot; alt=&quot;image-20220405215303452&quot;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;解读题意&lt;/strong&gt;：题目中的&lt;code&gt;numCourses&lt;/code&gt;表示需要修读的&lt;strong&gt;课程总数&lt;/strong&gt;，且&lt;strong&gt;课程编号是从&lt;code&gt;0-numCourses-1&lt;/code&gt;&lt;strong&gt;的，&lt;code&gt;prerequisites&lt;/code&gt;表示&lt;/strong&gt;每两门课之间的依赖关系&lt;/strong&gt;。我们需要给出&lt;strong&gt;各门课程学习的先后顺序&lt;/strong&gt;，保证合理完成全部课程。如果无法完成所有课程，就返回空数组。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;什么时候无法完成&lt;/strong&gt;？</summary>
     
     
     
