@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+<meta name="baidu-site-verification" content="code-ggUTnhuHfI" />
+<meta name="google-site-verification" content="Fx1G5n_aH60ZKxRzgNpbIhPP6rmaQKVbLDw_SqiQtE8" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon%2032.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon%2016.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ThreadLocal是用自己作为key，不是线程作为key，线程类有一个类型为ThreadLocalMap的属性，每个线程包含了独有的ThreadLocalMap然后用ThreadLocal为key去获取value，线程之间能隔离获取就是因为ThreadLocalMap是隔离的，每个线程有独立的ThreadLocalMap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ThreadLocal必须知道的">
+<meta property="og:url" content="http://example.com/2023/03/28/TreadLocal/index.html">
+<meta property="og:site_name" content="酒书茶社">
+<meta property="og:description" content="ThreadLocal是用自己作为key，不是线程作为key，线程类有一个类型为ThreadLocalMap的属性，每个线程包含了独有的ThreadLocalMap然后用ThreadLocal为key去获取value，线程之间能隔离获取就是因为ThreadLocalMap是隔离的，每个线程有独立的ThreadLocalMap">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303280931768.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303280927376.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303280927188.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303281041458.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303281050739.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303281053061.png">
+<meta property="og:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303281053248.png">
+<meta property="article:published_time" content="2023-03-28T04:34:01.000Z">
+<meta property="article:modified_time" content="2023-03-28T04:35:02.111Z">
+<meta property="article:author" content="YuFish-W">
+<meta property="article:tag" content="酒书茶社、YuFish-W">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303280931768.png">
+
+<link rel="canonical" href="http://example.com/2023/03/28/TreadLocal/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ThreadLocal必须知道的 | 酒书茶社</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="酒书茶社" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">酒书茶社</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人是生而自由的，却无往不在枷锁之中。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/YuFish-W" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/28/TreadLocal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="YuFish-W">
+      <meta itemprop="description" content="功成名就不是目的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="酒书茶社">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ThreadLocal必须知道的
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-28 12:34:01 / 修改时间：12:35:02" itemprop="dateCreated datePublished" datetime="2023-03-28T12:34:01+08:00">2023-03-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E6%89%A9%E5%B1%95/" itemprop="url" rel="index"><span itemprop="name">java扩展</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.3k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li><p><code>ThreadLocal</code>是用自己作为<code>key</code>，不是线程作为<code>key</code>，线程类有一个类型为<code>ThreadLocalMap</code>的属性，每个线程包含了独有的<code>ThreadLocalMap</code>然后用<code>ThreadLocal</code>为<code>key</code>去获取<code>value</code>，线程之间能隔离获取就是因为<code>ThreadLocalMap</code>是隔离的，每个线程有独立的<code>ThreadLocalMap</code><span id="more"></span> </p>
+<ul>
+<li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303280931768.png" alt="image-20230328093151675"></p>
+</li>
+<li><p><code>ThreadLocal</code>有一个内部类<code>ThreadLocalMap</code>,<code>ThreadLocalMap</code>有一个内部类<code>Entry</code>，这<code>Entry</code>相当于键值对，里面的键值对是<code>&lt;ThreadLocal k,Object v&gt;</code></p>
+</li>
+<li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303280927376.png" alt="image-20230328092710288"></p>
+</li>
+<li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303280927188.png" alt="image-20230328092721104"></p>
+</li>
+<li><p><code>ThreadLocalMap</code>里面有一个**<code>Entry</code>数组<strong>，<code>threadlocal.set(value)</code>的时候会</strong>用当前的<code>ThreadLocal</code>对象作为key<strong>计算哈希值，</strong>和数组长度取余得到一个数组下标i，然后构建Entry对象存入i位置** </p>
+<ul>
+<li>```java<br>tab[i] = new Entry(key, value);<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    + **先不考虑哈希碰撞，下面说** </span><br><span class="line"></span><br><span class="line">+ 每次用`threadlcoal.get()`的时候先获取当前线程的这个`ThreadLocalMap`，然后**用当前的`ThreadLocal`对象作为key计算在Entry数组中取出Entry对象e**，然后`e.value`获取值 </span><br><span class="line"></span><br><span class="line">  + 由于`Entry`这个键值对中的`key`是弱引用，垃圾回收会回收`key`，但是`Entry`对象还在，`value`值也在，`key`没了，**&lt;font color=&#x27;blue&#x27;&gt;也就是说此时即使`key`被垃圾回收了但是`Entry`和`value`还在&lt;/font&gt;**，**此时如果能得到这个`Entry`对象，就仍然可以得到它的`value`**  </span><br><span class="line"></span><br><span class="line">  + ```java</span><br><span class="line">    public class Test &#123;</span><br><span class="line">        public static void main(String[] args) throws Exception &#123;</span><br><span class="line">            Thread thread = Thread.currentThread();</span><br><span class="line">            //得到线程私有的属性threadLocals，它是ThreadLocal.ThreadLocalMap对象</span><br><span class="line">            Field field = thread.getClass().getDeclaredField(&quot;threadLocals&quot;);</span><br><span class="line">            field.setAccessible(true);//由于不是public属性，爆破</span><br><span class="line">            //这里不能用ThreadLocal.ThreadLocalMap指向，因为ThreadLocalMap不是public得不到</span><br><span class="line">            Object o1 = field.get(thread);</span><br><span class="line">            //得到ThreadLocalMap的table属性，他是一个Entry数组，</span><br><span class="line">            Field table = o1.getClass().getDeclaredField(&quot;table&quot;);</span><br><span class="line">            table.setAccessible(true);</span><br><span class="line">            //得到Entry数组，数组是支持向上转型的</span><br><span class="line">            Object[] o2 = (Object[])table.get(o1);</span><br><span class="line">    </span><br><span class="line">            ThreadLocal&lt;MyObject&gt; local = new ThreadLocal&lt;&gt;();</span><br><span class="line">            local.set(new MyObject());</span><br><span class="line">            //得到ThreadLocal计算的哈希值字段，用于计算数组下标</span><br><span class="line">            Field field1 = local.getClass().getDeclaredField(&quot;threadLocalHashCode&quot;);</span><br><span class="line">            field1.setAccessible(true);</span><br><span class="line">            int hashcode = (int)field1.get(local);</span><br><span class="line">    </span><br><span class="line">            System.out.println(local.get());//输出</span><br><span class="line">    </span><br><span class="line">            //触发垃圾回收</span><br><span class="line">            local = null;</span><br><span class="line">            System.gc();</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">    </span><br><span class="line">            //根据哈希值计算数组下标，得到Entry，然后获取它的value属性</span><br><span class="line">            Object o = o2[hashcode &amp; (o2.length - 1)];</span><br><span class="line">            Field field2 = o.getClass().getDeclaredField(&quot;value&quot;);</span><br><span class="line">            field2.setAccessible(true);</span><br><span class="line">            Object value = field2.get(o);</span><br><span class="line">    </span><br><span class="line">            System.out.println(value);//最后输出</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    class MyObject &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public String toString() &#123;</span><br><span class="line">            return &quot;得到该对象&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303281041458.png" alt="image-20230328104101366"></p>
+<ul>
+<li><strong>由此可见即使<code>Entry</code>中的threadlocal用了弱引用，被回收了也还是能得到value</strong> </li>
+</ul>
+</li>
+<li><p><strong><font color='blue'>注意，虽然<code>ThreadLocal</code>对象是弱引用，但是上面触发垃圾回收仍然需要先将<code>local=null</code>，否则无法回收。因为此时<code>Entry</code>中的<code>ThreadLocal</code>虽然是弱引用，但是外面这个传入的<code>ThreadLocal</code>对象是强引用，而且这两个对象是同一个对象，此时不会回收</font></strong>  </p>
+<ul>
+<li><blockquote>
+<p>ps:垃圾回收器判断是否回收一个对象，用的是可达性分析法，从GC ROOT对象出发遍历所有被涉及的对象，没被遍历到的视为不可达，就当垃圾进行回收，如果一个对象仅仅有一个弱引用可达，也会被回收</p>
+<ul>
+<li>此时我们的<code>ThreadLocal</code>对象再栈中有强引用指向，因此即使<code>Entry</code>中是弱引用也不会回收<ul>
+<li>证明：将<code>local=null</code>注掉，断点分析查看Entry数组中的引用是否还在<ul>
+<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303281050739.png" alt="image-20230328105037664"></li>
+<li><strong>可以看到entry中<code>referent</code>字段仍有<code>threadlocal</code>的引用，不会回收</strong> <ul>
+<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303281053061.png" alt="image-20230328105312990"></li>
+</ul>
+</li>
+<li><strong>取消注释，发现已经被回收，<code>referent=null</code></strong>  <ul>
+<li><img src="https://yufish-pic-1310579125.cos.ap-nanjing.myqcloud.com/markdown-Pic2/202303281053248.png" alt="image-20230328105347167"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>那么问题来了，既然有没有<code>ThreadLocal</code>对象都能获取<code>value</code>，那为什么还要存储它，只存<code>value</code>不就行了？</strong></p>
+<ul>
+<li><p><strong>原因是在调用<code>ThreadLocal</code>对象的<code>set()</code>方法的时候，可能发生哈希碰撞</strong> </p>
+<ul>
+<li><p><strong>此时我们需要判断：这个哈希碰撞是同一个<code>ThreadLocal</code>对象产生的还是不同的<code>ThreadLocal</code>对象得到了同样的哈希值</strong></p>
+<ol>
+<li><strong>如果使用一个<code>ThreadLocal</code>对象，就覆盖原先的<code>value</code></strong></li>
+<li><strong>如果是不同的，就用开放定址法解决冲突</strong></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(ThreadLocal&lt;?&gt; key, Object value)</span> </span>&#123;</span><br><span class="line">    Entry[] tab = table;</span><br><span class="line">    <span class="keyword">int</span> len = tab.length;</span><br><span class="line">    <span class="keyword">int</span> i = key.threadLocalHashCode &amp; (len-<span class="number">1</span>);</span><br><span class="line">	<span class="comment">//nextIndex就是返回下一个下标，如果此时是最后一个就返回0，开放定址法</span></span><br><span class="line">    <span class="keyword">for</span> (Entry e = tab[i];e != <span class="keyword">null</span>;e = tab[i = nextIndex(i, len)]) &#123;</span><br><span class="line">        ThreadLocal&lt;?&gt; k = e.get();</span><br><span class="line">		<span class="comment">//使用一个对象就覆盖</span></span><br><span class="line">        <span class="keyword">if</span> (k == key) &#123;</span><br><span class="line">            e.value = value;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//entry不为空k为空，表示之前的entry弱引用被回收，另外处理</span></span><br><span class="line">        <span class="keyword">if</span> (k == <span class="keyword">null</span>) &#123;</span><br><span class="line">            replaceStaleEntry(key, value, i);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//找到空位置</span></span><br><span class="line">    tab[i] = <span class="keyword">new</span> Entry(key, value);</span><br><span class="line">    <span class="keyword">int</span> sz = ++size;</span><br><span class="line">    <span class="keyword">if</span> (!cleanSomeSlots(i, sz) &amp;&amp; sz &gt;= threshold)</span><br><span class="line">        rehash();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div>
+	  
+	    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+	  
+	</div>
+
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>YuFish-W
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2023/03/28/TreadLocal/" title="ThreadLocal必须知道的">http://example.com/2023/03/28/TreadLocal/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/24/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%96%E6%A8%A1%E5%B0%BD%E9%87%8F%E5%AF%B9%E8%B4%A8%E6%95%B0%E5%8F%96/" rel="prev" title="为什么取模尽量对质数取">
+      <i class="fa fa-chevron-left"></i> 为什么取模尽量对质数取
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YuFish-W"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">YuFish-W</p>
+  <div class="site-description" itemprop="description">功成名就不是目的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YuFish-W" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YuFish-W" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+      
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=167712&auto=1&height=66"></iframe>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-truck"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YuFish-W</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">82k</span>
+</div>
+
+        
+
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      已有<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人访问
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次
+    </span>
+  
+</div>
+
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":130,"height":270},"mobile":{"show":false},"log":false});</script></body>
+</html>
