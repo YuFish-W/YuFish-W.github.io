@@ -273,7 +273,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-29 09:58:29" itemprop="dateModified" datetime="2023-03-29T09:58:29+08:00">2023-03-29</time>
+                <time title="修改时间：2023-03-29 11:49:57" itemprop="dateModified" datetime="2023-03-29T11:49:57+08:00">2023-03-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -306,27 +306,7 @@
           <blockquote>
 <p>先说结论：因为对质数取模之后的结果发生碰撞概率更小。</p>
 <ul>
-<li>很多时候为了解决数字超过存储上限问题，我们可以对该数取模然后存储，这就导致不同的数字可能取模后结果一致，也就是发生了碰撞，这时我们就需要对比原数字。</li>
-</ul>
-</blockquote>
-<ul>
-<li>首先，在求余数的时候，例如:<code>a%b</code>，我们希望取余后的数有可能是<code>0-(b-1)</code>之间任意的一个数，这样才能最大化取余之后的映射空间，减少碰撞<ul>
-<li><strong><font color="blue">而如果<code>a</code>,<code>b</code>有公约数<code>c</code>，那么取余后的结果只会是c的倍数：0,c,2c,3c等等，而取不到<code>1-(c-1)</code>，<code>(c+1)-(2c-1)</code>中间的数，大大减少了映射空间</font></strong> </li>
-<li>例如：<code>25%10=5</code>,<code>25%15=10</code>,<code>25%20=5</code>等等</li>
-</ul>
-</li>
-<li>那么这是为何？<ul>
-<li>**我们可以这样理解，我们将a和b都看做是水平x轴上的一个点，<code>a%b</code>就表示我们从b点开始往后跳，每次跳的步长固定是b，一直跳到下一跳后的位置超过a停止，此时<font color="red">余数就是a减去当前位置</font>**，例如<code>25%15</code>，15每次跳的步长就是15，此时它下一条是30超过了25，因此余数就是当前25-15=10</li>
-<li>而<code>25%15</code>的时候，我们可以将每一跳的步长15看成是：<strong>步长为5每次必须跳3下</strong>，而5同时也是25的因子，因此<strong>25可以看成步长为5跳了5下</strong>，<ul>
-<li><strong>此时5是他们的公共跳跃因子</strong>，也就是说<strong>25一定在5的某一跳上</strong>，而<strong>15每次跳完也只可能是在5的某一跳上</strong> </li>
-<li><strong>那么此时当15的下一跳超过25的时候，他们中间的距离只可能是5的倍数，此时也就大大减少了映射空间</strong> </li>
-</ul>
-</li>
-</ul>
-</li>
-<li>而如果在<code>a%b</code>的时候<strong>b是个质数</strong>，那么a和b之间就<strong>没有公共跳跃因子</strong>，也就不会说他们的位置一定在一个因子的某一跳上，<strong>从而导致<code>a%b</code>结果只可能是该因子的倍数</strong> </li>
-</ul>
-
+<li>很多时候为了解决数字超过存储上限问题，我们可以对该数取模然后存储，这就导致不同的数字可能取模后结果一致，也就是发生了碰撞，这时我们就需要对比原数字。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/03/24/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%96%E6%A8%A1%E5%B0%BD%E9%87%8F%E5%AF%B9%E8%B4%A8%E6%95%B0%E5%8F%96/#more" rel="contents">
