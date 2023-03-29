@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="先说结论：因为对质数取模之后的结果发生碰撞概率更小。  很多时候为了解决数字超过存储上限问题，我们可以对该数取模然后存储，这就导致不同的数字可能取模后结果一致，也就是发生了碰撞，这时我们就需要对比原数字。    例如：x%a这样，假如x&#x3D;39，a&#x3D;9，此时我们理想的取模之后的范围根据a的值应该在在0-8之间 但是由于a&#x3D;9&#x3D;3*3，x&#x3D;39&#x3D;13*3，此时他们有公约数3 而取模本质可以理解成先求">
+  <meta name="description" content="先说结论：因为对质数取模之后的结果发生碰撞概率更小。  很多时候为了解决数字超过存储上限问题，我们可以对该数取模然后存储，这就导致不同的数字可能取模后结果一致，也就是发生了碰撞，这时我们就需要对比原数字。    首先，在求余数的时候，例如:a%b，我们希望取余后的数有可能是0-(b-1)之间任意的一个数，这样才能最大化取余之后的映射空间，减少碰撞 而如果a,b有公约数c，那么取余后的结果只会是c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为什么取模尽量对质数取">
 <meta property="og:url" content="http://example.com/2023/03/24/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%96%E6%A8%A1%E5%B0%BD%E9%87%8F%E5%AF%B9%E8%B4%A8%E6%95%B0%E5%8F%96/index.html">
 <meta property="og:site_name" content="酒书茶社">
-<meta property="og:description" content="先说结论：因为对质数取模之后的结果发生碰撞概率更小。  很多时候为了解决数字超过存储上限问题，我们可以对该数取模然后存储，这就导致不同的数字可能取模后结果一致，也就是发生了碰撞，这时我们就需要对比原数字。    例如：x%a这样，假如x&#x3D;39，a&#x3D;9，此时我们理想的取模之后的范围根据a的值应该在在0-8之间 但是由于a&#x3D;9&#x3D;3*3，x&#x3D;39&#x3D;13*3，此时他们有公约数3 而取模本质可以理解成先求">
+<meta property="og:description" content="先说结论：因为对质数取模之后的结果发生碰撞概率更小。  很多时候为了解决数字超过存储上限问题，我们可以对该数取模然后存储，这就导致不同的数字可能取模后结果一致，也就是发生了碰撞，这时我们就需要对比原数字。    首先，在求余数的时候，例如:a%b，我们希望取余后的数有可能是0-(b-1)之间任意的一个数，这样才能最大化取余之后的映射空间，减少碰撞 而如果a,b有公约数c，那么取余后的结果只会是c">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-24T04:23:03.000Z">
-<meta property="article:modified_time" content="2023-03-24T04:27:53.299Z">
+<meta property="article:modified_time" content="2023-03-29T01:58:29.768Z">
 <meta property="article:author" content="YuFish-W">
 <meta property="article:tag" content="酒书茶社、YuFish-W">
 <meta name="twitter:card" content="summary">
@@ -179,10 +179,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-03-24 12:23:03 / 修改时间：12:27:53" itemprop="dateCreated datePublished" datetime="2023-03-24T12:23:03+08:00">2023-03-24</time>
+              <time title="创建时间：2023-03-24 12:23:03" itemprop="dateCreated datePublished" datetime="2023-03-24T12:23:03+08:00">2023-03-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-29 09:58:29" itemprop="dateModified" datetime="2023-03-29T09:58:29+08:00">2023-03-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -206,7 +212,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>305</span>
+              <span>666</span>
             </span>
 
         </div>
@@ -225,12 +231,21 @@
 </ul>
 </blockquote>
 <ul>
-<li>例如：<code>x%a</code>这样，假如x=39，a=9，此时我们理想的取模之后的范围根据a的值应该在在<code>0-8</code>之间<ul>
-<li>但是由于<code>a=9=3*3</code>，<code>x=39=13*3</code>，此时他们有公约数3</li>
-<li>而取模本质可以理解成先求出<code>相除</code>之后的整数部分<code>c</code>，然后<code>原数字-c*模数</code>。而此时<code>39/9</code>因为存在公约数3，将会约成<code>13/3</code>，此时可以发现真正的取值范围是<code>0-2</code>，也就是说缩小了<code>3</code>倍</li>
+<li>首先，在求余数的时候，例如:<code>a%b</code>，我们希望取余后的数有可能是<code>0-(b-1)</code>之间任意的一个数，这样才能最大化取余之后的映射空间，减少碰撞<ul>
+<li><strong><font color='blue'>而如果<code>a</code>,<code>b</code>有公约数<code>c</code>，那么取余后的结果只会是c的倍数：0,c,2c,3c等等，而取不到<code>1-(c-1)</code>，<code>(c+1)-(2c-1)</code>中间的数，大大减少了映射空间</font></strong> </li>
+<li>例如：<code>25%10=5</code>,<code>25%15=10</code>,<code>25%20=5</code>等等</li>
 </ul>
 </li>
-<li>由此可见，如果取模的时候如果两个数字存在公约数<code>k</code>，则取模后的范围将会被缩小<code>k</code>倍</li>
+<li>那么这是为何？<ul>
+<li>**我们可以这样理解，我们将a和b都看做是水平x轴上的一个点，<code>a%b</code>就表示我们从b点开始往后跳，每次跳的步长固定是b，一直跳到下一跳后的位置超过a停止，此时<font color='red'>余数就是a减去当前位置</font>**，例如<code>25%15</code>，15每次跳的步长就是15，此时它下一条是30超过了25，因此余数就是当前25-15=10</li>
+<li>而<code>25%15</code>的时候，我们可以将每一跳的步长15看成是：<strong>步长为5每次必须跳3下</strong>，而5同时也是25的因子，因此<strong>25可以看成步长为5跳了5下</strong>，<ul>
+<li><strong>此时5是他们的公共跳跃因子</strong>，也就是说<strong>25一定在5的某一跳上</strong>，而<strong>15每次跳完也只可能是在5的某一跳上</strong> </li>
+<li><strong>那么此时当15的下一跳超过25的时候，他们中间的距离只可能是5的倍数，此时也就大大减少了映射空间</strong> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>而如果在<code>a%b</code>的时候<strong>b是个质数</strong>，那么a和b之间就<strong>没有公共跳跃因子</strong>，也就不会说他们的位置一定在一个因子的某一跳上，<strong>从而导致<code>a%b</code>结果只可能是该因子的倍数</strong> </li>
 </ul>
 
     </div>
@@ -418,7 +433,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">82k</span>
+    <span title="站点总字数">83k</span>
 </div>
 
         
